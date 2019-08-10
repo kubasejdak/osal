@@ -30,24 +30,25 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
+#pragma once
 
-#include <catch2/VerboseReporter.hpp>
-#include <catch2/catch.hpp>
+#include <system_error>
+#include <type_traits>
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
-{
-#ifdef TEST_TAGS
-    (void) argc;
+namespace osal {
 
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
+enum class Error {
+    eOk,
+    eRecursiveUsage
+};
 
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
-}
+std::error_code make_error_code(Error);
+
+} // namespace osal
+
+namespace std {
+
+template <>
+struct is_error_code_enum<osal::Error> : true_type {};
+
+} // namespace std

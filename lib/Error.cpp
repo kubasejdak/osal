@@ -30,24 +30,35 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
+#include "osal/Error.hpp"
 
-#include <catch2/VerboseReporter.hpp>
-#include <catch2/catch.hpp>
+#include <string>
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+namespace osal {
+
+struct ErrorCategory : std::error_category {
+    [[nodiscard]] const char* name() const noexcept override;
+    [[nodiscard]] std::string message(int value) const override;
+};
+
+const char* ErrorCategory::name() const noexcept
 {
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+    return "osal";
 }
+
+std::string ErrorCategory::message(int value) const
+{
+    switch (static_cast<Error>(value)) {
+        case Error::eOk: return "no error";
+        default: return "(unrecognized error)";
+    }
+}
+
+const ErrorCategory errorCategory{};
+
+std::error_code make_error_code(Error error)
+{
+    return {static_cast<int>(error), errorCategory};
+}
+
+} // namespace osal

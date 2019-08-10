@@ -30,24 +30,60 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
+#include "osal/Mutex.hpp"
 
-#include <catch2/VerboseReporter.hpp>
-#include <catch2/catch.hpp>
+#include "osal/Error.hpp"
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+#include <mutex>
+
+namespace osal {
+namespace detail {
+
+struct MutexImpl {
+    std::recursive_timed_mutex mutex;
+    std::timed_mutex helperMutex;
+};
+
+} // namespace detail
+
+Mutex::Mutex(MutexType type)
+    : m_type(type)
+    , m_impl(std::make_unique<detail::MutexImpl>())
 {
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
 }
+
+Mutex::~Mutex() = default;
+
+std::error_code Mutex::lock()
+{
+    if (m_type == MutexType::eRecursive)
+        m_impl->mutex.lock();
+    else {
+        m_impl->helperMutex.lock();
+        if (m_lockCounter == 0)
+            m_impl->mutex.lock();
+
+        m_impl->helperMutex.unlock();
+    }
+
+    ++ m_lockCounter;
+    return Error::eOk;
+}
+
+std::error_code Mutex::lock(Timeout timeout)
+{
+    (void) timeout;
+    return Error::eOk;
+}
+
+std::error_code Mutex::tryLock()
+{
+    return Error::eOk;
+}
+
+std::error_code Mutex::unlock()
+{
+    return Error::eOk;
+}
+
+} // namespace osal

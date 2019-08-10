@@ -30,24 +30,42 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
+#pragma once
 
-#include <catch2/VerboseReporter.hpp>
-#include <catch2/catch.hpp>
+#include "osal/Timeout.hpp"
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
-{
-#ifdef TEST_TAGS
-    (void) argc;
+#include <cstdint>
+#include <memory>
+#include <system_error>
 
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
+namespace osal {
 
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
-}
+enum class MutexType {
+    eNonRecursive,
+    eRecursive
+};
+
+namespace detail {
+
+struct MutexImpl;
+
+} // namespace detail
+
+class Mutex {
+public:
+    explicit Mutex(MutexType type = MutexType::eNonRecursive);
+    ~Mutex();
+
+    std::error_code lock();
+    std::error_code lock(Timeout timeout);
+    std::error_code tryLock();
+    std::error_code unlock();
+    [[nodiscard]] MutexType type() const { return m_type; }
+
+private:
+    MutexType m_type;
+    std::unique_ptr<detail::MutexImpl> m_impl;
+    std::uint32_t m_lockCounter = 0;
+};
+
+} // namespace osal

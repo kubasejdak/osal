@@ -29,25 +29,3 @@
 /// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ///
 /////////////////////////////////////////////////////////////////////////////////////
-
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
-
-#include <catch2/VerboseReporter.hpp>
-#include <catch2/catch.hpp>
-
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
-{
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
-}

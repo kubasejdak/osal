@@ -1,6 +1,7 @@
 # Object library type is used to prevent compiler from removing unit test functions from the binary.
 add_library(apposal-tests OBJECT EXCLUDE_FROM_ALL
     appMain.cpp
+    unit/Mutex.cpp
 )
 
 target_include_directories(apposal-tests
@@ -12,7 +13,7 @@ target_compile_features(apposal-tests
 )
 
 target_link_libraries(apposal-tests
-    PRIVATE catch2
+    PRIVATE catch2 osal
 )
 
 # This is required to selectively run Catch2 tests using tags on platforms, where cmd line arguments are not available.

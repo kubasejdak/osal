@@ -30,24 +30,24 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
+#include <osal/Mutex.hpp>
 
-#include <catch2/VerboseReporter.hpp>
 #include <catch2/catch.hpp>
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+TEST_CASE("Create non-recursive mutex", "[unit][mutex")
 {
-#ifdef TEST_TAGS
-    (void) argc;
+    osal::Mutex mutex(osal::MutexType::eNonRecursive);
+    REQUIRE(mutex.type() == osal::MutexType::eNonRecursive);
+}
 
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
+TEST_CASE("Create recursive mutex", "[unit][mutex")
+{
+    osal::Mutex mutex(osal::MutexType::eRecursive);
+    REQUIRE(mutex.type() == osal::MutexType::eRecursive);
+}
 
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+TEST_CASE("Create default non-recursive mutex", "[unit][mutex")
+{
+    osal::Mutex mutex;
+    REQUIRE(mutex.type() == osal::MutexType::eNonRecursive);
 }
