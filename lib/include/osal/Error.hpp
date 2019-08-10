@@ -39,7 +39,9 @@ namespace osal {
 
 enum class Error {
     eOk,
-    eRecursiveUsage
+    eRecursiveUsage,
+    eNotOwner,
+    eNotLocked
 };
 
 std::error_code make_error_code(Error);

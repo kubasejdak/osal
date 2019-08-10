@@ -30,24 +30,48 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.hpp>
 #include <osal/Mutex.hpp>
 
 #include <catch2/catch.hpp>
 
-TEST_CASE("Create non-recursive mutex", "[unit][mutex")
+TEST_CASE("Create non-recursive mutex", "[unit][mutex]")
 {
     osal::Mutex mutex(osal::MutexType::eNonRecursive);
     REQUIRE(mutex.type() == osal::MutexType::eNonRecursive);
 }
 
-TEST_CASE("Create recursive mutex", "[unit][mutex")
+TEST_CASE("Create recursive mutex", "[unit][mutex]")
 {
     osal::Mutex mutex(osal::MutexType::eRecursive);
     REQUIRE(mutex.type() == osal::MutexType::eRecursive);
 }
 
-TEST_CASE("Create default non-recursive mutex", "[unit][mutex")
+TEST_CASE("Create default non-recursive mutex", "[unit][mutex]")
 {
     osal::Mutex mutex;
     REQUIRE(mutex.type() == osal::MutexType::eNonRecursive);
+}
+
+TEST_CASE("Lock multiple times non-recursive mutex", "[unit][mutex]")
+{
+    osal::Mutex mutex;
+
+    auto result = mutex.lock();
+    REQUIRE(result == osal::Error::eOk);
+
+    result = mutex.lock();
+    REQUIRE(result == osal::Error::eRecursiveUsage);
+
+    result = mutex.lock();
+    REQUIRE(result == osal::Error::eRecursiveUsage);
+
+    result = mutex.unlock();
+    REQUIRE(result == osal::Error::eOk);
+
+    result = mutex.lock();
+    REQUIRE(result == osal::Error::eOk);
+
+    result = mutex.unlock();
+    REQUIRE(result == osal::Error::eOk);
 }
