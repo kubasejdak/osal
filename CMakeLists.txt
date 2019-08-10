@@ -17,8 +17,13 @@ include(${platform_SOURCE_DIR}/${PLATFORM}/toolchain.cmake)
 project(osal VERSION 0.1 LANGUAGES C CXX)
 
 if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_BUILD_TYPE            Debug)
 endif ()
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS   ON)
+
+# Project-wide compilation options.
+add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 add_subdirectory(${platform_SOURCE_DIR})
 add_subdirectory(external)
