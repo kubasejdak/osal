@@ -65,9 +65,9 @@ std::error_code Mutex::lock()
     }
 
     m_impl->mutex.lock();
+
     m_impl->owner = std::this_thread::get_id();
     ++m_lockCounter;
-
     return Error::eOk;
 }
 
@@ -79,6 +79,17 @@ std::error_code Mutex::lock(Timeout timeout)
 
 std::error_code Mutex::tryLock()
 {
+    std::lock_guard<std::mutex> lock(m_impl->helperMutex);
+    if (m_type == MutexType::eNonRecursive && m_lockCounter == 1) {
+        if (m_impl->owner == std::this_thread::get_id())
+            return Error::eRecursiveUsage;
+    }
+
+    if (!m_impl->mutex.try_lock())
+        return Error::eLocked;
+
+    m_impl->owner = std::this_thread::get_id();
+    ++m_lockCounter;
     return Error::eOk;
 }
 

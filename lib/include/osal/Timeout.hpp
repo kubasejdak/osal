@@ -32,10 +32,18 @@
 
 #pragma once
 
+#include <chrono>
+
+using namespace std::chrono_literals;
+
 namespace osal {
 
 class Timeout {
 public:
+    Timeout(std::chrono::milliseconds duration);
+
+private:
+    std::chrono::milliseconds m_duration;
 };
 
 } // namespace osal

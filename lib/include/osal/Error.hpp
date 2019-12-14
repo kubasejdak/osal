@@ -41,7 +41,8 @@ enum class Error {
     eOk,
     eRecursiveUsage,
     eNotOwner,
-    eNotLocked
+    eNotLocked,
+    eLocked
 };
 
 std::error_code make_error_code(Error);
