@@ -30,30 +30,60 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
-
 #include "platformInit.hpp"
 
-#include <catch2/catch.hpp>
+#include <stm32f4xx_gpio.h>
+#include <stm32f4xx_rcc.h>
+#include <stm32f4xx_usart.h>
 
-#include <cstdlib>
+#include <cstddef>
+#include <cstdint>
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+int consolePrint(const char* message, std::size_t size)
 {
-    if (!platformInit())
-        return EXIT_FAILURE;
+    for (std::size_t i = 0; i < size; ++i) {
+        while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET) { // NOLINT
+        }
+        USART_SendData(UART4, message[i]); // NOLINT
+    }
 
-#ifdef TEST_TAGS
-    (void) argc;
+    return size;
+}
 
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
+static void consoleInitGpio()
+{
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_UART4); // NOLINT
 
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+    GPIO_InitTypeDef config{};
+    config.GPIO_Pin = GPIO_Pin_10;
+    config.GPIO_Mode = GPIO_Mode_AF;
+    config.GPIO_OType = GPIO_OType_PP;
+    config.GPIO_PuPd = GPIO_PuPd_UP;
+    config.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_Init(GPIOC, &config); // NOLINT
+}
+
+static void consoleInitUart()
+{
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
+
+    USART_InitTypeDef config{};
+    constexpr std::uint32_t cConsoleBaudrate = 115200;
+    config.USART_BaudRate = cConsoleBaudrate;
+    config.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    config.USART_Mode = USART_Mode_Tx;
+    config.USART_Parity = USART_Parity_No;
+    config.USART_StopBits = USART_StopBits_1;
+    config.USART_WordLength = USART_WordLength_8b;
+    USART_Init(UART4, &config); // NOLINT
+    USART_Cmd(UART4, ENABLE);   // NOLINT
+}
+
+bool platformInit()
+{
+    consoleInitGpio();
+    consoleInitUart();
+
+    return true;
 }

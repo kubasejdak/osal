@@ -3,8 +3,7 @@ if (NOT DEFINED OSAL_PLATFORM)
 endif ()
 
 # Project-wide compilation options.
-add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
 
 add_subdirectory(${OSAL_PLATFORM})
 

@@ -30,30 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
-
 #include "platformInit.hpp"
 
-#include <catch2/catch.hpp>
-
-#include <cstdlib>
-
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+bool platformInit()
 {
-    if (!platformInit())
-        return EXIT_FAILURE;
-
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+    return true;
 }
