@@ -48,7 +48,7 @@ struct MutexImpl {
 
 } // namespace detail
 
-Mutex::Mutex(MutexType type)
+Mutex::Mutex(MutexType type) noexcept
     : m_type(type)
     , m_impl(std::make_unique<detail::MutexImpl>())
 {

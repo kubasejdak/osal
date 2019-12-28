@@ -1,7 +1,7 @@
 include(FetchContent)
 FetchContent_Declare(
     platform
-    GIT_REPOSITORY  git@github.com:kubasejdak/platform.git
+    GIT_REPOSITORY  https://github.com/kubasejdak/platform.git
     GIT_TAG         master
 )
 

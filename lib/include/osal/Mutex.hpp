@@ -53,8 +53,13 @@ struct MutexImpl;
 
 class Mutex {
 public:
-    explicit Mutex(MutexType type = MutexType::eNonRecursive);
+    explicit Mutex(MutexType type = MutexType::eNonRecursive) noexcept;
+    Mutex(const Mutex&) = delete;
+    Mutex(Mutex&&) noexcept = default;
     ~Mutex();
+
+    Mutex& operator=(const Mutex&) = delete;
+    Mutex& operator=(Mutex&&) noexcept = default;
 
     std::error_code lock();
     std::error_code lock(Timeout timeout);

@@ -16,6 +16,11 @@ target_compile_features(apposal-tests
 
 find_package(Catch2 REQUIRED)
 
+if (PLATFORM STREQUAL "freertos-arm")
+    # This is required, because FreeRTOS doesn't support signals or exceptions.
+    target_compile_definitions(Catch2::Catch2 INTERFACE CATCH_CONFIG_NO_POSIX_SIGNALS CATCH_CONFIG_DISABLE_EXCEPTIONS)
+endif ()
+
 target_link_libraries(apposal-tests
     PUBLIC platform-init
     PRIVATE Catch2::Catch2 osal

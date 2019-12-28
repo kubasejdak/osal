@@ -30,18 +30,45 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "osal/Mutex.hpp"
 
-#include <chrono>
+#include "osal/Error.hpp"
 
 namespace osal {
+namespace detail {
 
-class Timeout {
-public:
-    Timeout(std::chrono::milliseconds duration) noexcept;
-
-private:
-    std::chrono::milliseconds m_duration;
+struct MutexImpl {
 };
+
+} // namespace detail
+
+Mutex::Mutex(MutexType type) noexcept
+    : m_type(type)
+    , m_impl(std::make_unique<detail::MutexImpl>())
+{
+}
+
+Mutex::~Mutex() = default;
+
+std::error_code Mutex::lock()
+{
+    return Error::eOk;
+}
+
+std::error_code Mutex::lock(Timeout timeout)
+{
+    (void) timeout;
+    return Error::eOk;
+}
+
+std::error_code Mutex::tryLock()
+{
+    return Error::eOk;
+}
+
+std::error_code Mutex::unlock()
+{
+    return Error::eOk;
+}
 
 } // namespace osal
