@@ -45,7 +45,8 @@ enum class Error {
     eLocked
 };
 
-std::error_code make_error_code(Error);
+// NOLINTNEXTLINE(readability-identifier-naming)
+std::error_code make_error_code(Error error);
 
 } // namespace osal
 

@@ -3,6 +3,7 @@ Checks:              '*,
                       -cppcoreguidelines-pro-bounds-pointer-arithmetic,
                       -fuchsia-default-arguments-calls,
                       -fuchsia-default-arguments-declarations,
+                      -llvm-header-guard,
                       -modernize-use-trailing-return-type'
 WarningsAsErrors:    '*'
 HeaderFilterRegex:   ''
