@@ -38,6 +38,7 @@ namespace osal {
 
 class Timeout {
 public:
+    // NOLINTNEXTLINE(google-explicit-constructor)
     Timeout(std::chrono::milliseconds duration) noexcept;
 
 private:
