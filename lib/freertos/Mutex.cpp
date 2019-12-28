@@ -52,22 +52,26 @@ Mutex::~Mutex() = default;
 
 std::error_code Mutex::lock()
 {
+    (void) m_impl;
     return Error::eOk;
 }
 
 std::error_code Mutex::lock(Timeout timeout)
 {
     (void) timeout;
+    (void) m_impl;
     return Error::eOk;
 }
 
 std::error_code Mutex::tryLock()
 {
+    (void) m_impl;
     return Error::eOk;
 }
 
 std::error_code Mutex::unlock()
 {
+    (void) m_impl;
     return Error::eOk;
 }
 

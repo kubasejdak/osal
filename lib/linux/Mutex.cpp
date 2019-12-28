@@ -74,6 +74,7 @@ std::error_code Mutex::lock()
 std::error_code Mutex::lock(Timeout timeout)
 {
     (void) timeout;
+    (void) m_impl;
     return Error::eOk;
 }
 
