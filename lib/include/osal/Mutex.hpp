@@ -40,10 +40,12 @@
 
 namespace osal {
 
+// clang-format off
 enum class MutexType {
     eNonRecursive,
     eRecursive
 };
+// clang-format on
 
 namespace detail {
 

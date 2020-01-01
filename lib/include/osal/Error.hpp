@@ -37,6 +37,7 @@
 
 namespace osal {
 
+// clang-format off
 enum class Error {
     eOk,
     eRecursiveUsage,
@@ -44,6 +45,7 @@ enum class Error {
     eNotLocked,
     eLocked
 };
+// clang-format on
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 std::error_code make_error_code(Error error);

@@ -37,16 +37,14 @@
 namespace osal {
 namespace detail {
 
-struct MutexImpl {
-};
+struct MutexImpl {};
 
 } // namespace detail
 
 Mutex::Mutex(MutexType type) noexcept
     : m_type(type)
     , m_impl(std::make_unique<detail::MutexImpl>())
-{
-}
+{}
 
 Mutex::~Mutex() = default;
 
