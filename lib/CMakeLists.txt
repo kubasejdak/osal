@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.15)
+
 if (NOT DEFINED OSAL_PLATFORM)
     message(FATAL_ERROR "'OSAL_PLATFORM' is not defined!")
 endif ()
