@@ -35,6 +35,8 @@
 
 #include "platformInit.hpp"
 
+#include <osal/init.h>
+
 #include <catch2/catch.hpp>
 
 #include <cstdlib>
@@ -43,6 +45,9 @@
 int appMain(int argc, char* argv[])
 {
     if (!platformInit())
+        return EXIT_FAILURE;
+
+    if (!osalInit())
         return EXIT_FAILURE;
 
 #ifdef TEST_TAGS

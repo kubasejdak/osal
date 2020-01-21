@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,47 +30,30 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-//#include "osal/Mutex.hpp"
-//
-//#include "osal/Error.hpp"
-//
-//namespace osal {
-//namespace detail {
-//
-//struct MutexImpl {};
-//
-//} // namespace detail
-//
-//Mutex::Mutex(MutexType type) noexcept
-//    : m_type(type)
-//    , m_impl(std::make_unique<detail::MutexImpl>())
-//{}
-//
-//Mutex::~Mutex() = default;
-//
-//std::error_code Mutex::lock()
-//{
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//std::error_code Mutex::lock(Timeout timeout)
-//{
-//    (void) timeout;
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//std::error_code Mutex::tryLock()
-//{
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//std::error_code Mutex::unlock()
-//{
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//} // namespace osal
+#include "osal/timestamp.h"
+
+#include <chrono>
+
+std::chrono::steady_clock::time_point initTime;
+
+template <typename Unit>
+static std::uint64_t timeSinceStart()
+{
+    auto now = std::chrono::steady_clock::now();
+    return std::chrono::duration_cast<Unit>(initTime - now).count();
+}
+
+uint64_t osalGetTimestampMs()
+{
+    return timeSinceStart<std::chrono::milliseconds>();
+}
+
+uint64_t osalGetTimestampUs()
+{
+   return timeSinceStart<std::chrono::microseconds>();
+}
+
+uint64_t osalGetTimestampNs()
+{
+    return timeSinceStart<std::chrono::nanoseconds>();
+}

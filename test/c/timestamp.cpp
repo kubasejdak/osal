@@ -30,47 +30,19 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-//#include "osal/Mutex.hpp"
-//
-//#include "osal/Error.hpp"
-//
-//namespace osal {
-//namespace detail {
-//
-//struct MutexImpl {};
-//
-//} // namespace detail
-//
-//Mutex::Mutex(MutexType type) noexcept
-//    : m_type(type)
-//    , m_impl(std::make_unique<detail::MutexImpl>())
-//{}
-//
-//Mutex::~Mutex() = default;
-//
-//std::error_code Mutex::lock()
-//{
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//std::error_code Mutex::lock(Timeout timeout)
-//{
-//    (void) timeout;
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//std::error_code Mutex::tryLock()
-//{
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//std::error_code Mutex::unlock()
-//{
-//    (void) m_impl;
-//    return Error::eOk;
-//}
-//
-//} // namespace osal
+#include <osal/timestamp.h>
+
+#include <catch2/catch.hpp>
+
+#include <thread>
+
+using namespace std::chrono_literals;
+
+TEST_CASE("Test", "[c][unit][time]")
+{
+    auto now1 = osalGetTimestampMs();
+    std::this_thread::sleep_for(500ms);
+    auto now2 = osalGetTimestampMs();
+
+    REQUIRE(now2 - now1 >= 500);
+}

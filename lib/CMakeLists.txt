@@ -5,19 +5,14 @@ if (NOT DEFINED OSAL_PLATFORM)
 endif ()
 
 # Project-wide compilation options.
-add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c17> $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
 
 add_subdirectory(${OSAL_PLATFORM})
+#add_subdirectory(common)
 
-add_library(osal EXCLUDE_FROM_ALL
-    Error.cpp
-    Timeout.cpp
-)
+# OSAL for C.
+add_library(osal-c INTERFACE)
 
-target_include_directories(osal
-    PUBLIC include
-)
-
-target_link_libraries(osal
+target_link_libraries(osal-c
     INTERFACE osal-${OSAL_PLATFORM}
 )
