@@ -30,18 +30,16 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <osal/sleep.h>
-#include <osal/timestamp.h>
+#pragma once
 
-#include <catch2/catch.hpp>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <thread>
+#include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-TEST_CASE("Test", "[c][unit][timestamp]")
-{
-    auto now1 = osalGetTimestampMs();
-    osalSleepMs(500);
-    auto now2 = osalGetTimestampMs();
+void osalSleepMs(uint64_t delayMs);
 
-    REQUIRE(now2 - now1 >= 500);
+#ifdef __cplusplus
 }
+#endif

@@ -30,18 +30,12 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <osal/sleep.h>
-#include <osal/timestamp.h>
+#include "osal/sleep.h"
 
-#include <catch2/catch.hpp>
-
+#include <chrono>
 #include <thread>
 
-TEST_CASE("Test", "[c][unit][timestamp]")
+void osalSleepMs(uint64_t delayMs)
 {
-    auto now1 = osalGetTimestampMs();
-    osalSleepMs(500);
-    auto now2 = osalGetTimestampMs();
-
-    REQUIRE(now2 - now1 >= 500);
+    std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
 }
