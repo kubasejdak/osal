@@ -32,31 +32,30 @@
 
 #include "osal/timestamp.h"
 
-//#include <chrono>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
-//std::chrono::steady_clock::time_point initTime;
+#include <cstdint>
 
-//template <typename Unit>
-//static std::uint64_t timeSinceStart()
-//{
-//    auto now = std::chrono::steady_clock::now();
-//    return std::chrono::duration_cast<Unit>(initTime - now).count();
-//}
+TickType_t initTime;
+
+static std::uint64_t timeSinceStartMs()
+{
+    auto now = xTaskGetTickCount() / configTICK_RATE_HZ;
+    return static_cast<std::uint64_t>(now - initTime);
+}
 
 uint64_t osalTimestampGetMs()
 {
-    return 0;
-//    return timeSinceStart<std::chrono::milliseconds>();
+    return timeSinceStartMs();
 }
 
 uint64_t osalTimestampGetUs()
 {
-    return 0;
-//   return timeSinceStart<std::chrono::microseconds>();
+    return osalMsToUs(timeSinceStartMs());
 }
 
 uint64_t osalTimestampGetNs()
 {
-    return 0;
-//    return timeSinceStart<std::chrono::nanoseconds>();
+    return osalMsToNs(timeSinceStartMs());
 }

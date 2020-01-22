@@ -8,3 +8,7 @@ add_library(osal-freertos EXCLUDE_FROM_ALL
 target_include_directories(osal-freertos
     PUBLIC ../include
 )
+
+target_link_libraries(osal-freertos
+    PRIVATE freertos
+)

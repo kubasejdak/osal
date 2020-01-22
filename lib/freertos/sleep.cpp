@@ -32,11 +32,10 @@
 
 #include "osal/sleep.h"
 
-//#include <chrono>
-//#include <thread>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
 void osalSleepMs(uint64_t delayMs)
 {
-    (void) delayMs;
-//    std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
+    vTaskDelay(delayMs / portTICK_PERIOD_MS);
 }

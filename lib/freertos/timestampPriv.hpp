@@ -30,6 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <chrono>
+#pragma once
 
-extern std::chrono::steady_clock::time_point initTime;
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+
+extern TickType_t initTime;

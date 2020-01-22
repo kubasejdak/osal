@@ -36,7 +36,7 @@
 
 bool osalInit()
 {
-//    initTime = std::chrono::steady_clock::now();
+    initTime = xTaskGetTickCount() / configTICK_RATE_HZ;
 
     return true;
 }

@@ -35,15 +35,41 @@
 
 #include <catch2/catch.hpp>
 
-#include <thread>
+#include <cstdint>
 
-TEST_CASE("Test", "[c][unit][timestamp]")
+TEST_CASE("Check timestamp values after multiple delays", "[c][unit][timestamp]")
 {
-    constexpr int cDelayMs = 500;
+    std::uint64_t delayMs{};
+
+    SECTION("Delay 500ms")
+    {
+        constexpr std::uint64_t cDelayMs = 500;
+        delayMs = cDelayMs;
+    }
+
+    SECTION("Delay 1ms")
+    {
+        constexpr std::uint64_t cDelayMs = 1;
+        delayMs = cDelayMs;
+    }
+
+    SECTION("Delay 0ms")
+    {
+        constexpr std::uint64_t cDelayMs = 0;
+        delayMs = cDelayMs;
+    }
 
     auto now1 = osalTimestampGetMs();
-    osalSleepMs(cDelayMs);
+    osalSleepMs(delayMs);
     auto now2 = osalTimestampGetMs();
+    const auto delay2Ms = 2 * delayMs;
+    osalSleepMs(delay2Ms);
+    auto now3 = osalTimestampGetMs();
 
-    REQUIRE(now2 - now1 >= cDelayMs);
+    REQUIRE(now2 >= now1);
+    REQUIRE((now2 - now1) >= delayMs);
+    REQUIRE(now3 >= now2);
+    REQUIRE(now3 >= now1);
+    REQUIRE((now3 - now2) >= delay2Ms);
+    REQUIRE((now3 - now1) >= (delay2Ms + delayMs));
 }

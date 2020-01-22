@@ -40,7 +40,7 @@ template <typename Unit>
 static std::uint64_t timeSinceStart()
 {
     auto now = std::chrono::steady_clock::now();
-    return std::chrono::duration_cast<Unit>(initTime - now).count();
+    return std::chrono::duration_cast<Unit>(now - initTime).count();
 }
 
 uint64_t osalTimestampGetMs()
