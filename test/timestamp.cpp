@@ -39,9 +39,11 @@
 
 TEST_CASE("Test", "[c][unit][timestamp]")
 {
-    auto now1 = osalGetTimestampMs();
-    osalSleepMs(500);
-    auto now2 = osalGetTimestampMs();
+    constexpr int cDelayMs = 500;
 
-    REQUIRE(now2 - now1 >= 500);
+    auto now1 = osalTimestampGetMs();
+    osalSleepMs(cDelayMs);
+    auto now2 = osalTimestampGetMs();
+
+    REQUIRE(now2 - now1 >= cDelayMs);
 }

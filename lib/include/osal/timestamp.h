@@ -38,9 +38,9 @@ extern "C" {
 
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-uint64_t osalGetTimestampMs();
-uint64_t osalGetTimestampUs();
-uint64_t osalGetTimestampNs();
+uint64_t osalTimestampGetMs();
+uint64_t osalTimestampGetUs();
+uint64_t osalTimestampGetNs();
 
 enum ConversionsToSec
 {
