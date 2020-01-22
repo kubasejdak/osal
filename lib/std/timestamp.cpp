@@ -34,7 +34,7 @@
 
 #include <chrono>
 
-std::chrono::steady_clock::time_point initTime;
+std::chrono::steady_clock::time_point initTime; // NOLINT(cert-err58-cpp)
 
 template <typename Unit>
 static std::uint64_t timeSinceStart()
