@@ -34,6 +34,10 @@
 
 namespace osal {
 
+/// Initializes OSAL internal modules.
+/// @return Flag indicating if the initialization was successful.
+/// @retval true            Initialization was successful.
+/// @retval false           Some errors occurred during the initialization. OSAL may not be functional.
 bool init();
 
 } // namespace osal

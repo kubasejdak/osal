@@ -36,9 +36,17 @@
 
 namespace osal {
 
+/// @typedef Clock
+/// Default clock type used by OSAL to represent the timestamp.
 using Clock = std::chrono::steady_clock;
+
+/// @typedef Duration
+/// Default duration type used by OSAL to represent the timestamp.
 using Duration = std::chrono::nanoseconds;
 
+/// Returns the timestamp relative to the start of the program in ns.
+/// @return Timestamp relative to the start of the program in ns.
+/// @note Timestamp can be easily converted to any unit with std::chrono::duration_cast().
 std::chrono::time_point<Clock, Duration> timestamp();
 
 } // namespace osal

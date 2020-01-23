@@ -36,6 +36,10 @@
 extern "C" {
 #endif
 
+/// Initializes OSAL internal modules.
+/// @return Flag indicating if the initialization was successful.
+/// @retval true            Initialization was successful.
+/// @retval false           Some errors occurred during the initialization. OSAL may not be functional.
 bool osalInit();
 
 #ifdef __cplusplus
