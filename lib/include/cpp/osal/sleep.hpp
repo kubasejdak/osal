@@ -49,7 +49,7 @@ void sleepMs(std::uint64_t durationMs);
 template <typename Representation, typename Period>
 void sleep(const std::chrono::duration<Representation, Period>& duration)
 {
-    sleepMs(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
+    detail::sleepMs(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
 }
 
 } // namespace osal
