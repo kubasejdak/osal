@@ -34,9 +34,14 @@
 
 #include "osal/init.h"
 
-bool osalInit()
+static void initTimestamp()
 {
     initTime = xTaskGetTickCount() / configTICK_RATE_HZ;
+}
+
+bool osalInit()
+{
+    initTimestamp();
 
     return true;
 }

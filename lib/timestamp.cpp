@@ -30,25 +30,16 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "osal/timestamp.hpp"
 
-#include <chrono>
-#include <cstdint>
-
-// NOLINTNEXTLINE(google-global-names-in-headers)
-using namespace std::chrono_literals;
+#include "osal/timestamp.h"
 
 namespace osal {
-namespace detail {
 
-void sleepMs(std::uint64_t durationMs);
-
-} // namespace detail
-
-template <typename Representation, typename Period>
-void sleep(const std::chrono::duration<Representation, Period>& duration)
+std::chrono::time_point<Clock, Duration> timestamp()
 {
-    detail::sleepMs(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
+    Duration timeSinceStart(osalTimestampNs());
+    return std::chrono::time_point<Clock, Duration>(timeSinceStart);
 }
 
 } // namespace osal

@@ -45,17 +45,17 @@ static std::uint64_t timeSinceStartMs()
     return static_cast<std::uint64_t>(now - initTime);
 }
 
-uint64_t osalTimestampGetMs()
+uint64_t osalTimestampMs()
 {
     return timeSinceStartMs();
 }
 
-uint64_t osalTimestampGetUs()
+uint64_t osalTimestampUs()
 {
     return osalMsToUs(timeSinceStartMs());
 }
 
-uint64_t osalTimestampGetNs()
+uint64_t osalTimestampNs()
 {
     return osalMsToNs(timeSinceStartMs());
 }

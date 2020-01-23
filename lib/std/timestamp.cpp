@@ -43,17 +43,17 @@ static std::uint64_t timeSinceStart()
     return std::chrono::duration_cast<Unit>(now - initTime).count();
 }
 
-uint64_t osalTimestampGetMs()
+uint64_t osalTimestampMs()
 {
     return timeSinceStart<std::chrono::milliseconds>();
 }
 
-uint64_t osalTimestampGetUs()
+uint64_t osalTimestampUs()
 {
    return timeSinceStart<std::chrono::microseconds>();
 }
 
-uint64_t osalTimestampGetNs()
+uint64_t osalTimestampNs()
 {
     return timeSinceStart<std::chrono::nanoseconds>();
 }

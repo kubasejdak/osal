@@ -15,13 +15,21 @@ add_library(osal-c INTERFACE)
 add_library(osal::c ALIAS osal-c)
 
 target_link_libraries(osal-c
-    INTERFACE osal-${OSAL_PLATFORM}
+    INTERFACE osal-${OSAL_PLATFORM} osal-common
 )
 
 # OSAL for C++.
-add_library(osal-cpp INTERFACE)
+add_library(osal-cpp
+    init.cpp
+    sleep.cpp
+    timestamp.cpp
+)
 add_library(osal::cpp ALIAS osal-cpp)
 
+target_include_directories(osal-cpp
+    PUBLIC include/cpp
+)
+
 target_link_libraries(osal-cpp
-    INTERFACE osal-common
+    PRIVATE osal-c osal-common
 )

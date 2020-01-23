@@ -38,87 +38,22 @@ extern "C" {
 
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-uint64_t osalTimestampGetMs();
-uint64_t osalTimestampGetUs();
-uint64_t osalTimestampGetNs();
+uint64_t osalTimestampMs();
+uint64_t osalTimestampUs();
+uint64_t osalTimestampNs();
 
-enum ConversionsToSec
-{
-    eOsalMsInSec = 1000,
-    eOsalUsInSec = 1000000,
-    eOsalNsInSec = 1000000000
-};
-
-enum ConversionsToMs
-{
-    eOsalUsInMs = 1000,
-    eOsalNsInMs = 1000000
-};
-
-enum ConversionsToUs
-{
-    eOsalNsInUs = 1000
-};
-
-static inline uint64_t osalMsToSec(uint64_t milliseconds)
-{
-    return (milliseconds / eOsalMsInSec);
-}
-
-static inline uint64_t osalUsToSec(uint64_t microseconds)
-{
-    return (microseconds / eOsalUsInSec);
-}
-
-static inline uint64_t osalNsToSec(uint64_t nanoseconds)
-{
-    return (nanoseconds / eOsalNsInSec);
-}
-
-static inline uint64_t osalSecToMs(uint64_t seconds)
-{
-    return (seconds * eOsalMsInSec);
-}
-
-static inline uint64_t osalUsToMs(uint64_t microseconds)
-{
-    return (microseconds / eOsalUsInMs);
-}
-
-static inline uint64_t osalNsToMs(uint64_t nanoseconds)
-{
-    return (nanoseconds / eOsalNsInMs);
-}
-
-static inline uint64_t osalSecToUs(uint64_t seconds)
-{
-    return (seconds * eOsalUsInSec);
-}
-
-static inline uint64_t osalMsToUs(uint64_t milliseconds)
-{
-    return (milliseconds * eOsalUsInMs);
-}
-
-static inline uint64_t osalNsToUs(uint64_t nanoseconds)
-{
-    return (nanoseconds / eOsalNsInUs);
-}
-
-static inline uint64_t osalSecToNs(uint64_t seconds)
-{
-    return (seconds * eOsalNsInSec);
-}
-
-static inline uint64_t osalMsToNs(uint64_t milliseconds)
-{
-    return (milliseconds * eOsalNsInMs);
-}
-
-static inline uint64_t osalUsToNs(uint64_t microseconds)
-{
-    return (microseconds * eOsalNsInUs);
-}
+uint64_t osalMsToSec(uint64_t milliseconds);
+uint64_t osalUsToSec(uint64_t microseconds);
+uint64_t osalNsToSec(uint64_t nanoseconds);
+uint64_t osalSecToMs(uint64_t seconds);
+uint64_t osalUsToMs(uint64_t microseconds);
+uint64_t osalNsToMs(uint64_t nanoseconds);
+uint64_t osalSecToUs(uint64_t seconds);
+uint64_t osalMsToUs(uint64_t milliseconds);
+uint64_t osalNsToUs(uint64_t nanoseconds);
+uint64_t osalSecToNs(uint64_t seconds);
+uint64_t osalMsToNs(uint64_t milliseconds);
+uint64_t osalUsToNs(uint64_t microseconds);
 
 #ifdef __cplusplus
 }

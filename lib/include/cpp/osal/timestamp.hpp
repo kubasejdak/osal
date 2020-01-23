@@ -33,22 +33,12 @@
 #pragma once
 
 #include <chrono>
-#include <cstdint>
-
-// NOLINTNEXTLINE(google-global-names-in-headers)
-using namespace std::chrono_literals;
 
 namespace osal {
-namespace detail {
 
-void sleepMs(std::uint64_t durationMs);
+using Clock = std::chrono::steady_clock;
+using Duration = std::chrono::nanoseconds;
 
-} // namespace detail
-
-template <typename Representation, typename Period>
-void sleep(const std::chrono::duration<Representation, Period>& duration)
-{
-    detail::sleepMs(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
-}
+std::chrono::time_point<Clock, Duration> timestamp();
 
 } // namespace osal

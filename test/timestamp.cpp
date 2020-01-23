@@ -31,13 +31,15 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include <osal/sleep.h>
+#include <osal/sleep.hpp>
 #include <osal/timestamp.h>
+#include <osal/timestamp.hpp>
 
 #include <catch2/catch.hpp>
 
 #include <cstdint>
 
-TEST_CASE("Check timestamp values after multiple delays", "[c][unit][timestamp]")
+TEST_CASE("Check C timestamp values after multiple delays", "[c][unit][timestamp]")
 {
     std::uint64_t delayMs{};
 
@@ -59,12 +61,12 @@ TEST_CASE("Check timestamp values after multiple delays", "[c][unit][timestamp]"
         delayMs = cDelayMs;
     }
 
-    auto now1 = osalTimestampGetMs();
+    auto now1 = osalTimestampMs();
     osalSleepMs(delayMs);
-    auto now2 = osalTimestampGetMs();
+    auto now2 = osalTimestampMs();
     const auto cDelay2Ms = 2 * delayMs;
     osalSleepMs(cDelay2Ms);
-    auto now3 = osalTimestampGetMs();
+    auto now3 = osalTimestampMs();
 
     REQUIRE(now2 >= now1);
     REQUIRE((now2 - now1) >= delayMs);
@@ -72,4 +74,38 @@ TEST_CASE("Check timestamp values after multiple delays", "[c][unit][timestamp]"
     REQUIRE(now3 >= now1);
     REQUIRE((now3 - now2) >= cDelay2Ms);
     REQUIRE((now3 - now1) >= (cDelay2Ms + delayMs));
+}
+
+TEST_CASE("Check C++ timestamp values after multiple delays", "[cpp][unit][timestamp]")
+{
+    std::chrono::milliseconds delay{};
+
+    SECTION("Delay 500ms")
+    {
+        delay = 500ms;
+    }
+
+    SECTION("Delay 1ms")
+    {
+        delay = 1ms;
+    }
+
+    SECTION("Delay 0ms")
+    {
+        delay = 0ms;
+    }
+
+    auto now1 = osal::timestamp();
+    osal::sleep(delay);
+    auto now2 = osal::timestamp();
+    const auto cDelay2 = 2 * delay;
+    osal::sleep(cDelay2);
+    auto now3 = osal::timestamp();
+
+    REQUIRE(now2 >= now1);
+    REQUIRE((now2 - now1) >= delay);
+    REQUIRE(now3 >= now2);
+    REQUIRE(now3 >= now1);
+    REQUIRE((now3 - now2) >= cDelay2);
+    REQUIRE((now3 - now1) >= (cDelay2 + delay));
 }

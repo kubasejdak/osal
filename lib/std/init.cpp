@@ -34,9 +34,14 @@
 
 #include "osal/init.h"
 
-bool osalInit()
+static void initTimestamp()
 {
     initTime = std::chrono::steady_clock::now();
+}
+
+bool osalInit()
+{
+    initTimestamp();
 
     return true;
 }
