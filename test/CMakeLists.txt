@@ -23,7 +23,7 @@ endif ()
 
 target_link_libraries(apposal-tests
     PUBLIC platform-init
-    PRIVATE Catch2::Catch2 osal-c
+    PRIVATE Catch2::Catch2 osal::c osal::cpp
 )
 
 # This is required to selectively run Catch2 tests using tags on platforms, where cmd line arguments are not available.

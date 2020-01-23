@@ -30,12 +30,26 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
 #include "osal/sleep.h"
 
 #include <chrono>
-#include <thread>
+#include <cstdint>
 
-void osalSleepMs(const uint64_t durationMs)
+using namespace std::chrono_literals;
+
+namespace osal {
+namespace detail {
+
+void sleepMs(std::uint64_t durationMs);
+
+} // namespace detail
+
+template <typename Representation, typename Period>
+void sleep(const std::chrono::duration<Representation, Period>& duration)
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(durationMs));
+    sleepMs(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
 }
+
+} // namespace osal

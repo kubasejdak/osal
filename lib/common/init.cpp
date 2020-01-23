@@ -30,12 +30,15 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "osal/sleep.h"
+#include "osal/init.hpp"
 
-#include <chrono>
-#include <thread>
+#include "osal/init.h"
 
-void osalSleepMs(const uint64_t durationMs)
+namespace osal {
+
+bool init()
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(durationMs));
+    return osalInit();
 }
+
+} // namespace osal

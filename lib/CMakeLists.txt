@@ -8,11 +8,20 @@ endif ()
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c17> $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
 
 add_subdirectory(${OSAL_PLATFORM})
-#add_subdirectory(common)
+add_subdirectory(common)
 
 # OSAL for C.
 add_library(osal-c INTERFACE)
+add_library(osal::c ALIAS osal-c)
 
 target_link_libraries(osal-c
     INTERFACE osal-${OSAL_PLATFORM}
+)
+
+# OSAL for C++.
+add_library(osal-cpp INTERFACE)
+add_library(osal::cpp ALIAS osal-cpp)
+
+target_link_libraries(osal-cpp
+    INTERFACE osal-common
 )

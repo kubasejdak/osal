@@ -5,5 +5,5 @@ add_library(osal-std EXCLUDE_FROM_ALL
 )
 
 target_include_directories(osal-std
-    PUBLIC ../include
+    PUBLIC ../include/c
 )

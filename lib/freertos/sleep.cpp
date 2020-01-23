@@ -35,7 +35,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-void osalSleepMs(uint64_t delayMs)
+void osalSleepMs(const uint64_t durationMs)
 {
-    vTaskDelay(delayMs / portTICK_PERIOD_MS);
+    vTaskDelay(durationMs / portTICK_PERIOD_MS);
 }

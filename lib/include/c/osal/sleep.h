@@ -38,7 +38,7 @@ extern "C" {
 
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-void osalSleepMs(uint64_t delayMs);
+void osalSleepMs(uint64_t durationMs);
 
 #ifdef __cplusplus
 }
