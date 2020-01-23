@@ -38,21 +38,88 @@ extern "C" {
 
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
+/// Returns the timestamp relative to the start of the program in ms.
+/// @return Timestamp relative to the start of the program in ms.
 uint64_t osalTimestampMs();
+
+/// Returns the timestamp relative to the start of the program in us.
+/// @return Timestamp relative to the start of the program in us.
 uint64_t osalTimestampUs();
+
+/// Returns the timestamp relative to the start of the program in ns.
+/// @return Timestamp relative to the start of the program in ns.
 uint64_t osalTimestampNs();
 
+/// Converts milliseconds to seconds.
+/// @param milliseconds         Milliseconds to be converted.
+/// @return Milliseconds expressed in a number of seconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalMsToSec(uint64_t milliseconds);
+
+/// Converts microseconds to seconds.
+/// @param microseconds         Microseconds to be converted.
+/// @return Microseconds expressed in a number of seconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalUsToSec(uint64_t microseconds);
+
+/// Converts nanoseconds to seconds.
+/// @param nanoseconds          Nanoseconds to be converted.
+/// @return Nanoseconds expressed in a number of seconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalNsToSec(uint64_t nanoseconds);
+
+/// Converts seconds to milliseconds.
+/// @param seconds              Seconds to be converted.
+/// @return Seconds expressed in a number of milliseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalSecToMs(uint64_t seconds);
+
+/// Converts microseconds to milliseconds.
+/// @param microseconds         Microseconds to be converted.
+/// @return Microseconds expressed in a number of milliseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalUsToMs(uint64_t microseconds);
+
+/// Converts nanoseconds to milliseconds.
+/// @param nanoseconds          Nanoseconds to be converted.
+/// @return Nanoseconds expressed in a number of milliseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalNsToMs(uint64_t nanoseconds);
+
+/// Converts seconds to microseconds.
+/// @param seconds              Seconds to be converted.
+/// @return Seconds expressed in a number of microseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalSecToUs(uint64_t seconds);
+
+/// Converts milliseconds to microseconds.
+/// @param milliseconds         Milliseconds to be converted.
+/// @return Milliseconds expressed in a number of microseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalMsToUs(uint64_t milliseconds);
+
+/// Converts nanoseconds to microseconds.
+/// @param nanoseconds          Nanoseconds to be converted.
+/// @return Nanoseconds expressed in a number of microseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalNsToUs(uint64_t nanoseconds);
+
+/// Converts seconds to nanoseconds.
+/// @param seconds              Seconds to be converted.
+/// @return Seconds expressed in a number of nanoseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalSecToNs(uint64_t seconds);
+
+/// Converts milliseconds to nanoseconds.
+/// @param milliseconds         Milliseconds to be converted.
+/// @return Milliseconds expressed in a number of nanoseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalMsToNs(uint64_t milliseconds);
+
+/// Converts microseconds to nanoseconds.
+/// @param microseconds         Microseconds to be converted.
+/// @return Microseconds expressed in a number of nanoseconds.
+/// @note This function doesn't check for overflows or conversion loses.
 uint64_t osalUsToNs(uint64_t microseconds);
 
 #ifdef __cplusplus
