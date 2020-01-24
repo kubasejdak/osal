@@ -1,4 +1,4 @@
-name: Test STD Linux
+name: Test Standard Linux
 
 on: [push, pull_request]
 
