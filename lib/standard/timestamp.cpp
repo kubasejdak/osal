@@ -34,8 +34,14 @@
 
 #include <chrono>
 
+/// Internal value of system time latched during OSAL initialization.
+/// @note This value must be properly set by OSAL initialization in order to have correct values
+/// returned from timestamp module.
 std::chrono::steady_clock::time_point initTime; // NOLINT(cert-err58-cpp)
 
+/// Returns the time since the osalInit() function was called.
+/// @tparam Unit        Unit in which time should be represented (converted to).
+/// @return Returns the time since the osalInit() function was called.
 template <typename Unit>
 static std::uint64_t timeSinceStart()
 {

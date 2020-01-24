@@ -37,8 +37,13 @@
 
 #include <cstdint>
 
+/// Internal value of the CPU ticks latched during OSAL initialization.
+/// @note This value must be properly set by OSAL initialization in order to have correct values
+/// returned from timestamp module.
 TickType_t initTime;
 
+/// Returns the time in ms since the osalInit() function was called.
+/// @return Time in ms since the osalInit() function was called.
 static std::uint64_t timeSinceStartMs()
 {
     auto now = xTaskGetTickCount() / configTICK_RATE_HZ;

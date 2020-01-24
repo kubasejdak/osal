@@ -41,10 +41,17 @@ using namespace std::chrono_literals;
 namespace osal {
 namespace detail {
 
+/// Internal function implementing thread suspension for time intervals in ms.
+/// @param durationMs           Time to sleep in ms.
 void sleepMs(std::uint64_t durationMs);
 
 } // namespace detail
 
+/// Suspends the current thread for the specified amount of time.
+/// @tparam Representation      Signed arithmetic type representing the number of ticks in the clock's duration.
+/// @tparam Period              A std::ratio type representing the tick period of the clock, in seconds.
+/// @param duration             Amount of time for which current thread should be suspended.
+/// @note This function can accept any time duration unit supported by std::chrono library.
 template <typename Representation, typename Period>
 void sleep(const std::chrono::duration<Representation, Period>& duration)
 {

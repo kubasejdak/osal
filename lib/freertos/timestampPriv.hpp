@@ -35,4 +35,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
+/// Internal value of the CPU ticks latched during OSAL initialization.
+/// @note This value must be properly set by OSAL initialization in order to have correct values
+/// returned from timestamp module.
 extern TickType_t initTime;

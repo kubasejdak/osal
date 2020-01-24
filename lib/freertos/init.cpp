@@ -34,6 +34,7 @@
 
 #include "osal/init.h"
 
+/// Initializes the internal state of the timestamp module.
 static void initTimestamp()
 {
     initTime = xTaskGetTickCount() / configTICK_RATE_HZ;
