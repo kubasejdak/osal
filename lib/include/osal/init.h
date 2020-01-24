@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,35 +30,18 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
+#pragma once
 
-#include "platformInit.hpp"
-
-#include <osal/init.h>
-
-#include <catch2/catch.hpp>
-
-#include <cstdlib>
-
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
-{
-    if (!platformInit())
-        return EXIT_FAILURE;
-
-    if (!osalInit())
-        return EXIT_FAILURE;
-
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
+#ifdef __cplusplus
+extern "C" {
 #endif
+
+/// Initializes OSAL internal modules.
+/// @return Flag indicating if the initialization was successful.
+/// @retval true            Initialization was successful.
+/// @retval false           Some errors occurred during the initialization. OSAL may not be functional.
+bool osalInit();
+
+#ifdef __cplusplus
 }
+#endif

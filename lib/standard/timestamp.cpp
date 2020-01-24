@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,35 +30,36 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
+#include "osal/timestamp.h"
 
-#include "platformInit.hpp"
+#include <chrono>
 
-#include <osal/init.h>
+/// Internal value of system time latched during OSAL initialization.
+/// @note This value must be properly set by OSAL initialization in order to have correct values
+/// returned from timestamp module.
+std::chrono::steady_clock::time_point initTime; // NOLINT(cert-err58-cpp)
 
-#include <catch2/catch.hpp>
-
-#include <cstdlib>
-
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+/// Returns the time since the osalInit() function was called.
+/// @tparam Unit        Unit in which time should be represented (converted to).
+/// @return Returns the time since the osalInit() function was called.
+template <typename Unit>
+static std::uint64_t timeSinceStart()
 {
-    if (!platformInit())
-        return EXIT_FAILURE;
+    auto now = std::chrono::steady_clock::now();
+    return std::chrono::duration_cast<Unit>(now - initTime).count();
+}
 
-    if (!osalInit())
-        return EXIT_FAILURE;
+uint64_t osalTimestampMs()
+{
+    return timeSinceStart<std::chrono::milliseconds>();
+}
 
-#ifdef TEST_TAGS
-    (void) argc;
+uint64_t osalTimestampUs()
+{
+   return timeSinceStart<std::chrono::microseconds>();
+}
 
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+uint64_t osalTimestampNs()
+{
+    return timeSinceStart<std::chrono::nanoseconds>();
 }

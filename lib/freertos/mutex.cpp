@@ -30,35 +30,47 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
-
-#include "platformInit.hpp"
-
-#include <osal/init.h>
-
-#include <catch2/catch.hpp>
-
-#include <cstdlib>
-
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
-{
-    if (!platformInit())
-        return EXIT_FAILURE;
-
-    if (!osalInit())
-        return EXIT_FAILURE;
-
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
-}
+//#include "osal/Mutex.hpp"
+//
+//#include "osal/Error.hpp"
+//
+//namespace osal {
+//namespace detail {
+//
+//struct MutexImpl {};
+//
+//} // namespace detail
+//
+//Mutex::Mutex(MutexType type) noexcept
+//    : m_type(type)
+//    , m_impl(std::make_unique<detail::MutexImpl>())
+//{}
+//
+//Mutex::~Mutex() = default;
+//
+//std::error_code Mutex::lock()
+//{
+//    (void) m_impl;
+//    return Error::eOk;
+//}
+//
+//std::error_code Mutex::lock(Timeout timeout)
+//{
+//    (void) timeout;
+//    (void) m_impl;
+//    return Error::eOk;
+//}
+//
+//std::error_code Mutex::tryLock()
+//{
+//    (void) m_impl;
+//    return Error::eOk;
+//}
+//
+//std::error_code Mutex::unlock()
+//{
+//    (void) m_impl;
+//    return Error::eOk;
+//}
+//
+//} // namespace osal

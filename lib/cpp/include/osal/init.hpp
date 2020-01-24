@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,48 +30,14 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <osal/Error.hpp>
-#include <osal/Mutex.hpp>
+#pragma once
 
-#include <catch2/catch.hpp>
+namespace osal {
 
-TEST_CASE("Create non-recursive mutex", "[unit][mutex]")
-{
-    osal::Mutex mutex(osal::MutexType::eNonRecursive);
-    REQUIRE(mutex.type() == osal::MutexType::eNonRecursive);
-}
+/// Initializes OSAL internal modules.
+/// @return Flag indicating if the initialization was successful.
+/// @retval true            Initialization was successful.
+/// @retval false           Some errors occurred during the initialization. OSAL may not be functional.
+bool init();
 
-TEST_CASE("Create recursive mutex", "[unit][mutex]")
-{
-    osal::Mutex mutex(osal::MutexType::eRecursive);
-    REQUIRE(mutex.type() == osal::MutexType::eRecursive);
-}
-
-TEST_CASE("Create default non-recursive mutex", "[unit][mutex]")
-{
-    osal::Mutex mutex;
-    REQUIRE(mutex.type() == osal::MutexType::eNonRecursive);
-}
-
-TEST_CASE("Lock multiple times non-recursive mutex", "[unit][mutex]")
-{
-    osal::Mutex mutex;
-
-    auto result = mutex.lock();
-    REQUIRE(result == osal::Error::eOk);
-
-    result = mutex.lock();
-    REQUIRE(result == osal::Error::eRecursiveUsage);
-
-    result = mutex.lock();
-    REQUIRE(result == osal::Error::eRecursiveUsage);
-
-    result = mutex.unlock();
-    REQUIRE(result == osal::Error::eOk);
-
-    result = mutex.lock();
-    REQUIRE(result == osal::Error::eOk);
-
-    result = mutex.unlock();
-    REQUIRE(result == osal::Error::eOk);
-}
+} // namespace osal

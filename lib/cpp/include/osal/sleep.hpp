@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,35 +30,32 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
+#pragma once
 
-#include "platformInit.hpp"
+#include <chrono>
+#include <cstdint>
 
-#include <osal/init.h>
+// NOLINTNEXTLINE(google-global-names-in-headers)
+using namespace std::chrono_literals;
 
-#include <catch2/catch.hpp>
+namespace osal {
+namespace detail {
 
-#include <cstdlib>
+/// Internal function implementing thread suspension for time intervals in ms.
+/// @param durationMs           Time to sleep in ms.
+void sleepMs(std::uint64_t durationMs);
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+} // namespace detail
+
+/// Suspends the current thread for the specified amount of time.
+/// @tparam Representation      Signed arithmetic type representing the number of ticks in the clock's duration.
+/// @tparam Period              A std::ratio type representing the tick period of the clock, in seconds.
+/// @param duration             Amount of time for which current thread should be suspended.
+/// @note This function can accept any time duration unit supported by std::chrono library.
+template <typename Representation, typename Period>
+void sleep(const std::chrono::duration<Representation, Period>& duration)
 {
-    if (!platformInit())
-        return EXIT_FAILURE;
-
-    if (!osalInit())
-        return EXIT_FAILURE;
-
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+    detail::sleepMs(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
 }
+
+} // namespace osal

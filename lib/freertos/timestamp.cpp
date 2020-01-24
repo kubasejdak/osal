@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,35 +30,37 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
+#include "osal/timestamp.h"
 
-#include "platformInit.hpp"
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
-#include <osal/init.h>
+#include <cstdint>
 
-#include <catch2/catch.hpp>
+/// Internal value of the CPU ticks latched during OSAL initialization.
+/// @note This value must be properly set by OSAL initialization in order to have correct values
+/// returned from timestamp module.
+TickType_t initTime;
 
-#include <cstdlib>
-
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+/// Returns the time in ms since the osalInit() function was called.
+/// @return Time in ms since the osalInit() function was called.
+static std::uint64_t timeSinceStartMs()
 {
-    if (!platformInit())
-        return EXIT_FAILURE;
+    auto now = xTaskGetTickCount() / configTICK_RATE_HZ;
+    return static_cast<std::uint64_t>(now - initTime);
+}
 
-    if (!osalInit())
-        return EXIT_FAILURE;
+uint64_t osalTimestampMs()
+{
+    return timeSinceStartMs();
+}
 
-#ifdef TEST_TAGS
-    (void) argc;
+uint64_t osalTimestampUs()
+{
+    return osalMsToUs(timeSinceStartMs());
+}
 
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+uint64_t osalTimestampNs()
+{
+    return osalMsToNs(timeSinceStartMs());
 }

@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,35 +30,19 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
+#include "timestampPriv.hpp"
 
-#include "platformInit.hpp"
+#include "osal/init.h"
 
-#include <osal/init.h>
-
-#include <catch2/catch.hpp>
-
-#include <cstdlib>
-
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+/// Initializes the internal state of the timestamp module.
+static void initTimestamp()
 {
-    if (!platformInit())
-        return EXIT_FAILURE;
+    initTime = std::chrono::steady_clock::now();
+}
 
-    if (!osalInit())
-        return EXIT_FAILURE;
+bool osalInit()
+{
+    initTimestamp();
 
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
+    return true;
 }

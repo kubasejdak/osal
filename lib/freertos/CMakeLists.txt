@@ -1,7 +1,14 @@
 add_library(osal-freertos EXCLUDE_FROM_ALL
-    Mutex.cpp
+    init.cpp
+    mutex.cpp
+    sleep.cpp
+    timestamp.cpp
 )
 
 target_include_directories(osal-freertos
-    PRIVATE ../include
+    PUBLIC ../include
+)
+
+target_link_libraries(osal-freertos
+    PRIVATE freertos
 )

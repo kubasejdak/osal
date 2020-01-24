@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,35 +30,24 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "junit" // NOLINT
+#pragma once
 
-#include "platformInit.hpp"
+#include <chrono>
 
-#include <osal/init.h>
+namespace osal {
 
-#include <catch2/catch.hpp>
+/// @typedef Clock
+/// Default clock type used by OSAL to represent the timestamp.
+using Clock = std::chrono::steady_clock;
 
-#include <cstdlib>
+/// @typedef Duration
+/// Default duration type used by OSAL to represent the timestamp.
+using Duration = std::chrono::nanoseconds;
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
-{
-    if (!platformInit())
-        return EXIT_FAILURE;
+/// Returns the timestamp relative to the call to osal::init() function in ns.
+/// @return Timestamp relative to the osal::init() function in ns.
+/// @note osal::init() has to be called in order to have correct values returned by this function.
+/// @note Timestamp can be easily converted to any unit with std::chrono::duration_cast().
+std::chrono::time_point<Clock, Duration> timestamp();
 
-    if (!osalInit())
-        return EXIT_FAILURE;
-
-#ifdef TEST_TAGS
-    (void) argc;
-
-    std::array<char*, 2> argvTags{};
-    argvTags[0] = argv[0];
-    argvTags[1] = const_cast<char*>(TEST_TAGS);
-
-    return Catch::Session().run(argvTags.size(), argvTags.data());
-#else
-    return Catch::Session().run(argc, argv);
-#endif
-}
+} // namespace osal

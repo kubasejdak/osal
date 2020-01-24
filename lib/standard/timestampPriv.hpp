@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -30,47 +30,11 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "osal/Mutex.hpp"
+#pragma once
 
-#include "osal/Error.hpp"
+#include <chrono>
 
-namespace osal {
-namespace detail {
-
-struct MutexImpl {};
-
-} // namespace detail
-
-Mutex::Mutex(MutexType type) noexcept
-    : m_type(type)
-    , m_impl(std::make_unique<detail::MutexImpl>())
-{}
-
-Mutex::~Mutex() = default;
-
-std::error_code Mutex::lock()
-{
-    (void) m_impl;
-    return Error::eOk;
-}
-
-std::error_code Mutex::lock(Timeout timeout)
-{
-    (void) timeout;
-    (void) m_impl;
-    return Error::eOk;
-}
-
-std::error_code Mutex::tryLock()
-{
-    (void) m_impl;
-    return Error::eOk;
-}
-
-std::error_code Mutex::unlock()
-{
-    (void) m_impl;
-    return Error::eOk;
-}
-
-} // namespace osal
+/// Internal value of system time latched during OSAL initialization.
+/// @note This value must be properly set by OSAL initialization in order to have correct values
+/// returned from timestamp module.
+extern std::chrono::steady_clock::time_point initTime;

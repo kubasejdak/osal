@@ -3,7 +3,7 @@ add_subdirectory(init/${PLATFORM})
 # Object library type is used to prevent compiler from removing unit test functions from the binary.
 add_library(apposal-tests OBJECT EXCLUDE_FROM_ALL
     appMain.cpp
-    unit/Mutex.cpp
+    timestamp.cpp
 )
 
 target_include_directories(apposal-tests
@@ -23,7 +23,7 @@ endif ()
 
 target_link_libraries(apposal-tests
     PUBLIC platform-init
-    PRIVATE Catch2::Catch2 osal
+    PRIVATE Catch2::Catch2 osal::c osal::cpp
 )
 
 # This is required to selectively run Catch2 tests using tags on platforms, where cmd line arguments are not available.
