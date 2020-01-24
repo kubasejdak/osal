@@ -9,6 +9,7 @@ add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-st
 
 add_subdirectory(${OSAL_PLATFORM})
 add_subdirectory(common)
+add_subdirectory(cpp)
 
 # OSAL for C.
 add_library(osal-c INTERFACE)
@@ -19,17 +20,4 @@ target_link_libraries(osal-c
 )
 
 # OSAL for C++.
-add_library(osal-cpp
-    init.cpp
-    sleep.cpp
-    timestamp.cpp
-)
 add_library(osal::cpp ALIAS osal-cpp)
-
-target_include_directories(osal-cpp
-    PUBLIC include/cpp
-)
-
-target_link_libraries(osal-cpp
-    PRIVATE osal-c osal-common
-)

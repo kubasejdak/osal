@@ -3,5 +3,5 @@ add_library(osal-common EXCLUDE_FROM_ALL
 )
 
 target_include_directories(osal-common
-    PRIVATE ../include/c
+    PRIVATE ../include
 )
