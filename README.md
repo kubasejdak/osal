@@ -1,4 +1,4 @@
-[![Test Linux](https://github.com/kubasejdak/osal/workflows/Test%20Linux/badge.svg)](https://github.com/kubasejdak/osal/actions?query=workflow%3A%22Test+Linux%22)
+[![Test Standard Linux](https://github.com/kubasejdak/osal/workflows/Test%20Standard%20Linux/badge.svg)](https://github.com/kubasejdak/osal/actions?query=workflow%3A%22Test+Standard+Linux%22)
 [![Build FreeRTOS ARM](https://github.com/kubasejdak/osal/workflows/Build%20FreeRTOS%20ARM/badge.svg)](https://github.com/kubasejdak/osal/actions?query=workflow%3A%22Build+FreeRTOS+ARM%22)
 
 [![Quality](https://github.com/kubasejdak/osal/workflows/Quality/badge.svg)](https://github.com/kubasejdak/osal/actions?query=workflow%3A%22Quality%22)
