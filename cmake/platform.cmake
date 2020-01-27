@@ -1,8 +1,8 @@
 include(FetchContent)
-FetchContent_Declare(
-    platform
-    GIT_REPOSITORY  https://github.com/kubasejdak/platform.git
-    GIT_TAG         master
+FetchContent_Declare(platform
+    GIT_REPOSITORY          https://github.com/kubasejdak/platform.git
+    GIT_TAG                 origin/master
+    UPDATE_DISCONNECTED     ON
 )
 
 FetchContent_GetProperties(platform)
