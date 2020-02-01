@@ -6,7 +6,7 @@ stages:
   - build_Clang
 
 Build_Test_Linux:
-  stage: build GCC
+  stage: build_GCC
   tags:
     - linux
     - shared
