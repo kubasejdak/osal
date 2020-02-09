@@ -1,0 +1,39 @@
+.Run_Test:
+  stage: test
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - cd ${AppArtifact}/bin
+    - ./osal-tests ${TestTags}
+
+.Run_Test_Linux:
+  extends: .Run_Test
+  stage: test
+  tags:
+    - linux
+    - shared
+  image: kubasejdak/gcc:latest
+  dependencies:
+    - Linux_GCC_Debug_Build
+  variables:
+    AppArtifact: "Linux_GCC_Debug_Build"
+
+#.Run_Test_Linux_ARM:
+#  extends: .Run_Test
+#  stage: test
+#  tags:
+#    - raspberrypi
+#  dependencies:
+#    - Linux_ARM_GCC_Debug_Build
+#  variables:
+#    AppArtifact: "Linux_ARM_GCC_Debug_Build"
+
+#Timestamp_Linux_ARM_UT:
+#  extends: .Run_Test_Linux_ARM
+#  variables:
+#    TestTags: "[timestamp]"
+
+Timestamp_Linux_UT:
+  extends: .Run_Test_Linux
+  variables:
+    TestTags: "[timestamp]"

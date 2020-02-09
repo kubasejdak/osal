@@ -5,7 +5,7 @@ add_library(platform-init EXCLUDE_FROM_ALL
 )
 
 target_include_directories(platform-init
-    PUBLIC ../..
+    PUBLIC ..
 )
 
 target_link_libraries(platform-init
