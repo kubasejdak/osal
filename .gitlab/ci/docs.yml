@@ -18,4 +18,4 @@ pages:
     # Generate documentation.
     - ../tools/build/linux-gcc-debug.sh
     - make doxygen
-    - mv docs/* public
+    - mv docs/* ../public
