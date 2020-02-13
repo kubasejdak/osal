@@ -16,6 +16,6 @@ pages:
     - cd ${CI_JOB_NAME}
 
     # Generate documentation.
-    - ../tools/build/${Script}.sh
+    - ../tools/build/linux-gcc-debug.sh
     - make doxygen
     - mv docs/* public
