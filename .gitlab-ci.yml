@@ -6,9 +6,11 @@ stages:
   - build-Clang
   - test
   - quality
+  - deploy
 
 include:
   - ".gitlab/ci/build-tests-freertos.yml"
   - ".gitlab/ci/build-tests-standard.yml"
+  - ".gitlab/ci/docs.yml"
   - ".gitlab/ci/quality.yml"
   - ".gitlab/ci/run-tests-standard.yml"
