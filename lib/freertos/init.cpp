@@ -30,9 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "timestampPriv.hpp"
-
 #include "osal/init.h"
+
+#include "timestampPriv.hpp"
 
 /// Initializes the internal state of the timestamp module.
 static void initTimestamp()

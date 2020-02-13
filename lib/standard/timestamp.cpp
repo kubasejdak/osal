@@ -56,7 +56,7 @@ uint64_t osalTimestampMs()
 
 uint64_t osalTimestampUs()
 {
-   return timeSinceStart<std::chrono::microseconds>();
+    return timeSinceStart<std::chrono::microseconds>();
 }
 
 uint64_t osalTimestampNs()

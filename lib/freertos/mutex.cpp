@@ -34,40 +34,40 @@
 //
 //#include "osal/Error.hpp"
 //
-//namespace osal {
-//namespace detail {
+// namespace osal {
+// namespace detail {
 //
-//struct MutexImpl {};
+// struct MutexImpl {};
 //
 //} // namespace detail
 //
-//Mutex::Mutex(MutexType type) noexcept
+// Mutex::Mutex(MutexType type) noexcept
 //    : m_type(type)
 //    , m_impl(std::make_unique<detail::MutexImpl>())
 //{}
 //
-//Mutex::~Mutex() = default;
+// Mutex::~Mutex() = default;
 //
-//std::error_code Mutex::lock()
+// std::error_code Mutex::lock()
 //{
 //    (void) m_impl;
 //    return Error::eOk;
 //}
 //
-//std::error_code Mutex::lock(Timeout timeout)
+// std::error_code Mutex::lock(Timeout timeout)
 //{
 //    (void) timeout;
 //    (void) m_impl;
 //    return Error::eOk;
 //}
 //
-//std::error_code Mutex::tryLock()
+// std::error_code Mutex::tryLock()
 //{
 //    (void) m_impl;
 //    return Error::eOk;
 //}
 //
-//std::error_code Mutex::unlock()
+// std::error_code Mutex::unlock()
 //{
 //    (void) m_impl;
 //    return Error::eOk;
