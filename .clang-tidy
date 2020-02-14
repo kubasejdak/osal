@@ -1,8 +1,10 @@
 ---
 Checks:              '*,
+                      -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
                       -cppcoreguidelines-pro-bounds-pointer-arithmetic,
                       -fuchsia-default-arguments-calls,
                       -fuchsia-default-arguments-declarations,
+                      -hicpp-no-array-decay,
                       -llvm-header-guard,
                       -modernize-use-trailing-return-type'
 WarningsAsErrors:    '*'
