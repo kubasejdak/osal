@@ -5,12 +5,14 @@ stages:
   - build-GCC
   - build-Clang
   - test
+  - coverage
   - quality
   - deploy
 
 include:
   - ".gitlab/ci/build-tests-freertos.yml"
   - ".gitlab/ci/build-tests-standard.yml"
-  - ".gitlab/ci/docs.yml"
+  - ".gitlab/ci/coverage-standard.yml"
+  - ".gitlab/ci/deploy.yml"
   - ".gitlab/ci/quality.yml"
   - ".gitlab/ci/run-tests-standard.yml"

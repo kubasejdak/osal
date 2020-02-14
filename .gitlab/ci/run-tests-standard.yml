@@ -28,6 +28,16 @@
 #  variables:
 #    AppArtifact: "Linux_ARM_GCC_Debug_Build"
 
+#Timeout_Linux_ARM_UT:
+#  extends: .Run_Test_Linux_ARM
+#  variables:
+#    TestTags: "[timeout]"
+
+Timeout_Linux_UT:
+  extends: .Run_Test_Linux
+  variables:
+    TestTags: "[timeout]"
+
 #Timestamp_Linux_ARM_UT:
 #  extends: .Run_Test_Linux_ARM
 #  variables:

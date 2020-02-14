@@ -13,7 +13,7 @@
     - cd ${CI_JOB_NAME}
 
     # Build application.
-    - ../tools/build/${Script}.sh "${Args}"
+    - ../tools/build/${Script}.sh
     - make
 
 .Build_Test_Linux_GCC:
@@ -70,12 +70,6 @@ Linux_GCC_Debug_Build:
   extends: .Build_Test_Linux_GCC
   variables:
     Script: "linux-gcc-debug"
-
-Linux_GCC_Debug_Codecov_Build:
-  extends: .Build_Test_Linux_GCC
-  variables:
-    Script: "linux-gcc-debug"
-    Args: "-DCOVERAGE=ON"
 
 Linux_GCC_Release_Build:
   extends: .Build_Test_Linux_GCC

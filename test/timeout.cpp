@@ -49,21 +49,13 @@ TEST_CASE("Creation of timeout", "[unit][cpp][timeout]")
     osal::Timeout t7 = t4;
     osal::Timeout t8(100ms, true);
 
-    REQUIRE(!t1.isExpired());
     REQUIRE(t1.duration() == 3s);
-    REQUIRE(!t2.isExpired());
     REQUIRE(t2.duration() == 4ms);
-    REQUIRE(!t3.isExpired());
     REQUIRE(t3.duration() == 1us);
-    REQUIRE(!t4.isExpired());
     REQUIRE(t4.duration() == 8ns);
-    REQUIRE(!t5.isExpired());
     REQUIRE(t5.duration() == 100ms);
-    REQUIRE(!t6.isExpired());
     REQUIRE(t6.duration() == t2.duration());
-    REQUIRE(!t7.isExpired());
     REQUIRE(t7.duration() == t4.duration());
-    REQUIRE(t8.isExpired());
     REQUIRE(t8.duration() == 100ms);
 
     // Make all timeouts expired.
