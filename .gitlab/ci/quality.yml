@@ -47,3 +47,27 @@ Clang_Tidy_Linux_ARM:
   image: kubasejdak/arm-linux-gnueabihf-clang:latest
   variables:
     Script: "linux-arm-clang-debug"
+
+Coverage_Total:
+  stage: quality
+  image: kubasejdak/gcc:latest
+  tags:
+    - linux
+    - shared
+  dependencies:
+    - Timestamp_Coverage
+    - Timeout_Coverage
+  artifacts:
+    name: "${CI_JOB_NAME}_${CI_JOB_ID}"
+    expire_in: 2 weeks
+    paths:
+      - ${CI_JOB_NAME}
+  script:
+    - mkdir ${CI_JOB_NAME}
+    - cd ${CI_JOB_NAME}
+
+    - |
+      lcov -a ../Timestamp_Coverage/coverage/coverage.info \
+           -a ../Timeout_Coverage/coverage/coverage.info \
+           -o coverage.info
+    - genhtml coverage.info -o html
