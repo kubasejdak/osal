@@ -39,39 +39,39 @@
 Linux_ARM_Clang_Debug_Build:
   extends: .Build_Test_Linux_ARM_Clang
   variables:
-    Script: "linux-arm-clang-debug"
+    Script: "linux-arm-clang-9-debug"
 
 Linux_ARM_Clang_Release_Build:
   extends: .Build_Test_Linux_ARM_Clang
   variables:
-    Script: "linux-arm-clang-release"
+    Script: "linux-arm-clang-9-release"
 
 Linux_ARM_GCC_Debug_Build:
   extends: .Build_Test_Linux_ARM_GCC
   variables:
-    Script: "linux-arm-gcc-debug"
+    Script: "linux-arm-gcc-9-debug"
 
 Linux_ARM_GCC_Release_Build:
   extends: .Build_Test_Linux_ARM_GCC
   variables:
-    Script: "linux-arm-gcc-release"
+    Script: "linux-arm-gcc-9-release"
 
 Linux_Clang_Debug_Build:
   extends: .Build_Test_Linux_Clang
   variables:
-    Script: "linux-clang-debug"
+    Script: "linux-clang-9-debug"
 
 Linux_Clang_Release_Build:
   extends: .Build_Test_Linux_Clang
   variables:
-    Script: "linux-clang-release"
+    Script: "linux-clang-9-release"
 
 Linux_GCC_Debug_Build:
   extends: .Build_Test_Linux_GCC
   variables:
-    Script: "linux-gcc-debug"
+    Script: "linux-gcc-9-debug"
 
 Linux_GCC_Release_Build:
   extends: .Build_Test_Linux_GCC
   variables:
-    Script: "linux-gcc-release"
+    Script: "linux-gcc-9-release"

@@ -22,9 +22,9 @@
 FreeRTOS_ARM_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Script: "freertos-arm-gcc-debug"
+    Script: "freertos-arm-gcc-9-debug"
 
 FreeRTOS_ARM_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Script: "freertos-arm-gcc-release"
+    Script: "freertos-arm-gcc-9-release"

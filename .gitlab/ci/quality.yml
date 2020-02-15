@@ -40,13 +40,13 @@ Clang_Tidy_Linux:
   extends: .Clang_Tidy
   image: kubasejdak/clang:latest
   variables:
-    Script: "linux-clang-debug"
+    Script: "linux-clang-9-debug"
 
 Clang_Tidy_Linux_ARM:
   extends: .Clang_Tidy
   image: kubasejdak/arm-linux-gnueabihf-clang:latest
   variables:
-    Script: "linux-arm-clang-debug"
+    Script: "linux-arm-clang-9-debug"
 
 Coverage_Total:
   stage: quality
