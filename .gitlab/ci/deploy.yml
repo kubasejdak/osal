@@ -9,7 +9,7 @@ codecov.io:
   dependencies:
     - Coverage_Total
   script:
-    - cd Coverage_Total/coverage
+    - cd Coverage_Total
     - bash -c "bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}"
 
 pages:
