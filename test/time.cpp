@@ -37,7 +37,7 @@
 
 #include <catch2/catch.hpp>
 
-TEST_CASE("Check C timestamp values after multiple delays in ms", "[c][unit][timestamp]")
+TEST_CASE("Check C timestamp values after multiple delays in ms", "[unit][c][timestamp]")
 {
     std::uint64_t delayMs{};
 
@@ -78,7 +78,7 @@ TEST_CASE("Check C timestamp values after multiple delays in ms", "[c][unit][tim
     REQUIRE((now3 - now1) <= (cDelay2Ms + delayMs + 2 * cMarginMs));
 }
 
-TEST_CASE("Check C timestamp values after multiple delays in us", "[c][unit][timestamp]")
+TEST_CASE("Check C timestamp values after multiple delays in us", "[unit][c][timestamp]")
 {
     std::uint64_t delayMs{};
 
@@ -119,7 +119,7 @@ TEST_CASE("Check C timestamp values after multiple delays in us", "[c][unit][tim
     REQUIRE((now3 - now1) <= osalMsToUs(cDelay2Ms + delayMs + 2 * cMarginMs));
 }
 
-TEST_CASE("Check C timestamp values after multiple delays in ns", "[c][unit][timestamp]")
+TEST_CASE("Check C timestamp values after multiple delays in ns", "[unit][c][timestamp]")
 {
     std::uint64_t delayMs{};
 
@@ -160,7 +160,7 @@ TEST_CASE("Check C timestamp values after multiple delays in ns", "[c][unit][tim
     REQUIRE((now3 - now1) <= osalMsToNs(cDelay2Ms + delayMs + 2 * cMarginMs));
 }
 
-TEST_CASE("Check C++ timestamp values after multiple delays", "[cpp][unit][timestamp]")
+TEST_CASE("Check C++ timestamp values after multiple delays", "[unit][cpp][timestamp]")
 {
     std::chrono::milliseconds delay{};
 
@@ -205,4 +205,115 @@ TEST_CASE("Check C++ timestamp values after multiple delays", "[cpp][unit][times
     REQUIRE((now3 - now2) <= (cDelay2 + cMargin));
     REQUIRE((now3 - now1) >= (cDelay2 + delay));
     REQUIRE((now3 - now1) <= (cDelay2 + delay + 2 * cMargin));
+}
+
+TEST_CASE("Check helper conversion functions", "[unit][c][timestamp]")
+{
+    auto result = osalMsToSec(45); // NOLINT
+    REQUIRE(result == 0);
+
+    result = osalMsToSec(5000); // NOLINT
+    REQUIRE(result == 5);
+
+    result = osalMsToSec(4500); // NOLINT
+    REQUIRE(result == 4);
+
+    result = osalUsToSec(45); // NOLINT
+    REQUIRE(result == 0);
+
+    result = osalUsToSec(5000000UL); // NOLINT
+    REQUIRE(result == 5);
+
+    result = osalUsToSec(4500000UL); // NOLINT
+    REQUIRE(result == 4);
+
+    result = osalNsToSec(45); // NOLINT
+    REQUIRE(result == 0);
+
+    result = osalNsToSec(5000000000UL); // NOLINT
+    REQUIRE(result == 5);
+
+    result = osalNsToSec(4500000000UL); // NOLINT
+    REQUIRE(result == 4);
+
+    result = osalSecToMs(45); // NOLINT
+    REQUIRE(result == 45000);
+
+    result = osalSecToMs(5); // NOLINT
+    REQUIRE(result == 5000);
+
+    result = osalSecToMs(4); // NOLINT
+    REQUIRE(result == 4000);
+
+    result = osalUsToMs(45); // NOLINT
+    REQUIRE(result == 0);
+
+    result = osalUsToMs(5000); // NOLINT
+    REQUIRE(result == 5);
+
+    result = osalUsToMs(4500); // NOLINT
+    REQUIRE(result == 4);
+
+    result = osalNsToMs(45); // NOLINT
+    REQUIRE(result == 0);
+
+    result = osalNsToMs(5000000UL); // NOLINT
+    REQUIRE(result == 5);
+
+    result = osalNsToMs(4500000UL); // NOLINT
+    REQUIRE(result == 4);
+
+    result = osalSecToUs(1); // NOLINT
+    REQUIRE(result == 1000000UL);
+
+    result = osalSecToUs(2); // NOLINT
+    REQUIRE(result == 2000000UL);
+
+    result = osalSecToUs(4); // NOLINT
+    REQUIRE(result == 4000000UL);
+
+    result = osalMsToUs(1); // NOLINT
+    REQUIRE(result == 1000);
+
+    result = osalMsToUs(2); // NOLINT
+    REQUIRE(result == 2000);
+
+    result = osalMsToUs(4); // NOLINT
+    REQUIRE(result == 4000);
+
+    result = osalNsToUs(5); // NOLINT
+    REQUIRE(result == 0);
+
+    result = osalNsToUs(2000); // NOLINT
+    REQUIRE(result == 2);
+
+    result = osalNsToUs(4600); // NOLINT
+    REQUIRE(result == 4);
+
+    result = osalSecToNs(1); // NOLINT
+    REQUIRE(result == 1000000000UL);
+
+    result = osalSecToNs(2); // NOLINT
+    REQUIRE(result == 2000000000UL);
+
+    result = osalSecToNs(4); // NOLINT
+    REQUIRE(result == 4000000000UL);
+
+    result = osalMsToNs(1); // NOLINT
+    REQUIRE(result == 1000000UL);
+
+    result = osalMsToNs(2); // NOLINT
+    REQUIRE(result == 2000000UL);
+
+    result = osalMsToNs(4); // NOLINT
+    REQUIRE(result == 4000000UL);
+
+    result = osalUsToNs(1); // NOLINT
+    REQUIRE(result == 1000);
+
+    result = osalUsToNs(2); // NOLINT
+    REQUIRE(result == 2000);
+
+    result = osalUsToNs(4); // NOLINT
+    REQUIRE(result == 4000);
 }
