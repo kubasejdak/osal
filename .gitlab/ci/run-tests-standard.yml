@@ -18,30 +18,30 @@
   variables:
     AppArtifact: "Linux_GCC_Debug_Build"
 
-#.Run_Test_Linux_ARM:
-#  extends: .Run_Test
-#  stage: test
-#  tags:
-#    - raspberrypi
-#  dependencies:
-#    - Linux_ARM_GCC_Debug_Build
-#  variables:
-#    AppArtifact: "Linux_ARM_GCC_Debug_Build"
+.Run_Test_Linux_ARM:
+  extends: .Run_Test
+  stage: test
+  tags:
+    - raspberrypi
+  dependencies:
+    - Linux_ARM_GCC_Debug_Build
+  variables:
+    AppArtifact: "Linux_ARM_GCC_Debug_Build"
 
-#Timeout_Linux_ARM_UT:
-#  extends: .Run_Test_Linux_ARM
-#  variables:
-#    TestTags: "[timeout]"
+Timeout_Linux_ARM_UT:
+  extends: .Run_Test_Linux_ARM
+  variables:
+    TestTags: "[timeout]"
 
 Timeout_Linux_UT:
   extends: .Run_Test_Linux
   variables:
     TestTags: "[timeout]"
 
-#Timestamp_Linux_ARM_UT:
-#  extends: .Run_Test_Linux_ARM
-#  variables:
-#    TestTags: "[timestamp]"
+Timestamp_Linux_ARM_UT:
+  extends: .Run_Test_Linux_ARM
+  variables:
+    TestTags: "[timestamp]"
 
 Timestamp_Linux_UT:
   extends: .Run_Test_Linux
