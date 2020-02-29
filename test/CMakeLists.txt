@@ -15,9 +15,10 @@ target_compile_features(apposal-tests
     PRIVATE cxx_std_17
 )
 
+conan_get(Catch2/2.11.1@catchorg/stable)
 find_package(Catch2 REQUIRED)
 
-if (PLATFORM STREQUAL "freertos-arm")
+if (PLATFORM STREQUAL freertos-arm)
     # This is required, because FreeRTOS doesn't support signals or exceptions.
     target_compile_definitions(Catch2::Catch2 INTERFACE CATCH_CONFIG_NO_POSIX_SIGNALS CATCH_CONFIG_DISABLE_EXCEPTIONS)
 endif ()
