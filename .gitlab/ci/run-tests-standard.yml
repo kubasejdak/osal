@@ -8,7 +8,6 @@
 
 .Run_Test_Linux:
   extends: .Run_Test
-  stage: test
   tags:
     - linux
     - shared
@@ -20,7 +19,6 @@
 
 .Run_Test_Linux_ARM:
   extends: .Run_Test
-  stage: test
   tags:
     - raspberrypi
   dependencies:
