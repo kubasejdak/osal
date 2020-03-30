@@ -17,7 +17,7 @@ add_library(osal::c ALIAS osal-c)
 
 target_link_libraries(osal-c
     INTERFACE osal-${OSAL_PLATFORM} osal-common
-)
+    )
 
 # OSAL for C++.
 add_library(osal::cpp ALIAS osal-cpp)

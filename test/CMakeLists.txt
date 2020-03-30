@@ -3,6 +3,7 @@ add_subdirectory(init)
 # Object library type is used to prevent compiler from removing unit test functions from the binary.
 add_library(apposal-tests OBJECT EXCLUDE_FROM_ALL
     appMain.cpp
+    thread.cpp
     time.cpp
     timeout.cpp
 )
