@@ -45,3 +45,13 @@ Timestamp_Linux_UT:
   extends: .Run_Test_Linux
   variables:
     TestTags: "[timestamp]"
+
+Thread_Linux_ARM_UT:
+  extends: .Run_Test_Linux_ARM
+  variables:
+    TestTags: "[thread]"
+
+Thread_Linux_UT:
+  extends: .Run_Test_Linux
+  variables:
+    TestTags: "[thread]"

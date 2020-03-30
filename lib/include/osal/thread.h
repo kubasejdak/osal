@@ -32,17 +32,48 @@
 
 #pragma once
 
-#include "osal/error.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <system_error>
-#include <type_traits>
+#include "error.h"
+#include "internal/threadImpl.h"
 
-// NOLINTNEXTLINE(readability-identifier-naming)
-std::error_code make_error_code(OsalError error);
+#include <stddef.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
+#include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-namespace std {
+struct OsalThread {
+    ThreadImpl impl;
+};
 
-template <>
-struct is_error_code_enum<OsalError> : true_type {};
+// clang-format off
+enum OsalThreadPriority {
+    eLowest,
+    eLow,
+    eNormal,
+    eHigh,
+    eHighest
+};
+// clang-format on
 
-} // namespace std
+static const OsalThreadPriority cOsalThreadDefaultPriority = OsalThreadPriority::eNormal;
+static const size_t cOsalThreadDefaultStackSize = 8 * 1024;
+
+struct OsalThreadConfig {
+    OsalThreadPriority priority;
+    size_t stackSize;
+    void* stack;
+};
+
+typedef void (*OsalThreadFunction)(void*); // NOLINT(modernize-use-using)
+
+OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg);
+OsalError osalThreadDestroy(OsalThread* thread);
+OsalError osalThreadJoin(OsalThread* thread);
+
+void osalThreadYield();
+uint32_t osalThreadId();
+
+#ifdef __cplusplus
+}
+#endif

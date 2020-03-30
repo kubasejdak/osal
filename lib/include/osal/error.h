@@ -29,3 +29,27 @@
 /// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ///
 /////////////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// clang-format off
+enum OsalError {
+    eOk,
+    eInvalidArgument,
+    eOsError,
+    eThreadNotJoined,
+    eThreadAlreadyStarted,
+    eRecursiveUsage,
+    eNotOwner,
+    eNotLocked,
+    eLocked
+};
+// clang-format on
+
+#ifdef __cplusplus
+}
+#endif

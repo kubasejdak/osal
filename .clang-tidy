@@ -1,9 +1,10 @@
 ---
 Checks:              '*,
                       -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+                      -cppcoreguidelines-pro-bounds-constant-array-index,
                       -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-                      -fuchsia-default-arguments-calls,
-                      -fuchsia-default-arguments-declarations,
+                      -fuchsia-*,
+                      -google-runtime-references,
                       -hicpp-no-array-decay,
                       -llvm-header-guard,
                       -modernize-use-trailing-return-type'

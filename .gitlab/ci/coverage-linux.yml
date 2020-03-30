@@ -1,4 +1,4 @@
-.Standard_Coverage:
+.Linux_Coverage:
   stage: coverage
   image: kubasejdak/gcc:latest
   tags:
@@ -21,11 +21,16 @@
     - make coverage
 
 Timeout_Coverage:
-  extends: .Standard_Coverage
+  extends: .Linux_Coverage
   variables:
     Tags: "[timeout]"
 
 Timestamp_Coverage:
-  extends: .Standard_Coverage
+  extends: .Linux_Coverage
   variables:
     Tags: "[timestamp]"
+
+Thread_Coverage:
+  extends: .Linux_Coverage
+  variables:
+    Tags: "[thread]"

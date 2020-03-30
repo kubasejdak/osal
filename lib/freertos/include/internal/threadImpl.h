@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -32,47 +32,15 @@
 
 #pragma once
 
-#include "osal/Timeout.hpp"
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
-#include <cstdint>
-#include <memory>
-#include <system_error>
+struct ThreadImpl {
+    TaskHandle_t handle;
+    bool initialized;
 
-namespace osal {
-
-// clang-format off
-enum class MutexType {
-    eNonRecursive,
-    eRecursive
+#if configSUPPORT_STATIC_ALLOCATION
+    StackType_t* stack;
+    StaticTask_t tcb;
+#endif
 };
-// clang-format on
-
-namespace detail {
-
-struct MutexImpl;
-
-} // namespace detail
-
-class Mutex {
-public:
-    explicit Mutex(MutexType type = MutexType::eNonRecursive) noexcept;
-    Mutex(const Mutex&) = delete;
-    Mutex(Mutex&&) noexcept = default;
-    ~Mutex();
-
-    Mutex& operator=(const Mutex&) = delete;
-    Mutex& operator=(Mutex&&) noexcept = default;
-
-    std::error_code lock();
-    std::error_code lock(Timeout timeout);
-    std::error_code tryLock();
-    std::error_code unlock();
-    [[nodiscard]] MutexType type() const { return m_type; }
-
-private:
-    MutexType m_type;
-    std::unique_ptr<detail::MutexImpl> m_impl;
-    std::uint32_t m_lockCounter = 0;
-};
-
-} // namespace osal
