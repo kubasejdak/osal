@@ -39,8 +39,8 @@ extern "C" {
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
 /// Suspends the current thread for the specified amount of time in ms.
-/// @param durationMs           Amount of time in ms for which current thread should be suspended.
-void osalSleepMs(uint64_t durationMs);
+/// @param cDurationMs          Amount of time in ms for which current thread should be suspended.
+void osalSleepMs(uint64_t cDurationMs);
 
 #ifdef __cplusplus
 }
