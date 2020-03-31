@@ -44,8 +44,8 @@
 namespace osal {
 
 template <typename ThreadFunction,
-          OsalThreadPriority priority = cOsalThreadDefaultPriority,
-          std::size_t stackSize = cOsalThreadDefaultStackSize>
+          OsalThreadPriority cPriority = cOsalThreadDefaultPriority,
+          std::size_t cStackSize = cOsalThreadDefaultStackSize>
 class Thread {
 public:
     Thread() = default;
@@ -99,7 +99,8 @@ public:
             threadFunction();
         };
 
-        auto error = osalThreadCreate(&m_thread, {priority, stackSize, stack}, m_workerFunction, m_userFunction.get());
+        auto error
+            = osalThreadCreate(&m_thread, {cPriority, cStackSize, stack}, m_workerFunction, m_userFunction.get());
 
         m_started = (error == OsalError::eOk);
         return error;
