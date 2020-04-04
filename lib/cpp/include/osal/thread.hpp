@@ -35,6 +35,7 @@
 #include "osal/error.hpp"
 #include "osal/thread.h"
 
+#include <cassert>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -150,8 +151,7 @@ public:
 
         m_userFunction = std::make_unique<FunctionWrapper>(
             std::bind(std::forward<ThreadFunction>(function), std::forward<Args>(args)...));
-        if (m_userFunction == nullptr)
-            return OsalError::eInvalidArgument;
+        assert(m_userFunction);
 
         m_workerFunction = [](void* arg) {
             auto threadFunction = *static_cast<FunctionWrapper*>(arg);
@@ -180,8 +180,7 @@ public:
             return OsalError::eThreadAlreadyStarted;
 
         m_userFunction = std::make_unique<FunctionWrapper>(function);
-        if (m_userFunction == nullptr)
-            return OsalError::eInvalidArgument;
+        assert(m_userFunction);
 
         m_workerFunction = [](void* arg) {
             auto threadFunction = *static_cast<FunctionWrapper*>(arg);

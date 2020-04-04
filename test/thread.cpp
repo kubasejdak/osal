@@ -288,6 +288,13 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
         launched = true;
     };
 
+    auto func2 = [&]() {
+        constexpr int cDelayMs = 1000;
+        osalSleepMs(cDelayMs);
+
+        launched = true;
+    };
+
     SECTION("Create thread via constructor")
     {
         osal::Thread thread(func, cParam);
@@ -314,6 +321,14 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
         REQUIRE(error == OsalError::eThreadAlreadyStarted);
 
         error = thread.join();
+        REQUIRE(error == OsalError::eOk);
+
+        osal::Thread thread2(func2);
+
+        error = thread2.start(func2);
+        REQUIRE(error == OsalError::eThreadAlreadyStarted);
+
+        error = thread2.join();
         REQUIRE(error == OsalError::eOk);
     }
 
