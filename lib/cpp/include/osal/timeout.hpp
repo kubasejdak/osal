@@ -64,7 +64,7 @@ using NotLessThanDuration = std::enable_if_t<std::is_same_v<std::common_type_t<T
 /// Upon construction Timeout object calculates timestamp value, which determines deadline for the given operation.
 /// Calling "isExpired()" simply compares current timestamp value with the calculated one.
 /// @note This class is supposed to replace all occurrences of the raw std::uint32_t timeout values in OSAL and HAL
-/// APIs.
+///       APIs.
 class Timeout {
 public:
     /// Constructor.

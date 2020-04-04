@@ -42,17 +42,25 @@
 #include <cstring>
 #include <memory>
 
+/// @struct ThreadWrapperData
+/// Represents helper wrapper around OSAL thread function and its arguments.
+/// @note This type is necessary, because OsalThreadFunction has different signature than pthread.
+///       Thus special threadWrapper() function (with pthread compliant signature) is used directly in
+///       call to pthread_create() and OSAL thread function is passed along with its arguments as the
+///       argument.
 struct ThreadWrapperData {
     OsalThreadFunction func{};
     void* param{};
 };
 
+/// Helper thread function that has signature required by pthread. It is used as a wrapper for
+/// OSAL thread function.
+/// @param arg          User argument for the thread function.
+/// @return Result of this function is never used so it always returns nullptr.
 static void* threadWrapper(void* arg)
 {
-    auto* wrapperData = static_cast<ThreadWrapperData*>(arg);
+    auto wrapperData = std::unique_ptr<ThreadWrapperData>(static_cast<ThreadWrapperData*>(arg));
     wrapperData->func(wrapperData->param);
-
-    std::free(wrapperData); // NOLINT
     return nullptr;
 }
 
