@@ -19,6 +19,7 @@
     - make
     - bin/osal-tests [unit]${Tags}
     - make coverage
+    - sed -i "s|SF:${CI_PROJECT_DIR}/|SF:|g" coverage/coverage.info
 
 Timeout_Coverage:
   extends: .Linux_Coverage
