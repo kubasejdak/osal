@@ -1,26 +1,18 @@
-#variables:
-#  GIT_SUBMODULE_STRATEGY: recursive
-#
-#stages:
-#  - build-GCC
-#  - build-Clang
-#  - test
-#  - coverage
-#  - quality
-#  - deploy
-#
-#include:
-#  - ".gitlab/ci/build-tests-freertos.yml"
-#  - ".gitlab/ci/build-tests-linux.yml"
-#  - ".gitlab/ci/coverage-linux.yml"
-#  - ".gitlab/ci/deploy.yml"
-#  - ".gitlab/ci/quality.yml"
-#  - ".gitlab/ci/run-tests-linux.yml"
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
 
-Coverage:
-  tags:
-    - linux
-    - shared
-  dependencies: []
-  script:
-    - cat test.txt
+stages:
+  - build-GCC
+  - build-Clang
+  - test
+  - coverage
+  - quality
+  - deploy
+
+include:
+  - ".gitlab/ci/build-tests-freertos.yml"
+  - ".gitlab/ci/build-tests-linux.yml"
+  - ".gitlab/ci/coverage-linux.yml"
+  - ".gitlab/ci/deploy.yml"
+  - ".gitlab/ci/quality.yml"
+  - ".gitlab/ci/run-tests-linux.yml"
