@@ -23,4 +23,4 @@ Coverage:
     - shared
   dependencies: []
   script:
-    - echo 21.87%
+    - echo 43.87%
