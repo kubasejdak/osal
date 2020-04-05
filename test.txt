@@ -1,3 +1,30 @@
-
+Combining tracefiles.
+ Reading tracefile ../Timestamp_Coverage/coverage/coverage.info
+ Reading tracefile ../Timeout_Coverage/coverage/coverage.info
+ Reading tracefile ../Thread_Coverage/coverage/coverage.info
+ Writing data to coverage.info
+ Summary coverage rate:
+   lines......: 88.8% (174 of 196 lines)
+   functions..: 99.3% (146 of 147 functions)
+   branches...: no data found
+ $ genhtml coverage.info -o html
+ Reading data file coverage.info
+ Found 11 entries.
+ Found common filename prefix "/builds/kubasejdak-libs/osal/lib"
+ Writing .css and .png files.
+ Generating output.
+ Processing file common/timestamp.cpp
+ Processing file cpp/error.cpp
+ Processing file cpp/sleep.cpp
+ Processing file cpp/timestamp.cpp
+ Processing file cpp/include/osal/timeout.hpp
+ Processing file cpp/include/osal/sleep.hpp
+ Processing file cpp/include/osal/thread.hpp
+ Processing file linux/thread.cpp
+ Processing file linux/sleep.cpp
+ Processing file linux/timestamp.cpp
+ Processing file linux/init.cpp
+ Writing directory view page.
  Overall coverage rate:
-   lines......: 88.8% (174 of 196 lines)s
+   lines......: 88.8% (174 of 196 lines)
+   functions..: 99.3% (146 of 147 functions

@@ -53,7 +53,6 @@ Clang_Tidy_Linux_ARM:
 Coverage_Total:
   stage: quality
   image: kubasejdak/gcc:latest
-  coverage: '/Overall coverage rate:\s+lines\.+: (\d+.\d+\%)/'
   tags:
     - linux
     - shared
