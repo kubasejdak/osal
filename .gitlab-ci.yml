@@ -23,4 +23,6 @@ Coverage:
     - shared
   dependencies: []
   script:
-    - echo 43.87%
+    - echo " Overall coverage rate:"
+    - echo "    lines......: 90.4% (178 of 197 lines)"
+    - echo "    functions..: 99.4% (154 of 155 functions)"
