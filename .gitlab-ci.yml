@@ -23,4 +23,4 @@ Coverage:
     - shared
   dependencies: []
   script:
-    - echo Coverage lines: 43.88%
+    - printf "Coverage lines: 43.88%"
