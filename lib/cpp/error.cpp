@@ -48,14 +48,14 @@ std::string ErrorCategory::message(int value) const
 {
     switch (static_cast<OsalError>(value)) {
         case OsalError::eOk: return "no error";
-        case OsalError::eInvalidArgument: return "invalid arguments";
+        case OsalError::eInvalidArgument: return "invalid argument";
         case OsalError::eOsError: return "OS error";
         case OsalError::eThreadNotJoined: return "thread not joined";
         case OsalError::eThreadAlreadyStarted: return "thread already started";
-        case OsalError::eRecursiveUsage: return "recursive usage";
         case OsalError::eNotOwner: return "not owner";
         case OsalError::eNotLocked: return "not locked";
         case OsalError::eLocked: return "locked";
+        case OsalError::eTimeout: return "timeout";
         default: return "(unrecognized error)";
     }
 }

@@ -39,16 +39,16 @@
 
 OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg)
 {
-    if (thread == nullptr || func == nullptr || thread->impl.initialized)
+    if (thread == nullptr || func == nullptr)
         return OsalError::eInvalidArgument;
 
-    thread->impl.initialized = false;
+    thread->initialized = false;
 
     const auto cPriorityMin = 0;
     const auto cPriorityMax = configMAX_PRIORITIES - 1;
     const auto cPriorityStep = (cPriorityMax - cPriorityMin) / 4;
 
-    int priority{};
+    int priority;
     switch (config.priority) {
         case OsalThreadPriority::eLowest: priority = cPriorityMin; break;
         case OsalThreadPriority::eLow: priority = cPriorityMin + (cPriorityStep * 1); break;
@@ -71,23 +71,23 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
         return OsalError::eOsError;
 #endif
 
-    thread->impl.initialized = true;
+    thread->initialized = true;
     return OsalError::eOk;
 }
 
 OsalError osalThreadDestroy(OsalThread* thread)
 {
-    if (thread == nullptr || !thread->impl.initialized)
+    if (thread == nullptr || !thread->initialized)
         return OsalError::eInvalidArgument;
 
     vTaskDelete(thread->impl.handle);
-    std::memset(&thread->impl, 0, sizeof(thread->impl));
+    std::memset(thread, 0, sizeof(OsalThread));
     return OsalError::eOk;
 }
 
 OsalError osalThreadJoin(OsalThread* thread)
 {
-    if (thread == nullptr || !thread->impl.initialized)
+    if (thread == nullptr || !thread->initialized)
         return OsalError::eInvalidArgument;
 
     // TODO(kuba): implement once semaphores are available.
