@@ -43,10 +43,10 @@ enum OsalError {
     eOsError,
     eThreadNotJoined,
     eThreadAlreadyStarted,
-    eRecursiveUsage,
     eNotOwner,
     eNotLocked,
-    eLocked
+    eLocked,
+    eTimeout
 };
 // clang-format on
 

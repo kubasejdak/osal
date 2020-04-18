@@ -35,9 +35,10 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
+/// @struct ThreadImpl
+/// Helper class with concrete platform implementation of the thread handle.
 struct ThreadImpl {
     TaskHandle_t handle;
-    bool initialized;
 
 #if configSUPPORT_STATIC_ALLOCATION
     StackType_t* stack;

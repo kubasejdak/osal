@@ -34,8 +34,8 @@
 
 #include <pthread.h>
 
-/// @struct ThreadImpl
-/// Helper class with concrete platform implementation of the thread handle.
-struct ThreadImpl {
-    pthread_t handle;
+/// @struct MutexImpl
+/// Helper class with concrete platform implementation of the mutex handle.
+struct MutexImpl {
+    pthread_mutex_t handle;
 };

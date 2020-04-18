@@ -34,11 +34,9 @@
 
 #include <pthread.h>
 #include <sched.h>
-#include <unistd.h>
 
 #include <algorithm>
 #include <climits>
-#include <cstdlib>
 #include <cstring>
 #include <memory>
 
@@ -66,16 +64,16 @@ static void* threadWrapper(void* arg)
 
 OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg)
 {
-    if (thread == nullptr || func == nullptr || thread->impl.initialized)
+    if (thread == nullptr || func == nullptr)
         return OsalError::eInvalidArgument;
 
-    thread->impl.initialized = false;
+    thread->initialized = false;
 
     const auto cPriorityMin = sched_get_priority_min(SCHED_RR);
     const auto cPriorityMax = sched_get_priority_max(SCHED_RR);
     const auto cPriorityStep = (cPriorityMax - cPriorityMin) / 4;
 
-    int priority{};
+    int priority;
     switch (config.priority) {
         case OsalThreadPriority::eLowest: priority = cPriorityMin; break;
         case OsalThreadPriority::eLow: priority = cPriorityMin + (cPriorityStep * 1); break;
@@ -112,22 +110,22 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
         return OsalError::eOsError;
 
     thread->impl.handle = handle;
-    thread->impl.initialized = true;
+    thread->initialized = true;
     return OsalError::eOk;
 }
 
 OsalError osalThreadDestroy(OsalThread* thread)
 {
-    if (thread == nullptr || !thread->impl.initialized)
+    if (thread == nullptr || !thread->initialized)
         return OsalError::eInvalidArgument;
 
-    std::memset(&thread->impl, 0, sizeof(thread->impl));
+    std::memset(thread, 0, sizeof(OsalThread));
     return OsalError::eOk;
 }
 
 OsalError osalThreadJoin(OsalThread* thread)
 {
-    if (thread == nullptr || !thread->impl.initialized)
+    if (thread == nullptr || !thread->initialized)
         return OsalError::eInvalidArgument;
 
     if (pthread_join(thread->impl.handle, nullptr) != 0)

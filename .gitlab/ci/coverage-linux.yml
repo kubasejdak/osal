@@ -21,6 +21,11 @@
     - make coverage
     - sed -i "s|SF:${CI_PROJECT_DIR}/|SF:|g" coverage/coverage.info
 
+Mutex_Coverage:
+  extends: .Linux_Coverage
+  variables:
+    Tags: "[mutex]"
+
 Timeout_Coverage:
   extends: .Linux_Coverage
   variables:

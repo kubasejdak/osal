@@ -32,10 +32,15 @@
 
 #pragma once
 
-#include <pthread.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
 
-/// @struct ThreadImpl
-/// Helper class with concrete platform implementation of the thread handle.
-struct ThreadImpl {
-    pthread_t handle;
+/// @struct MutexImpl
+/// Helper class with concrete platform implementation of the mutex handle.
+struct MutexImpl {
+    SemaphoreHandle_t handle;
+
+#if configSUPPORT_STATIC_ALLOCATION
+    StaticSemaphore_t buffer;
+#endif
 };

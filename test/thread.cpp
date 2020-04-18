@@ -50,10 +50,6 @@ TEST_CASE("Thread creation and destruction", "[unit][c][thread]")
         = osalThreadCreate(&thread, {cOsalThreadDefaultPriority, cOsalThreadDefaultStackSize, nullptr}, func, nullptr);
     REQUIRE(error == OsalError::eOk);
 
-    error
-        = osalThreadCreate(&thread, {cOsalThreadDefaultPriority, cOsalThreadDefaultStackSize, nullptr}, func, nullptr);
-    REQUIRE(error == OsalError::eInvalidArgument);
-
     error = osalThreadJoin(&thread);
     REQUIRE(error == OsalError::eOk);
 

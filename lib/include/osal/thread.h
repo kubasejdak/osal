@@ -48,6 +48,7 @@ extern "C" {
 ///       contains objects from the target platform. Thus depending on its size is not recommended.
 struct OsalThread {
     ThreadImpl impl;
+    bool initialized;
 };
 
 // clang-format off
