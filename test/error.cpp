@@ -30,7 +30,7 @@
 TEST_CASE("Errors have proper human readable messages", "[unit][cpp][error]")
 {
     const std::string_view cUnrecognizedMsg = "(unrecognized error)";
-    constexpr int cErrorsCount = 8;
+    constexpr int cErrorsCount = 9;
 
     for (int i = 0; i < cErrorsCount; ++i) {
         std::error_code error = static_cast<OsalError>(i);
@@ -39,7 +39,7 @@ TEST_CASE("Errors have proper human readable messages", "[unit][cpp][error]")
         REQUIRE(error.message() != cUnrecognizedMsg);
     }
 
-    constexpr int cInvalidError = 999;
+    constexpr int cInvalidError = cErrorsCount;
     std::error_code error = static_cast<OsalError>(cInvalidError);
     REQUIRE(std::string_view(error.category().name()) == "osal");
     REQUIRE(!error.message().empty());
