@@ -26,6 +26,16 @@
   variables:
     AppArtifact: "Linux_ARM_GCC_Debug_Build"
 
+Error_Linux_ARM_UT:
+  extends: .Run_Test_Linux_ARM
+  variables:
+    TestTags: "[error]"
+
+Error_Linux_UT:
+  extends: .Run_Test_Linux
+  variables:
+    TestTags: "[error]"
+
 Mutex_Linux_ARM_UT:
   extends: .Run_Test_Linux_ARM
   variables:

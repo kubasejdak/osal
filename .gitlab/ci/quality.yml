@@ -55,6 +55,7 @@ Coverage_Total:
     - linux
     - shared
   dependencies:
+    - Error_Coverage
     - Mutex_Coverage
     - Timestamp_Coverage
     - Timeout_Coverage
@@ -69,7 +70,8 @@ Coverage_Total:
     - cd ${CI_JOB_NAME}
 
     - |
-      lcov -a ../Mutex_Coverage/coverage/coverage.info \
+      lcov -a ../Error_Coverage/coverage/coverage.info \
+           -a ../Mutex_Coverage/coverage/coverage.info \
            -a ../Timestamp_Coverage/coverage/coverage.info \
            -a ../Timeout_Coverage/coverage/coverage.info \
            -a ../Thread_Coverage/coverage/coverage.info \
