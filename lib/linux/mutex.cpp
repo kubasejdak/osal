@@ -37,6 +37,7 @@
 #include <cassert>
 #include <cerrno>
 #include <cstring>
+#include <ctime>
 
 OsalError osalMutexCreate(OsalMutex* mutex, OsalMutexType type)
 {
@@ -120,15 +121,14 @@ OsalError osalMutexTimedLock(OsalMutex* mutex, uint32_t timeoutMs)
     if (mutex == nullptr || !mutex->initialized)
         return OsalError::eInvalidArgument;
 
-    auto timeoutSec = osalMsToSec(timeoutMs);
-    auto timeoutNs = osalMsToNs(timeoutMs - osalSecToMs(timeoutSec));
-
     timespec ts{};
     auto result = clock_gettime(CLOCK_REALTIME, &ts);
     assert(result == 0);
 
-    ts.tv_sec += timeoutSec;
-    ts.tv_nsec += timeoutNs;
+    ts.tv_nsec += osalMsToNs(timeoutMs);
+    auto secs =  osalNsToSec(ts.tv_nsec);
+    ts.tv_sec += secs;
+    ts.tv_nsec -= osalSecToNs(secs);
 
     result = pthread_mutex_timedlock(&mutex->impl.handle, &ts);
     switch (result) {
