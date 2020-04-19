@@ -286,16 +286,16 @@ TEST_CASE("TimedLock called from second thread, timeout", "[unit][c][mutex]")
     REQUIRE(error == OsalError::eOk);
 
     auto func = [&mutex] {
-      auto start = osal::timestamp();
+        auto start = osal::timestamp();
 
-      constexpr std::uint32_t cTimeoutMs = 100;
-      auto error = osalMutexTimedLock(&mutex, cTimeoutMs);
-      if (error != OsalError::eTimeout)
-          REQUIRE(error == OsalError::eTimeout);
+        constexpr std::uint32_t cTimeoutMs = 100;
+        auto error = osalMutexTimedLock(&mutex, cTimeoutMs);
+        if (error != OsalError::eTimeout)
+            REQUIRE(error == OsalError::eTimeout);
 
-      auto end = osal::timestamp();
-      if ((end - start) < 100ms)
-          REQUIRE((end - start) >= 100ms);
+        auto end = osal::timestamp();
+        if ((end - start) < 100ms)
+            REQUIRE((end - start) >= 100ms);
     };
 
     osal::Thread thread(func);
