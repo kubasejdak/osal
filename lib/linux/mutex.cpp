@@ -88,15 +88,7 @@ OsalError osalMutexLock(OsalMutex* mutex)
         return OsalError::eInvalidArgument;
 
     auto result = pthread_mutex_lock(&mutex->impl.handle);
-    switch (result) {
-        case 0: return OsalError::eOk;
-        case EINVAL: return OsalError::eInvalidArgument;
-        case EAGAIN: [[fallthrough]];
-        case EBUSY: return OsalError::eLocked;
-        default: break;
-    }
-
-    return OsalError::eOsError;
+    return (result == 0) ? OsalError::eOk : OsalError::eOsError;
 }
 
 OsalError osalMutexTryLock(OsalMutex* mutex)
@@ -142,7 +134,6 @@ OsalError osalMutexTimedLock(OsalMutex* mutex, uint32_t timeoutMs)
     result = pthread_mutex_timedlock(&mutex->impl.handle, &ts);
     switch (result) {
         case 0: return OsalError::eOk;
-        case EINVAL: return OsalError::eInvalidArgument;
         case EAGAIN: [[fallthrough]];
         case EBUSY: return OsalError::eLocked;
         case ETIMEDOUT: return OsalError::eTimeout;
@@ -158,15 +149,7 @@ OsalError osalMutexUnlock(OsalMutex* mutex)
         return OsalError::eInvalidArgument;
 
     auto result = pthread_mutex_unlock(&mutex->impl.handle);
-    switch (result) {
-        case 0: return OsalError::eOk;
-        case EINVAL: return OsalError::eInvalidArgument;
-        case EAGAIN: [[fallthrough]];
-        case EBUSY: return OsalError::eLocked;
-        default: break;
-    }
-
-    return OsalError::eOsError;
+    return (result == 0) ? OsalError::eOk : OsalError::eOsError;
 }
 
 OsalError osalMutexUnlockIsr(OsalMutex* mutex)
