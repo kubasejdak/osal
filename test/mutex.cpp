@@ -212,3 +212,58 @@ TEST_CASE("TryLock called from second threads", "[unit][c][mutex]")
     error = osalMutexDestroy(&mutex);
     REQUIRE(error == OsalError::eOk);
 }
+
+TEST_CASE("TryLock called from ISR", "[unit][c][mutex]")
+{
+    OsalMutexType type{};
+
+    SECTION("Non recursive mutex") { type = OsalMutexType::eNonRecursive; }
+
+    SECTION("Default mutex") { type = cOsalMutexDefaultType; }
+
+    OsalMutex mutex{};
+    auto error = osalMutexCreate(&mutex, type);
+    REQUIRE(error == OsalError::eOk);
+
+    error = osalMutexLock(&mutex);
+    REQUIRE(error == OsalError::eOk);
+
+    auto func = [&mutex] {
+        auto start = osal::timestamp();
+
+        while (osalMutexTryLockIsr(&mutex) != OsalError::eOk)
+            osal::sleep(10ms);
+
+        auto end = osal::timestamp();
+        if ((end - start) < 100ms)
+            REQUIRE((end - start) >= 100ms);
+
+        auto error = osalMutexUnlock(&mutex);
+        if (error != OsalError::eOk)
+            REQUIRE(error == OsalError::eOk);
+    };
+
+    osal::Thread thread(func);
+
+    osal::sleep(120ms);
+    error = osalMutexUnlock(&mutex);
+    REQUIRE(error == OsalError::eOk);
+
+    thread.join();
+
+    error = osalMutexDestroy(&mutex);
+    REQUIRE(error == OsalError::eOk);
+}
+
+TEST_CASE("Recursive tryLock called from ISR", "[unit][c][mutex]")
+{
+    OsalMutex mutex{};
+    auto error = osalMutexCreate(&mutex, OsalMutexType::eRecursive);
+    REQUIRE(error == OsalError::eOk);
+
+    error = osalMutexTryLockIsr(&mutex);
+    REQUIRE(error == OsalError::eInvalidArgument);
+
+    error = osalMutexDestroy(&mutex);
+    REQUIRE(error == OsalError::eOk);
+}

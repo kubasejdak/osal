@@ -99,7 +99,6 @@ OsalError osalMutexTryLock(OsalMutex* mutex)
     auto result = pthread_mutex_trylock(&mutex->impl.handle);
     switch (result) {
         case 0: return OsalError::eOk;
-        case EINVAL: return OsalError::eInvalidArgument;
         case EAGAIN: [[fallthrough]];
         case EBUSY: return OsalError::eLocked;
         default: break;

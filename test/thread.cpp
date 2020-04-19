@@ -74,6 +74,13 @@ TEST_CASE("Thread creation with invalid arguments", "[unit][c][thread]")
                              nullptr,
                              nullptr);
     REQUIRE(error == OsalError::eInvalidArgument);
+
+    constexpr int cInvalidPriority = 5;
+    error = osalThreadCreate(&thread,
+                             {static_cast<OsalThreadPriority>(cInvalidPriority), cOsalThreadDefaultStackSize, nullptr},
+                             nullptr,
+                             nullptr);
+    REQUIRE(error == OsalError::eInvalidArgument);
 }
 
 TEST_CASE("Multiple thread joins", "[unit][c][thread]")
