@@ -36,6 +36,7 @@
 #include <sched.h>
 
 #include <algorithm>
+#include <cassert>
 #include <climits>
 #include <cstring>
 #include <memory>
@@ -84,30 +85,30 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
     }
 
     pthread_attr_t attr{};
-    if (pthread_attr_init(&attr) != 0)
-        return OsalError::eOsError;
+    [[maybe_unused]] auto result = pthread_attr_init(&attr);
+    assert(result == 0);
 
-    if (pthread_attr_setschedpolicy(&attr, SCHED_RR) != 0)
-        return OsalError::eOsError;
+    result = pthread_attr_setschedpolicy(&attr, SCHED_RR);
+    assert(result == 0);
 
     sched_param schedParam{};
     schedParam.sched_priority = priority;
-    if (pthread_attr_setschedparam(&attr, &schedParam) != 0)
-        return OsalError::eOsError;
+    result = pthread_attr_setschedparam(&attr, &schedParam);
+    assert(result == 0);
 
     auto stackSize = std::max<std::size_t>(config.stackSize, PTHREAD_STACK_MIN);
-    if (pthread_attr_setstacksize(&attr, stackSize) != 0)
-        return OsalError::eOsError;
+    result = pthread_attr_setstacksize(&attr, stackSize);
+    assert(result == 0);
 
     pthread_t handle{};
     auto wrapper = std::make_unique<ThreadWrapperData>();
     wrapper->func = func;
     wrapper->param = arg;
-    if (pthread_create(&handle, &attr, threadWrapper, wrapper.release()) != 0)
-        return OsalError::eOsError;
+    result = pthread_create(&handle, &attr, threadWrapper, wrapper.release());
+    assert(result == 0);
 
-    if (pthread_attr_destroy(&attr) != 0)
-        return OsalError::eOsError;
+    result = pthread_attr_destroy(&attr);
+    assert(result == 0);
 
     thread->impl.handle = handle;
     thread->initialized = true;
