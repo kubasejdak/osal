@@ -36,8 +36,8 @@
 extern "C" {
 #endif
 
-#include "error.h"
-#include "internal/mutexImpl.h"
+#include "Error.h"
+#include "internal/MutexImpl.h"
 
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 

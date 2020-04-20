@@ -30,14 +30,12 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "osal/mutex.h"
+#include "osal/Mutex.h"
 
-#include "osal/timestamp.h"
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
 
-#include <cassert>
-#include <cerrno>
 #include <cstring>
-#include <ctime>
 
 OsalError osalMutexCreate(OsalMutex* mutex, OsalMutexType type)
 {
@@ -46,28 +44,31 @@ OsalError osalMutexCreate(OsalMutex* mutex, OsalMutexType type)
 
     mutex->initialized = false;
 
-    int mutexType;
+    SemaphoreHandle_t handle;
+#if configSUPPORT_STATIC_ALLOCATION
     switch (type) {
-        case OsalMutexType::eRecursive: mutexType = PTHREAD_MUTEX_RECURSIVE; break;
-        case OsalMutexType::eNonRecursive: mutexType = PTHREAD_MUTEX_NORMAL; break;
+#    if configUSE_RECURSIVE_MUTEXES
+        case OsalMutexType::eRecursive: handle = xSemaphoreCreateRecursiveMutexStatic(&mutex->impl.buffer); break;
+#    endif
+        case OsalMutexType::eNonRecursive: handle = xSemaphoreCreateMutexStatic(&mutex->impl.buffer); break;
         default: return OsalError::eInvalidArgument;
     }
+#elif configSUPPORT_DYNAMIC_ALLOCATION
+    switch (type) {
+#    if configUSE_RECURSIVE_MUTEXES
+        case OsalMutexType::eRecursive: handle = xSemaphoreCreateRecursiveMutex(&mutex->impl.buffer); break;
+#    endif
+        case OsalMutexType::eNonRecursive: handle = xSemaphoreCreateMutex(); break;
+        default: return OsalError::eInvalidArgument;
+    }
+#endif
 
-    pthread_mutexattr_t attr;
-    pthread_mutexattr_init(&attr);
-    [[maybe_unused]] auto result = pthread_mutexattr_settype(&attr, mutexType);
-    assert(result == 0);
-
-    pthread_mutex_t handle;
-    result = pthread_mutex_init(&handle, &attr);
-    assert(result == 0);
-
-    pthread_mutexattr_destroy(&attr);
-    assert(result == 0);
+    if (handle == nullptr)
+        return OsalError::eOsError;
 
     mutex->impl.handle = handle;
-    mutex->type = type;
     mutex->initialized = true;
+    mutex->type = type;
     return OsalError::eOk;
 }
 
@@ -76,45 +77,33 @@ OsalError osalMutexDestroy(OsalMutex* mutex)
     if (mutex == nullptr || !mutex->initialized)
         return OsalError::eInvalidArgument;
 
-    [[maybe_unused]] auto result = pthread_mutex_destroy(&mutex->impl.handle);
-    assert(result == 0);
-
+    vSemaphoreDelete(mutex->impl.handle);
     std::memset(mutex, 0, sizeof(OsalMutex));
     return OsalError::eOk;
 }
 
 OsalError osalMutexLock(OsalMutex* mutex)
 {
-    if (mutex == nullptr || !mutex->initialized)
-        return OsalError::eInvalidArgument;
-
-    [[maybe_unused]] auto result = pthread_mutex_lock(&mutex->impl.handle);
-    assert(result == 0);
-    return OsalError::eOk;
+    return osalMutexTimedLock(mutex, portMAX_DELAY);
 }
 
 OsalError osalMutexTryLock(OsalMutex* mutex)
 {
-    if (mutex == nullptr || !mutex->initialized)
-        return OsalError::eInvalidArgument;
-
-    auto result = pthread_mutex_trylock(&mutex->impl.handle);
-    switch (result) {
-        case EAGAIN: [[fallthrough]];
-        case EBUSY: return OsalError::eLocked;
-        default: break;
-    }
-
-    assert(result == 0);
-    return OsalError::eOk;
+    return osalMutexTimedLock(mutex, 0);
 }
 
 OsalError osalMutexTryLockIsr(OsalMutex* mutex)
 {
-    if (mutex == nullptr || mutex->type == OsalMutexType::eRecursive)
+    if (mutex == nullptr || !mutex->initialized)
         return OsalError::eInvalidArgument;
 
-    return osalMutexTryLock(mutex);
+    if (mutex->type == OsalMutexType::eRecursive)
+        return OsalError::eInvalidArgument;
+
+    if (xSemaphoreTakeFromISR(mutex->impl.handle, nullptr) == pdFALSE)
+        return OsalError::eOsError;
+
+    return OsalError::eOk;
 }
 
 OsalError osalMutexTimedLock(OsalMutex* mutex, uint32_t timeoutMs)
@@ -122,20 +111,20 @@ OsalError osalMutexTimedLock(OsalMutex* mutex, uint32_t timeoutMs)
     if (mutex == nullptr || !mutex->initialized)
         return OsalError::eInvalidArgument;
 
-    timespec ts{};
-    auto result = clock_gettime(CLOCK_REALTIME, &ts);
-    assert(result == 0);
+    BaseType_t result;
+    TickType_t tickTimeout = (timeoutMs == portMAX_DELAY) ? portMAX_DELAY : (timeoutMs / portTICK_PERIOD_MS);
 
-    ts.tv_nsec += osalMsToNs(timeoutMs);
-    auto secs = osalNsToSec(ts.tv_nsec);
-    ts.tv_sec += secs;
-    ts.tv_nsec -= osalSecToNs(secs);
+    if (mutex->type == OsalMutexType::eRecursive) {
+#if configUSE_RECURSIVE_MUTEXES
+        result = xSemaphoreTakeRecursive(mutex->impl.handle, tickTimeout);
+#endif
+    }
+    else
+        result = xSemaphoreTake(mutex->impl.handle, tickTimeout);
 
-    result = pthread_mutex_timedlock(&mutex->impl.handle, &ts);
-    if (result == ETIMEDOUT)
-        return OsalError::eTimeout;
+    if (result == pdFALSE)
+        return OsalError::eOsError;
 
-    assert(result == 0);
     return OsalError::eOk;
 }
 
@@ -144,14 +133,32 @@ OsalError osalMutexUnlock(OsalMutex* mutex)
     if (mutex == nullptr || !mutex->initialized)
         return OsalError::eInvalidArgument;
 
-    auto result = pthread_mutex_unlock(&mutex->impl.handle);
-    return (result == 0) ? OsalError::eOk : OsalError::eOsError;
+    BaseType_t result;
+
+    if (mutex->type == OsalMutexType::eRecursive) {
+#if configUSE_RECURSIVE_MUTEXES
+        result = xSemaphoreGiveRecursive(mutex->impl.handle);
+#endif
+    }
+    else
+        result = xSemaphoreGive(mutex->impl.handle);
+
+    if (result == pdFALSE)
+        return OsalError::eOsError;
+
+    return OsalError::eOk;
 }
 
 OsalError osalMutexUnlockIsr(OsalMutex* mutex)
 {
-    if (mutex == nullptr || mutex->type == OsalMutexType::eRecursive)
+    if (mutex == nullptr || !mutex->initialized)
         return OsalError::eInvalidArgument;
 
-    return osalMutexUnlock(mutex);
+    if (mutex->type == OsalMutexType::eRecursive)
+        return OsalError::eInvalidArgument;
+
+    if (xSemaphoreGiveFromISR(mutex->impl.handle, nullptr) == pdFALSE)
+        return OsalError::eOsError;
+
+    return OsalError::eOk;
 }

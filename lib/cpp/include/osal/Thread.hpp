@@ -32,8 +32,8 @@
 
 #pragma once
 
-#include "osal/error.hpp"
-#include "osal/thread.h"
+#include "osal/Error.hpp"
+#include "osal/Thread.h"
 
 #include <cassert>
 #include <cstdint>

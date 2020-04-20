@@ -1,8 +1,8 @@
 add_library(osal-freertos EXCLUDE_FROM_ALL
     init.cpp
-    mutex.cpp
+    Mutex.cpp
     sleep.cpp
-    thread.cpp
+    Thread.cpp
     timestamp.cpp
 )
 

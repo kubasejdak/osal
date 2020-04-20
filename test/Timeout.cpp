@@ -30,8 +30,8 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Timeout.hpp>
 #include <osal/sleep.hpp>
-#include <osal/timeout.hpp>
 #include <osal/timestamp.hpp>
 
 #include <catch2/catch.hpp>

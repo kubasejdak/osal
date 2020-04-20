@@ -30,9 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <osal/mutex.h>
+#include <osal/Mutex.h>
+#include <osal/Thread.hpp>
 #include <osal/sleep.hpp>
-#include <osal/thread.hpp>
 #include <osal/timestamp.hpp>
 
 #include <catch2/catch.hpp>

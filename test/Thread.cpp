@@ -30,10 +30,10 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Thread.h>
+#include <osal/Thread.hpp>
 #include <osal/sleep.h>
 #include <osal/sleep.hpp>
-#include <osal/thread.h>
-#include <osal/thread.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -423,8 +423,8 @@ TEST_CASE("Thread creation in C++ with different priorities using helper types",
     bool launched = false;
 
     auto func = [&] {
-      osal::sleep(100ms);
-      launched = true;
+        osal::sleep(100ms);
+        launched = true;
     };
 
     SECTION("eLowest priority") { osal::LowestPrioThread<decltype(func)> thread(func); }
@@ -439,7 +439,6 @@ TEST_CASE("Thread creation in C++ with different priorities using helper types",
 
     REQUIRE(launched);
 }
-
 
 TEST_CASE("Move thread around", "[unit][cpp][thread]")
 {

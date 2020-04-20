@@ -32,7 +32,7 @@
 
 #pragma once
 
-#include "osal/error.h"
+#include "osal/Error.h"
 
 #include <system_error>
 #include <type_traits>
