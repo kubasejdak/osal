@@ -418,6 +418,29 @@ TEST_CASE("Thread creation in C++ with different priorities", "[unit][cpp][threa
     REQUIRE(launched);
 }
 
+TEST_CASE("Thread creation in C++ with different priorities using helper types", "[unit][cpp][thread]")
+{
+    bool launched = false;
+
+    auto func = [&] {
+      osal::sleep(100ms);
+      launched = true;
+    };
+
+    SECTION("eLowest priority") { osal::LowestPrioThread<decltype(func)> thread(func); }
+
+    SECTION("eLow priority") { osal::LowPrioThread<decltype(func)> thread(func); }
+
+    SECTION("eNormal priority") { osal::NormalPrioThread<decltype(func)> thread(func); }
+
+    SECTION("eHigh priority") { osal::HighPrioThread<decltype(func)> thread(func); }
+
+    SECTION("eHighest priority") { osal::HighestPrioThread<decltype(func)> thread(func); }
+
+    REQUIRE(launched);
+}
+
+
 TEST_CASE("Move thread around", "[unit][cpp][thread]")
 {
     constexpr unsigned int cParam = 0xdeadbeef;

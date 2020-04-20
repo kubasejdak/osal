@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2019-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2020, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -207,6 +207,41 @@ private:
     OsalThreadFunction m_workerFunction{};
     bool m_started{};
 };
+
+/// @typedef LowestPrioThread
+/// Helper type alias representing OSAL thread with OsalThreadPriority::eLowest priority.
+/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
+/// @tparam cStackSize          Stack size to be used in thread construction.
+template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using LowestPrioThread = Thread<ThreadFunction, OsalThreadPriority::eLowest, cStackSize>;
+
+/// @typedef LowPrioThread
+/// Helper type alias representing OSAL thread with OsalThreadPriority::eLow priority.
+/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
+/// @tparam cStackSize          Stack size to be used in thread construction.
+template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using LowPrioThread = Thread<ThreadFunction, OsalThreadPriority::eLow, cStackSize>;
+
+/// @typedef NormalPrioThread
+/// Helper type alias representing OSAL thread with OsalThreadPriority::eNormal priority.
+/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
+/// @tparam cStackSize          Stack size to be used in thread construction.
+template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using NormalPrioThread = Thread<ThreadFunction, OsalThreadPriority::eNormal, cStackSize>;
+
+/// @typedef HighPrioThread
+/// Helper type alias representing OSAL thread with OsalThreadPriority::eHigh priority.
+/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
+/// @tparam cStackSize          Stack size to be used in thread construction.
+template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using HighPrioThread = Thread<ThreadFunction, OsalThreadPriority::eHigh, cStackSize>;
+
+/// @typedef HighestPrioThread
+/// Helper type alias representing OSAL thread with OsalThreadPriority::eHighest priority.
+/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
+/// @tparam cStackSize          Stack size to be used in thread construction.
+template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using HighestPrioThread = Thread<ThreadFunction, OsalThreadPriority::eHighest, cStackSize>;
 
 namespace thread {
 
