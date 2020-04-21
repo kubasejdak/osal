@@ -1,6 +1,8 @@
 add_library(osal-cpp
     Error.cpp
     init.cpp
+    Mutex.cpp
+    ScopedLock.cpp
     sleep.cpp
     timestamp.cpp
 )
