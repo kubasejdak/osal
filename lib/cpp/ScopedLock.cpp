@@ -30,24 +30,52 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
-#include <chrono>
+#include "osal/ScopedLock.hpp"
 
 namespace osal {
 
-/// @typedef Clock
-/// Default clock type used by OSAL to represent the timestamp.
-using Clock = std::chrono::steady_clock;
+ScopedLock::ScopedLock(Mutex& mutex)
+    : m_mutex(mutex)
+{
+    lock();
+}
 
-/// @typedef Duration
-/// Default duration type used by OSAL to represent the timestamp.
-using Duration = std::chrono::milliseconds;
+ScopedLock::ScopedLock(Mutex& mutex, Timeout timeout)
+    : m_mutex(mutex)
+{
+    timedLock(timeout);
+}
 
-/// Returns the timestamp relative to the call to osal::init() function in ns.
-/// @return Timestamp relative to the osal::init() function in ns.
-/// @note osal::init() has to be called in order to have correct values returned by this function.
-/// @note Timestamp can be easily converted to any unit with std::chrono::duration_cast().
-std::chrono::time_point<Clock, Duration> timestamp();
+ScopedLock::~ScopedLock()
+{
+    unlock();
+}
+
+std::error_code ScopedLock::lock()
+{
+    auto error = m_mutex.lock();
+    if (!error)
+        m_locked = true;
+
+    return error;
+}
+
+std::error_code ScopedLock::timedLock(Timeout timeout)
+{
+    auto error = m_mutex.timedLock(timeout);
+    if (!error)
+        m_locked = true;
+
+    return error;
+}
+
+std::error_code ScopedLock::unlock()
+{
+    auto error = m_mutex.unlock();
+    if (!error)
+        m_locked = false;
+
+    return error;
+}
 
 } // namespace osal

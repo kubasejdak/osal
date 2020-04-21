@@ -42,8 +42,8 @@ TEST_CASE("Creation of timeout", "[unit][cpp][timeout]")
 {
     osal::Timeout t1(3s);
     osal::Timeout t2(4ms);
-    osal::Timeout t3(1us);
-    osal::Timeout t4(8ns);
+    osal::Timeout t3(1ms);
+    osal::Timeout t4(8ms);
     osal::Timeout t5 = 100ms;
     osal::Timeout t6(t2);
     osal::Timeout t7 = t4;
@@ -51,8 +51,8 @@ TEST_CASE("Creation of timeout", "[unit][cpp][timeout]")
 
     REQUIRE(t1.duration() == 3s);
     REQUIRE(t2.duration() == 4ms);
-    REQUIRE(t3.duration() == 1us);
-    REQUIRE(t4.duration() == 8ns);
+    REQUIRE(t3.duration() == 1ms);
+    REQUIRE(t4.duration() == 8ms);
     REQUIRE(t5.duration() == 100ms);
     REQUIRE(t6.duration() == t2.duration());
     REQUIRE(t7.duration() == t4.duration());
@@ -133,7 +133,7 @@ TEST_CASE("Timeout used as a function argument", "[unit][cpp][timeout]")
 
     SECTION("Timeout is propagated deep in the callstack")
     {
-        auto dummySleepFunc = [=] { osal::sleep(cTimeout); };
+        auto dummySleepFunc = [=] { osal::sleep(cTimeout + 10ms); };
 
         auto func1 = [=](osal::Timeout timeout) {
             dummySleepFunc();
@@ -173,6 +173,7 @@ TEST_CASE("Timeout used as a function argument", "[unit][cpp][timeout]")
     }
 
     auto end = osal::timestamp();
+    [[maybe_unused]] auto diff = (end - start).count();
 
     REQUIRE(timeout.isExpired());
     REQUIRE(timeout.timeLeft() == std::chrono::milliseconds::zero());

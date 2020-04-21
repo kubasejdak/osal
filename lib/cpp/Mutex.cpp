@@ -30,24 +30,57 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "osal/Mutex.hpp"
 
 #include <chrono>
 
 namespace osal {
 
-/// @typedef Clock
-/// Default clock type used by OSAL to represent the timestamp.
-using Clock = std::chrono::steady_clock;
+Mutex::Mutex(OsalMutexType type)
+{
+    osalMutexCreate(&m_mutex, type);
+}
 
-/// @typedef Duration
-/// Default duration type used by OSAL to represent the timestamp.
-using Duration = std::chrono::milliseconds;
+Mutex::Mutex(Mutex&& other) noexcept
+{
+    std::swap(m_mutex, other.m_mutex);
+}
 
-/// Returns the timestamp relative to the call to osal::init() function in ns.
-/// @return Timestamp relative to the osal::init() function in ns.
-/// @note osal::init() has to be called in order to have correct values returned by this function.
-/// @note Timestamp can be easily converted to any unit with std::chrono::duration_cast().
-std::chrono::time_point<Clock, Duration> timestamp();
+Mutex::~Mutex()
+{
+    if (m_mutex.initialized)
+        osalMutexDestroy(&m_mutex);
+}
+
+std::error_code Mutex::lock()
+{
+    return osalMutexLock(&m_mutex);
+}
+
+std::error_code Mutex::tryLock()
+{
+    return osalMutexTryLock(&m_mutex);
+}
+
+std::error_code Mutex::tryLockIsr()
+{
+    return osalMutexTryLockIsr(&m_mutex);
+}
+
+std::error_code Mutex::timedLock(Timeout timeout)
+{
+    std::uint32_t timeoutMs = std::chrono::duration_cast<std::chrono::milliseconds>(timeout.timeLeft()).count();
+    return osalMutexTimedLock(&m_mutex, timeoutMs);
+}
+
+std::error_code Mutex::unlock()
+{
+    return osalMutexUnlock(&m_mutex);
+}
+
+std::error_code Mutex::unlockIsr()
+{
+    return osalMutexUnlockIsr(&m_mutex);
+}
 
 } // namespace osal
