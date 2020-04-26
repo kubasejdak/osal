@@ -46,6 +46,16 @@ Mutex_Linux_UT:
   variables:
     TestTags: "[mutex]"
 
+Semaphore_Linux_ARM_UT:
+  extends: .Run_Test_Linux_ARM
+  variables:
+    TestTags: "[semaphore]"
+
+Semaphore_Linux_UT:
+  extends: .Run_Test_Linux
+  variables:
+    TestTags: "[semaphore]"
+
 Timeout_Linux_ARM_UT:
   extends: .Run_Test_Linux_ARM
   variables:

@@ -80,7 +80,7 @@ public:
     /// @return Flag indicating if the underlying mutex is locked.
     /// @retval true        Underlying mutex is locked.
     /// @retval false       Underlying mutex is not locked.
-    operator bool() { return isAcquired(); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    operator bool() const { return isAcquired(); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
     /// Returns flag indicating if the underlying mutex is locked.
     /// @return Flag indicating if the underlying mutex is locked.

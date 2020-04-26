@@ -1,6 +1,7 @@
 add_library(osal-freertos EXCLUDE_FROM_ALL
     init.cpp
     Mutex.cpp
+    Semaphore.cpp
     sleep.cpp
     Thread.cpp
     timestamp.cpp
