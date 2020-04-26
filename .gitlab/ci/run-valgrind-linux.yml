@@ -1,0 +1,48 @@
+.Run_Valgrind:
+  stage: valgrind
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - cd ${AppArtifact}/bin
+    - valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=123 ./osal-tests ${TestTags} || if [ $? -eq 123 ]; then exit 1; fi
+
+.Run_Valgrind_Linux:
+  extends: .Run_Valgrind
+  tags:
+    - linux
+    - shared
+  image: kubasejdak/gcc:latest
+  dependencies:
+    - Linux_GCC_Debug_Build
+  variables:
+    AppArtifact: "Linux_GCC_Debug_Build"
+
+Error_Valgrind_Linux:
+  extends: .Run_Valgrind_Linux
+  variables:
+    TestTags: "[error]"
+
+Mutex_Valgrind_Linux:
+  extends: .Run_Valgrind_Linux
+  variables:
+    TestTags: "[mutex]"
+
+Semaphore_Valgrind_Linux:
+  extends: .Run_Valgrind_Linux
+  variables:
+    TestTags: "[semaphore]"
+
+Timeout_Valgrind_Linux:
+  extends: .Run_Valgrind_Linux
+  variables:
+    TestTags: "[timeout]"
+
+Timestamp_Valgrind_Linux:
+  extends: .Run_Valgrind_Linux
+  variables:
+    TestTags: "[timestamp]"
+
+Thread_Valgrind_Linux:
+  extends: .Run_Valgrind_Linux
+  variables:
+    TestTags: "[thread]"

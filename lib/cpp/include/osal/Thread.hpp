@@ -150,6 +150,7 @@ public:
             return OsalError::eThreadAlreadyStarted;
 
         m_userFunction = std::make_unique<FunctionWrapper>(
+            // NOLINTNEXTLINE(modernize-avoid-bind)
             std::bind(std::forward<ThreadFunction>(function), std::forward<Args>(args)...));
         assert(m_userFunction);
 

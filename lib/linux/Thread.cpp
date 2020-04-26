@@ -74,7 +74,7 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
     const auto cPriorityMax = sched_get_priority_max(SCHED_RR);
     const auto cPriorityStep = (cPriorityMax - cPriorityMin) / 4;
 
-    int priority;
+    int priority{};
     switch (config.priority) {
         case OsalThreadPriority::eLowest: priority = cPriorityMin; break;
         case OsalThreadPriority::eLow: priority = cPriorityMin + (cPriorityStep * 1); break;

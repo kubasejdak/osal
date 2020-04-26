@@ -3,6 +3,7 @@ add_library(osal-cpp
     init.cpp
     Mutex.cpp
     ScopedLock.cpp
+    Semaphore.cpp
     sleep.cpp
     timestamp.cpp
 )
