@@ -37,8 +37,9 @@
 #include <system_error>
 #include <type_traits>
 
-// NOLINTNEXTLINE(readability-identifier-naming)
-std::error_code make_error_code(OsalError error);
+/// Creates error code value for OsalError enum.
+/// @return std::error_code value created from OsalError enum.
+std::error_code make_error_code(OsalError error); // NOLINT(readability-identifier-naming)
 
 namespace std {
 
