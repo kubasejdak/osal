@@ -32,13 +32,28 @@
 
 #pragma once
 
+#include "osal/Semaphore.h"
+
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+
+/// @struct ThreadWrapperData
+/// Represents helper wrapper around user thread function and its arguments.
+/// @note This type is necessary, because FreeRTOS doesn't support joining threads. For this purpose the additional
+///       semaphore is used to implement this mechanism. Special threadWrapper() function is used directly in
+///       call to xTaskCreate() and user thread function is passed along with its arguments as the
+///       argument.
+struct ThreadWrapperData {
+    TaskFunction_t func;
+    void* arg;
+    OsalSemaphore semaphore;
+};
 
 /// @struct ThreadImpl
 /// Helper class with concrete platform implementation of the thread handle.
 struct ThreadImpl {
     TaskHandle_t handle;
+    ThreadWrapperData params;
 
 #if configSUPPORT_STATIC_ALLOCATION
     StackType_t* stack;

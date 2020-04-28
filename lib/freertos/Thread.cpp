@@ -32,10 +32,22 @@
 
 #include "osal/Thread.h"
 
+#include "osal/Semaphore.h"
+
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
 #include <cstring>
+
+/// Helper thread function which is used as a wrapper for OSAL thread function.
+/// @param arg          Helper thread arguments.
+/// @note This function is used to implement thread joining.
+static void threadWrapper(void* arg)
+{
+    auto* params = static_cast<ThreadWrapperData*>(arg);
+    params->func(params->arg);
+    osalSemaphoreSignal(&params->semaphore);
+}
 
 OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg)
 {
@@ -58,15 +70,25 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
         default: return OsalError::eInvalidArgument;
     }
 
+    thread->impl.params.func = func;
+    thread->impl.params.arg = arg;
+    osalSemaphoreCreate(&thread->impl.params.semaphore, 0);
+
 #if configSUPPORT_STATIC_ALLOCATION
     thread->impl.stack = static_cast<StackType_t*>(config.stack);
-    thread->impl.handle
-        = xTaskCreateStatic(func, "thread", config.stackSize, arg, priority, thread->impl.stack, &thread->impl.tcb);
+    thread->impl.handle = xTaskCreateStatic(threadWrapper,
+                                            "thread",
+                                            config.stackSize,
+                                            &thread->impl.params,
+                                            priority,
+                                            thread->impl.stack,
+                                            &thread->impl.tcb);
 
     if (thread->impl.handle == nullptr)
         return OsalError::eOsError;
 #elif configSUPPORT_DYNAMIC_ALLOCATION
-    auto result = xTaskCreate(func, "thread", config.stackSize, arg, priority, &thread->impl.handle);
+    auto result
+        = xTaskCreate(threadWrapper, "thread", config.stackSize, &thread->impl.params, priority, &thread->impl.handle);
     if (result != pdPASS)
         return OsalError::eOsError;
 #endif
@@ -81,6 +103,9 @@ OsalError osalThreadDestroy(OsalThread* thread)
         return OsalError::eInvalidArgument;
 
     vTaskDelete(thread->impl.handle);
+
+    osalSemaphoreDestroy(&thread->impl.params.semaphore);
+
     std::memset(thread, 0, sizeof(OsalThread));
     return OsalError::eOk;
 }
@@ -90,9 +115,7 @@ OsalError osalThreadJoin(OsalThread* thread)
     if (thread == nullptr || !thread->initialized)
         return OsalError::eInvalidArgument;
 
-    // TODO(kuba): implement once semaphores are available.
-
-    return OsalError::eOk;
+    return osalSemaphoreWait(&thread->impl.params.semaphore);
 }
 
 void osalThreadYield()

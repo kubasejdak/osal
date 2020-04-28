@@ -54,7 +54,7 @@ struct ThreadWrapperData {
 
 /// Helper thread function that has signature required by pthread. It is used as a wrapper for
 /// OSAL thread function.
-/// @param arg          User argument for the thread function.
+/// @param arg          Helper thread arguments.
 /// @return Result of this function is never used so it always returns nullptr.
 static void* threadWrapper(void* arg)
 {
