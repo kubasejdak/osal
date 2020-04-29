@@ -42,7 +42,6 @@ extern "C" {
 #include <stddef.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-/// @struct OsalThread
 /// Represents OSAL thread handle.
 /// @note Size of this structure depends on the concrete implementation. In particular, ThreadImpl
 ///       contains objects from the target platform. Thus depending on its size is not recommended.
@@ -52,7 +51,6 @@ struct OsalThread {
 };
 
 // clang-format off
-/// @enum OsalThreadPriority
 /// Represents possible thread priorities that can be set with the OSAL API.
 /// @note It is up to the concrete implementation which physical priorities will be used for each
 ///       enum value. The only assumption client can make, is that eLowest will set the lowest
@@ -73,7 +71,6 @@ static const OsalThreadPriority cOsalThreadDefaultPriority = OsalThreadPriority:
 /// Helper constant with default stack size of new thread.
 static const size_t cOsalThreadDefaultStackSize = 8 * 1024;
 
-/// @struct OsalThreadConfig
 /// Represents structure used to configuration for created thread.
 /// @note Stack is not used in all configurations (e.g. Linux doesn't support it).
 struct OsalThreadConfig {
@@ -82,7 +79,6 @@ struct OsalThreadConfig {
     void* stack;
 };
 
-/// @typedef OsalThreadFunction
 /// Represents signature of the user function that can be invoked by OSAL thread.
 typedef void (*OsalThreadFunction)(void*); // NOLINT(modernize-use-using)
 

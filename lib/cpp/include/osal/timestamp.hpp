@@ -36,7 +36,6 @@
 
 namespace osal {
 
-/// @typedef
 /// Default clock type used by OSAL to represent the timestamp.
 using Clock = std::chrono::steady_clock;
 

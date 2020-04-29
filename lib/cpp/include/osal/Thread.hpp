@@ -44,7 +44,6 @@
 
 namespace osal {
 
-/// @class Thread
 /// Represents OSAL thread handle.
 /// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cPriority           Priority to be used in thread construction.
@@ -96,7 +95,7 @@ public:
     Thread(void* stack, ThreadFunction function) { start(stack, function); }
 
     /// Copy constructor.
-    /// @note This constructor is deleted, because this type is not meant to be copied.
+    /// @note This constructor is deleted, because Thread is not meant to be copy-constructed.
     Thread(const Thread&) = delete;
 
     /// Move constructor.
@@ -119,11 +118,11 @@ public:
     }
 
     /// Copy assignment operator.
-    /// @note This operator is deleted, because this type is not meant to be copied.
+    /// @note This operator is deleted, because Thread is not meant to be copy-assigned.
     Thread& operator=(const Thread&) = delete;
 
     /// Move assignment operator.
-    /// @note This operator is deleted, because this type is not meant to be moved after default construction.
+    /// @note This operator is deleted, because Thread is not meant to be move-assigned.
     Thread& operator=(Thread&& other) = delete;
 
     /// Starts the thread.
@@ -201,6 +200,7 @@ public:
     std::error_code join() { return osalThreadJoin(&m_thread); }
 
 private:
+    /// Helper wrapper around user thread function.
     using FunctionWrapper = std::function<void(void)>;
 
     OsalThread m_thread{};
@@ -209,35 +209,30 @@ private:
     bool m_started{};
 };
 
-/// @typedef LowestPrioThread
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eLowest priority.
 /// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
 template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
 using LowestPrioThread = Thread<ThreadFunction, OsalThreadPriority::eLowest, cStackSize>;
 
-/// @typedef LowPrioThread
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eLow priority.
 /// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
 template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
 using LowPrioThread = Thread<ThreadFunction, OsalThreadPriority::eLow, cStackSize>;
 
-/// @typedef NormalPrioThread
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eNormal priority.
 /// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
 template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
 using NormalPrioThread = Thread<ThreadFunction, OsalThreadPriority::eNormal, cStackSize>;
 
-/// @typedef HighPrioThread
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eHigh priority.
 /// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
 template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
 using HighPrioThread = Thread<ThreadFunction, OsalThreadPriority::eHigh, cStackSize>;
 
-/// @typedef HighestPrioThread
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eHighest priority.
 /// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.

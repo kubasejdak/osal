@@ -34,7 +34,6 @@
 
 #include <pthread.h>
 
-/// @struct MutexImpl
 /// Helper class with concrete platform implementation of the mutex handle.
 struct MutexImpl {
     pthread_mutex_t handle;

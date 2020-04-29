@@ -34,7 +34,6 @@
 
 #include <pthread.h>
 
-/// @struct ThreadImpl
 /// Helper class with concrete platform implementation of the thread handle.
 struct ThreadImpl {
     pthread_t handle;

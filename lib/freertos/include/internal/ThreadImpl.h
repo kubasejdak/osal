@@ -37,7 +37,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-/// @struct ThreadWrapperData
 /// Represents helper wrapper around user thread function and its arguments.
 /// @note This type is necessary, because FreeRTOS doesn't support joining threads. For this purpose the additional
 ///       semaphore is used to implement this mechanism. Special threadWrapper() function is used directly in
@@ -49,7 +48,6 @@ struct ThreadWrapperData {
     OsalSemaphore semaphore;
 };
 
-/// @struct ThreadImpl
 /// Helper class with concrete platform implementation of the thread handle.
 struct ThreadImpl {
     TaskHandle_t handle;

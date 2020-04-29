@@ -42,7 +42,6 @@
 
 namespace osal {
 
-/// @class Mutex
 /// Represents OSAL mutex handle.
 class Mutex {
 public:
@@ -51,10 +50,10 @@ public:
     explicit Mutex(OsalMutexType type = cOsalMutexDefaultType);
 
     /// Copy constructor.
-    /// @note This constructor is deleted, because Mutex is not meant to be copied.
+    /// @note This constructor is deleted, because Mutex is not meant to be copy-constructed.
     Mutex(const Mutex&) = delete;
 
-    /// move constructor.
+    /// Move constructor.
     /// @param other        Object to be moved from.
     Mutex(Mutex&& other) noexcept;
 
@@ -62,11 +61,13 @@ public:
     ~Mutex();
 
     /// Copy assignment operator.
-    /// @note This operator is deleted, because Mutex is not meant to be copied.
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Mutex is not meant to be copy-assigned.
     Mutex& operator=(const Mutex&) = delete;
 
     /// Move assignment operator.
-    /// @note This operator is deleted, because Mutex is not meant to be move assigned.
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Mutex is not meant to be move-assigned.
     Mutex& operator=(Mutex&&) = delete;
 
     /// Locks the given mutex. If it is currently locked any thread, then the calling thread will block until mutex

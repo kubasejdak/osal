@@ -35,7 +35,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 
-/// @struct SemaphoreImpl
 /// Helper class with concrete platform implementation of the semaphore handle.
 struct SemaphoreImpl {
     SemaphoreHandle_t handle;

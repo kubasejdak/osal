@@ -51,7 +51,6 @@ constexpr auto cTimeoutInfinity = Duration::max();
 
 namespace detail {
 
-/// @typedef NotLessThanDuration
 /// Helper type to perform SFINAE to prevent using std::chrono unit in Timeout, which is smaller than Duration,
 /// than Duration type.
 template <typename T>
@@ -59,7 +58,6 @@ using NotLessThanDuration = std::enable_if_t<std::is_same_v<std::common_type_t<T
 
 } // namespace detail
 
-/// @class Timeout
 /// Represents a universal timeout object, that can tell if the given timeout has already expired.
 /// Upon construction Timeout object calculates timestamp value, which determines deadline for the given operation.
 /// Calling "isExpired()" simply compares current timestamp value with the calculated one.

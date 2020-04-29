@@ -35,7 +35,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 
-/// @struct MutexImpl
 /// Helper class with concrete platform implementation of the mutex handle.
 struct MutexImpl {
     SemaphoreHandle_t handle;

@@ -40,7 +40,6 @@
 
 namespace osal {
 
-/// @class ScopedLock
 /// Helper RAII type to perform automatic lock/unlock on the specified mutex.
 /// @note Objects of this class should not be shared across threads.
 class ScopedLock {
@@ -57,23 +56,23 @@ public:
     ScopedLock(Mutex& mutex, Timeout timeout);
 
     /// Copy constructor.
-    /// @note This constructor is deleted, because ScopedLock is not meant to be copied.
+    /// @note This constructor is deleted, because ScopedLock is not meant to be copy-constructed.
     ScopedLock(const ScopedLock&) = delete;
 
     /// Move constructor.
-    /// @note This constructor is deleted, because ScopedLock is not meant to be copied.
+    /// @note This constructor is deleted, because ScopedLock is not meant to be move-constructed.
     ScopedLock(ScopedLock&& other) noexcept = delete;
 
     /// Destructor.
-    /// @note Destructor automatically unlock the underlying mutex.
+    /// @note Destructor automatically unlocks the underlying mutex.
     ~ScopedLock();
 
     /// Copy assignment operator.
-    /// @note This operator is deleted, because ScopedLock is not meant to be copied.
+    /// @note This operator is deleted, because ScopedLock is not meant to be copy-assigned.
     ScopedLock& operator=(const ScopedLock&) = delete;
 
     /// Move assignment operator.
-    /// @note This operator is deleted, because ScopedLock is not meant to be move assigned.
+    /// @note This operator is deleted, because ScopedLock is not meant to be move-assigned.
     ScopedLock& operator=(ScopedLock&&) = delete;
 
     /// Returns flag indicating if the underlying mutex is locked.

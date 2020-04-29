@@ -42,7 +42,6 @@
 
 namespace osal {
 
-/// @class Semaphore
 /// Represents OSAL semaphore handle.
 class Semaphore {
 public:
@@ -51,10 +50,10 @@ public:
     explicit Semaphore(unsigned int initialValue);
 
     /// Copy constructor.
-    /// @note This constructor is deleted, because Semaphore is not meant to be copied.
+    /// @note This constructor is deleted, because Semaphore is not meant to be copy-constructed.
     Semaphore(const Semaphore&) = delete;
 
-    /// move constructor.
+    /// Move constructor.
     /// @param other            Object to be moved from.
     Semaphore(Semaphore&& other) noexcept;
 
@@ -62,11 +61,13 @@ public:
     ~Semaphore();
 
     /// Copy assignment operator.
-    /// @note This operator is deleted, because Semaphore is not meant to be copied.
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Semaphore is not meant to be copy-assigned.
     Semaphore& operator=(const Semaphore&) = delete;
 
     /// Move assignment operator.
-    /// @note This operator is deleted, because Semaphore is not meant to be move assigned.
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Semaphore is not meant to be move-assigned.
     Semaphore& operator=(Semaphore&&) = delete;
 
     /// Decrements value of the given semaphore. If its value is currently 0, then the calling thread will block until

@@ -42,7 +42,6 @@ extern "C" {
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
 // clang-format off
-/// @enum OsalMutexType
 /// Represents possible types of the OSAL mutex. These types define how mutex will react to multiple recursive
 /// locks made by the same thread.
 enum OsalMutexType {
@@ -51,7 +50,6 @@ enum OsalMutexType {
 };
 // clang-format on
 
-/// @struct OsalMutex
 /// Represents OSAL mutex handle.
 /// @note Size of this structure depends on the concrete implementation. In particular, MutexImpl
 ///       contains objects from the target platform. Thus depending on its size is not recommended.

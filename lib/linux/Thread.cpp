@@ -41,7 +41,6 @@
 #include <cstring>
 #include <memory>
 
-/// @struct ThreadWrapperData
 /// Represents helper wrapper around OSAL thread function and its arguments.
 /// @note This type is necessary, because OsalThreadFunction has different signature than pthread.
 ///       Thus special threadWrapper() function (with pthread compliant signature) is used directly in

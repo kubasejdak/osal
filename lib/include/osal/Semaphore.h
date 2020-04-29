@@ -41,7 +41,6 @@ extern "C" {
 
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-/// @struct OsalSemaphore
 /// Represents OSAL semaphore handle.
 /// @note Size of this structure depends on the concrete implementation. In particular, SemaphoreImpl
 ///       contains objects from the target platform. Thus depending on its size is not recommended.

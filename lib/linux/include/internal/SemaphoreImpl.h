@@ -34,7 +34,6 @@
 
 #include <semaphore.h>
 
-/// @struct SemaphoreImpl
 /// Helper class with concrete platform implementation of the semaphore handle.
 struct SemaphoreImpl {
     sem_t handle;
