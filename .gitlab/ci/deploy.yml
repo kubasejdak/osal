@@ -6,15 +6,15 @@ pages:
   tags:
     - linux
     - shared
-  dependencies:
-    - Coverage_Total
+#  dependencies:
+#    - Coverage_Total
   artifacts:
     paths:
       - public
   script:
     # Copy coverage report.
-    - mkdir -p public/coverage
-    - mv Coverage_Total/html/* public/coverage
+ #   - mkdir -p public/coverage
+ #   - mv Coverage_Total/html/* public/coverage
 
     # Generate documentation.
     - mkdir -p public/docs
