@@ -36,11 +36,10 @@
 
 namespace osal {
 
-/// @typedef Clock
+/// @typedef
 /// Default clock type used by OSAL to represent the timestamp.
 using Clock = std::chrono::steady_clock;
 
-/// @typedef Duration
 /// Default duration type used by OSAL to represent the timestamp.
 using Duration = std::chrono::milliseconds;
 
