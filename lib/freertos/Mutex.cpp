@@ -47,17 +47,17 @@ OsalError osalMutexCreate(OsalMutex* mutex, OsalMutexType type)
     SemaphoreHandle_t handle{};
 #if configSUPPORT_STATIC_ALLOCATION
     switch (type) {
-#    if configUSE_RECURSIVE_MUTEXES
+    #if configUSE_RECURSIVE_MUTEXES
         case OsalMutexType::eRecursive: handle = xSemaphoreCreateRecursiveMutexStatic(&mutex->impl.buffer); break;
-#    endif
+    #endif
         case OsalMutexType::eNonRecursive: handle = xSemaphoreCreateMutexStatic(&mutex->impl.buffer); break;
         default: return OsalError::eInvalidArgument;
     }
 #elif configSUPPORT_DYNAMIC_ALLOCATION
     switch (type) {
-#    if configUSE_RECURSIVE_MUTEXES
+    #if configUSE_RECURSIVE_MUTEXES
         case OsalMutexType::eRecursive: handle = xSemaphoreCreateRecursiveMutex(&mutex->impl.buffer); break;
-#    endif
+    #endif
         case OsalMutexType::eNonRecursive: handle = xSemaphoreCreateMutex(); break;
         default: return OsalError::eInvalidArgument;
     }
