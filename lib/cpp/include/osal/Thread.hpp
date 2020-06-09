@@ -45,13 +45,11 @@
 namespace osal {
 
 /// Represents OSAL thread handle.
-/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cPriority           Priority to be used in thread construction.
 /// @tparam cStackSize          Stack size to be used in thread construction.
 /// @note This type can be used to start thread with any function (with any signature), in contrary to the C version
 ///       of this API.
-template <typename ThreadFunction = OsalThreadFunction,
-          OsalThreadPriority cPriority = cOsalThreadDefaultPriority,
+template <OsalThreadPriority cPriority = cOsalThreadDefaultPriority,
           std::size_t cStackSize = cOsalThreadDefaultStackSize>
 class Thread {
 public:
@@ -60,39 +58,16 @@ public:
     Thread() = default;
 
     /// Constructor.
+    /// @tparam ThreadFunction  Type of user function to be invoked by the new thread.
     /// @tparam Args            Types of user arguments to be passed to the used function.
     /// @param function         User function to be invoked by the new thread.
     /// @param args             User arguments to be passed to the used function.
     /// @note This constructor immediately starts the thread.
-    template <typename... Args>
+    template <typename ThreadFunction, typename... Args>
     explicit Thread(ThreadFunction function, Args&&... args)
-        : Thread(nullptr, function, std::forward<Args>(args)...)
-    {}
-
-    /// Constructor.
-    /// @tparam Args            Types of user arguments to be passed to the used function.
-    /// @param stack            Pointer to the stack to be used by this thread.
-    /// @param function         User function to be invoked by the new thread.
-    /// @param args             User arguments to be passed to the used function.
-    /// @note This constructor immediately starts the thread.
-    template <typename... Args>
-    Thread(void* stack, ThreadFunction function, Args&&... args)
     {
-        start(stack, function, std::forward<Args>(args)...);
+        start(std::forward<ThreadFunction>(function), std::forward<Args>(args)...);
     }
-
-    /// Constructor.
-    /// @param function         User function to be invoked by the new thread.
-    /// @note This constructor immediately starts the thread.
-    explicit Thread(ThreadFunction function)
-        : Thread(nullptr, function)
-    {}
-
-    /// Constructor.
-    /// @param stack            Pointer to the stack to be used by this thread.
-    /// @param function         User function to be invoked by the new thread.
-    /// @note This constructor immediately starts the thread.
-    Thread(void* stack, ThreadFunction function) { start(stack, function); }
 
     /// Copy constructor.
     /// @note This constructor is deleted, because Thread is not meant to be copy-constructed.
@@ -103,6 +78,7 @@ public:
     Thread(Thread&& other) noexcept
     {
         std::swap(m_thread, other.m_thread);
+        std::swap(m_stack, other.m_stack);
         std::swap(m_userFunction, other.m_userFunction);
         std::swap(m_workerFunction, other.m_workerFunction);
         std::swap(m_started, other.m_started);
@@ -125,25 +101,27 @@ public:
     /// @note This operator is deleted, because Thread is not meant to be move-assigned.
     Thread& operator=(Thread&& other) = delete;
 
-    /// Starts the thread.
-    /// @tparam Args            Types of user arguments to be passed to the used function.
-    /// @param function         User function to be invoked by the new thread.
-    /// @param args             User arguments to be passed to the used function.
+    /// Sets custom stack to be used by the created Thread.
+    /// @param stack            Custom stack to be used by the Thread.
     /// @return Error code of the operation.
-    template <typename... Args>
-    std::error_code start(ThreadFunction function, Args&&... args)
+    std::error_code setStack(void* stack)
     {
-        return start(nullptr, function, std::forward<Args>(args)...);
+        if (stack == nullptr)
+            return OsalError::eInvalidArgument;
+
+        m_stack = stack;
+        return OsalError::eOk;
     }
 
     /// Starts the thread.
+    /// @tparam ThreadFunction  Type of user function to be invoked by the new thread.
     /// @tparam Args            Types of user arguments to be passed to the used function.
     /// @param stack            Pointer to the stack to be used by this thread.
     /// @param function         User function to be invoked by the new thread.
     /// @param args             User arguments to be passed to the used function.
     /// @return Error code of the operation.
-    template <typename... Args>
-    std::error_code start(void* stack, ThreadFunction function, Args&&... args)
+    template <typename ThreadFunction, typename... Args>
+    std::error_code start(ThreadFunction function, Args&&... args)
     {
         if (m_started)
             return OsalError::eThreadAlreadyStarted;
@@ -154,41 +132,12 @@ public:
         assert(m_userFunction);
 
         m_workerFunction = [](void* arg) {
-            auto threadFunction = *static_cast<FunctionWrapper*>(arg);
-            threadFunction();
+            auto userFunction = *static_cast<FunctionWrapper*>(arg);
+            userFunction();
         };
 
         auto error
-            = osalThreadCreate(&m_thread, {cPriority, cStackSize, stack}, m_workerFunction, m_userFunction.get());
-
-        m_started = (error == OsalError::eOk);
-        return error;
-    }
-
-    /// Starts the thread.
-    /// @param function         User function to be invoked by the new thread.
-    /// @return Error code of the operation.
-    std::error_code start(ThreadFunction function) { return start(nullptr, function); }
-
-    /// Starts the thread.
-    /// @param stack            Pointer to the stack to be used by this thread.
-    /// @param function         User function to be invoked by the new thread.
-    /// @return Error code of the operation.
-    std::error_code start(void* stack, ThreadFunction function)
-    {
-        if (m_started)
-            return OsalError::eThreadAlreadyStarted;
-
-        m_userFunction = std::make_unique<FunctionWrapper>(function);
-        assert(m_userFunction);
-
-        m_workerFunction = [](void* arg) {
-            auto threadFunction = *static_cast<FunctionWrapper*>(arg);
-            threadFunction();
-        };
-
-        auto error
-            = osalThreadCreate(&m_thread, {cPriority, cStackSize, stack}, m_workerFunction, m_userFunction.get());
+            = osalThreadCreate(&m_thread, {cPriority, cStackSize, m_stack}, m_workerFunction, m_userFunction.get());
 
         m_started = (error == OsalError::eOk);
         return error;
@@ -204,40 +153,36 @@ private:
     using FunctionWrapper = std::function<void(void)>;
 
     OsalThread m_thread{};
+    void* m_stack{};
     std::unique_ptr<FunctionWrapper> m_userFunction;
     OsalThreadFunction m_workerFunction{};
     bool m_started{};
 };
 
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eLowest priority.
-/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
-template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
-using LowestPrioThread = Thread<ThreadFunction, OsalThreadPriority::eLowest, cStackSize>;
+template <std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using LowestPrioThread = Thread<OsalThreadPriority::eLowest, cStackSize>;
 
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eLow priority.
-/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
-template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
-using LowPrioThread = Thread<ThreadFunction, OsalThreadPriority::eLow, cStackSize>;
+template <std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using LowPrioThread = Thread<OsalThreadPriority::eLow, cStackSize>;
 
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eNormal priority.
-/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
-template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
-using NormalPrioThread = Thread<ThreadFunction, OsalThreadPriority::eNormal, cStackSize>;
+template <std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using NormalPrioThread = Thread<OsalThreadPriority::eNormal, cStackSize>;
 
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eHigh priority.
-/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
-template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
-using HighPrioThread = Thread<ThreadFunction, OsalThreadPriority::eHigh, cStackSize>;
+template <std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using HighPrioThread = Thread<OsalThreadPriority::eHigh, cStackSize>;
 
 /// Helper type alias representing OSAL thread with OsalThreadPriority::eHighest priority.
-/// @tparam ThreadFunction      Type of user function to be invoked by the new thread.
 /// @tparam cStackSize          Stack size to be used in thread construction.
-template <typename ThreadFunction = OsalThreadFunction, std::size_t cStackSize = cOsalThreadDefaultStackSize>
-using HighestPrioThread = Thread<ThreadFunction, OsalThreadPriority::eHighest, cStackSize>;
+template <std::size_t cStackSize = cOsalThreadDefaultStackSize>
+using HighestPrioThread = Thread<OsalThreadPriority::eHighest, cStackSize>;
 
 namespace thread {
 

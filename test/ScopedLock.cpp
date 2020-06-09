@@ -101,7 +101,7 @@ TEST_CASE("Non-recursive success waitLock() thread with ScopedLock in C++", "[un
         threadError = lock ? OsalError::eOk : OsalError::eTimeout;
     };
 
-    osal::Thread<decltype(func)> thread;
+    osal::Thread thread;
 
     {
         osal::ScopedLock lock(mutex);
