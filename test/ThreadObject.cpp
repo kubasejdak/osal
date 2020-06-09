@@ -69,7 +69,7 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
 
     SECTION("Create thread via start() method")
     {
-        osal::Thread<decltype(func)> thread;
+        osal::Thread thread;
         auto error = thread.start(func, cParam);
         REQUIRE(error == OsalError::eOk);
 
@@ -98,7 +98,7 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
 
     SECTION("Start thread multiple times: 2 times via start() method")
     {
-        osal::Thread<decltype(func)> thread;
+        osal::Thread thread;
         auto error = thread.start(func, cParam);
         REQUIRE(error == OsalError::eOk);
 
@@ -110,6 +110,41 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
     }
 
     REQUIRE(launched);
+}
+
+TEST_CASE("Thread creation with custom stack", "[unit][cpp][thread]")
+{
+    bool launched = false;
+    auto func = [&]() {
+        constexpr int cDelayMs = 1000;
+        osalSleepMs(cDelayMs);
+
+        launched = true;
+    };
+
+    SECTION("Create thread with custom stack")
+    {
+        std::array<char, cOsalThreadDefaultStackSize> stack{};
+        osal::Thread thread;
+
+        auto error = thread.setStack(stack.data());
+        REQUIRE(error == OsalError::eOk);
+
+        error = thread.start(func);
+        REQUIRE(error == OsalError::eOk);
+
+        error = thread.join();
+        REQUIRE(error == OsalError::eOk);
+
+        REQUIRE(launched);
+    }
+
+    SECTION("Create thread with nullptr stack")
+    {
+        osal::Thread thread;
+        auto error = thread.setStack(nullptr);
+        REQUIRE(error == OsalError::eInvalidArgument);
+    }
 }
 
 TEST_CASE("Thread creation with variadic arguments", "[unit][cpp][thread]")
@@ -166,15 +201,15 @@ TEST_CASE("Thread creation in C++ with different priorities", "[unit][cpp][threa
         launched = true;
     };
 
-    SECTION("eLowest priority") { osal::Thread<decltype(func), OsalThreadPriority::eLowest> thread(func); }
+    SECTION("eLowest priority") { osal::Thread<OsalThreadPriority::eLowest> thread(func); }
 
-    SECTION("eLow priority") { osal::Thread<decltype(func), OsalThreadPriority::eLow> thread(func); }
+    SECTION("eLow priority") { osal::Thread<OsalThreadPriority::eLow> thread(func); }
 
-    SECTION("eNormal priority") { osal::Thread<decltype(func), OsalThreadPriority::eNormal> thread(func); }
+    SECTION("eNormal priority") { osal::Thread<OsalThreadPriority::eNormal> thread(func); }
 
-    SECTION("eHigh priority") { osal::Thread<decltype(func), OsalThreadPriority::eHigh> thread(func); }
+    SECTION("eHigh priority") { osal::Thread<OsalThreadPriority::eHigh> thread(func); }
 
-    SECTION("eHighest priority") { osal::Thread<decltype(func), OsalThreadPriority::eHighest> thread(func); }
+    SECTION("eHighest priority") { osal::Thread<OsalThreadPriority::eHighest> thread(func); }
 
     REQUIRE(launched);
 }
@@ -188,15 +223,15 @@ TEST_CASE("Thread creation in C++ with different priorities using helper types",
         launched = true;
     };
 
-    SECTION("eLowest priority") { osal::LowestPrioThread<decltype(func)> thread(func); }
+    SECTION("eLowest priority") { osal::LowestPrioThread<> thread(func); }
 
-    SECTION("eLow priority") { osal::LowPrioThread<decltype(func)> thread(func); }
+    SECTION("eLow priority") { osal::LowPrioThread<> thread(func); }
 
-    SECTION("eNormal priority") { osal::NormalPrioThread<decltype(func)> thread(func); }
+    SECTION("eNormal priority") { osal::NormalPrioThread<> thread(func); }
 
-    SECTION("eHigh priority") { osal::HighPrioThread<decltype(func)> thread(func); }
+    SECTION("eHigh priority") { osal::HighPrioThread<> thread(func); }
 
-    SECTION("eHighest priority") { osal::HighestPrioThread<decltype(func)> thread(func); }
+    SECTION("eHighest priority") { osal::HighestPrioThread<> thread(func); }
 
     REQUIRE(launched);
 }
@@ -255,7 +290,7 @@ TEST_CASE("Launch 5 threads in C++ and check their results", "[unit][cpp][thread
     };
 
     constexpr std::size_t cThreadsCount = 5;
-    std::array<osal::Thread<decltype(func)>, cThreadsCount> threads{};
+    std::array<osal::Thread<>, cThreadsCount> threads{};
     std::array<int, cThreadsCount> counters{};
 
     for (std::size_t i = 0; i < threads.size(); ++i) {
@@ -289,26 +324,11 @@ TEST_CASE("Launch 5 threads in C++ with different priorities and check their res
         }
     };
 
-    osal::Thread<decltype(func), OsalThreadPriority::eLowest> thread1(func,
-                                                                      std::ref(counters[0]),
-                                                                      std::ref(start),
-                                                                      std::ref(stop));
-    osal::Thread<decltype(func), OsalThreadPriority::eLowest> thread2(func,
-                                                                      std::ref(counters[1]),
-                                                                      std::ref(start),
-                                                                      std::ref(stop));
-    osal::Thread<decltype(func), OsalThreadPriority::eLow> thread3(func,
-                                                                   std::ref(counters[2]),
-                                                                   std::ref(start),
-                                                                   std::ref(stop));
-    osal::Thread<decltype(func), OsalThreadPriority::eLow> thread4(func,
-                                                                   std::ref(counters[3]),
-                                                                   std::ref(start),
-                                                                   std::ref(stop));
-    osal::Thread<decltype(func), OsalThreadPriority::eNormal> thread5(func,
-                                                                      std::ref(counters[4]),
-                                                                      std::ref(start),
-                                                                      std::ref(stop));
+    osal::LowestPrioThread<> thread1(func, std::ref(counters[0]), std::ref(start), std::ref(stop));
+    osal::LowestPrioThread<> thread2(func, std::ref(counters[1]), std::ref(start), std::ref(stop));
+    osal::LowPrioThread<> thread3(func, std::ref(counters[2]), std::ref(start), std::ref(stop));
+    osal::LowPrioThread<> thread4(func, std::ref(counters[3]), std::ref(start), std::ref(stop));
+    osal::NormalPrioThread<> thread5(func, std::ref(counters[4]), std::ref(start), std::ref(stop));
 
     start = true; // NOLINT
     osal::sleep(5s);
@@ -350,11 +370,11 @@ TEST_CASE("Check if thread ids are unique and constant in C++", "[unit][cpp][thr
         }
     };
 
-    osal::Thread<decltype(func), OsalThreadPriority::eLowest> thread1(func, std::ref(ids[0]), std::ref(start));
-    osal::Thread<decltype(func), OsalThreadPriority::eLowest> thread2(func, std::ref(ids[1]), std::ref(start));
-    osal::Thread<decltype(func), OsalThreadPriority::eLow> thread3(func, std::ref(ids[2]), std::ref(start));
-    osal::Thread<decltype(func), OsalThreadPriority::eLow> thread4(func, std::ref(ids[3]), std::ref(start));
-    osal::Thread<decltype(func), OsalThreadPriority::eNormal> thread5(func, std::ref(ids[4]), std::ref(start));
+    osal::LowestPrioThread<> thread1(func, std::ref(ids[0]), std::ref(start));
+    osal::LowestPrioThread<> thread2(func, std::ref(ids[1]), std::ref(start));
+    osal::LowPrioThread<> thread3(func, std::ref(ids[2]), std::ref(start));
+    osal::LowPrioThread<> thread4(func, std::ref(ids[3]), std::ref(start));
+    osal::NormalPrioThread<> thread5(func, std::ref(ids[4]), std::ref(start));
 
     start = true; // NOLINT
 

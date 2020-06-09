@@ -36,8 +36,6 @@
 #include "osal/Semaphore.h"
 #include "osal/Timeout.hpp"
 
-#include <chrono>
-#include <string>
 #include <system_error>
 
 namespace osal {
@@ -71,7 +69,7 @@ public:
     Semaphore& operator=(Semaphore&&) = delete;
 
     /// Decrements value of the given semaphore. If its value is currently 0, then the calling thread will block until
-    /// se is positive again.
+    /// semaphore is positive again.
     /// @return Error code of the operation.
     std::error_code wait();
 
