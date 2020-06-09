@@ -45,16 +45,14 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
     constexpr unsigned int cParam = 0xdeadbeef;
     bool launched = false;
     auto func = [&](unsigned int arg) {
-        constexpr int cDelayMs = 1000;
-        osalSleepMs(cDelayMs);
+        osal::sleep(1s);
 
         REQUIRE(arg == cParam);
         launched = true;
     };
 
     auto func2 = [&]() {
-        constexpr int cDelayMs = 1000;
-        osalSleepMs(cDelayMs);
+        osal::sleep(1s);
 
         launched = true;
     };
@@ -116,8 +114,7 @@ TEST_CASE("Thread creation with custom stack", "[unit][cpp][thread]")
 {
     bool launched = false;
     auto func = [&]() {
-        constexpr int cDelayMs = 1000;
-        osalSleepMs(cDelayMs);
+        osal::sleep(1s);
 
         launched = true;
     };
@@ -241,8 +238,7 @@ TEST_CASE("Move thread around", "[unit][cpp][thread]")
     constexpr unsigned int cParam = 0xdeadbeef;
     bool launched = false;
     auto func = [&](unsigned int arg) {
-        constexpr int cDelayMs = 5000;
-        osalSleepMs(cDelayMs);
+        osal::sleep(5s);
 
         REQUIRE(arg == cParam);
         launched = true;

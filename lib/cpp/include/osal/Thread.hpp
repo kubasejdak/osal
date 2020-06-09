@@ -116,7 +116,6 @@ public:
     /// Starts the thread.
     /// @tparam ThreadFunction  Type of user function to be invoked by the new thread.
     /// @tparam Args            Types of user arguments to be passed to the used function.
-    /// @param stack            Pointer to the stack to be used by this thread.
     /// @param function         User function to be invoked by the new thread.
     /// @param args             User arguments to be passed to the used function.
     /// @return Error code of the operation.
