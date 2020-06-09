@@ -62,17 +62,17 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
         osal::Thread thread(func, cParam);
 
         auto error = thread.join();
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
     }
 
     SECTION("Create thread via start() method")
     {
         osal::Thread thread;
         auto error = thread.start(func, cParam);
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
 
         error = thread.join();
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
     }
 
     SECTION("Start thread multiple times: via constructor and via start() method")
@@ -83,7 +83,7 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
         REQUIRE(error == OsalError::eThreadAlreadyStarted);
 
         error = thread.join();
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
 
         osal::Thread thread2(func2);
 
@@ -91,20 +91,20 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
         REQUIRE(error == OsalError::eThreadAlreadyStarted);
 
         error = thread2.join();
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
     }
 
     SECTION("Start thread multiple times: 2 times via start() method")
     {
         osal::Thread thread;
         auto error = thread.start(func, cParam);
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
 
         error = thread.start(func, cParam);
         REQUIRE(error == OsalError::eThreadAlreadyStarted);
 
         error = thread.join();
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
     }
 
     REQUIRE(launched);
@@ -125,13 +125,13 @@ TEST_CASE("Thread creation with custom stack", "[unit][cpp][thread]")
         osal::Thread thread;
 
         auto error = thread.setStack(stack.data());
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
 
         error = thread.start(func);
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
 
         error = thread.join();
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
 
         REQUIRE(launched);
     }
@@ -251,7 +251,7 @@ TEST_CASE("Move thread around", "[unit][cpp][thread]")
     REQUIRE(error == OsalError::eInvalidArgument);
 
     error = thread2.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
 
     REQUIRE(launched);
 }
@@ -263,7 +263,7 @@ TEST_CASE("Multiple thread joins in C++", "[unit][cpp][thread]")
     osal::Thread thread(func);
 
     auto error = thread.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
 
     error = thread.join();
     REQUIRE(error == OsalError::eOsError);
@@ -291,12 +291,12 @@ TEST_CASE("Launch 5 threads in C++ and check their results", "[unit][cpp][thread
 
     for (std::size_t i = 0; i < threads.size(); ++i) {
         auto error = threads[i].start(func, std::ref(counters[i]));
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
     }
 
     for (std::size_t i = 0; i < threads.size(); ++i) {
         auto error = threads[i].join();
-        REQUIRE(error == OsalError::eOk);
+        REQUIRE(!error);
 
         auto counter = counters[i];
         REQUIRE(counter == cIterationsCount);
@@ -331,15 +331,15 @@ TEST_CASE("Launch 5 threads in C++ with different priorities and check their res
     stop = true; // NOLINT
 
     auto error = thread1.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread2.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread3.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread4.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread5.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
 
     for (auto counter : counters)
         REQUIRE(counter != 0);
@@ -375,15 +375,15 @@ TEST_CASE("Check if thread ids are unique and constant in C++", "[unit][cpp][thr
     start = true; // NOLINT
 
     auto error = thread1.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread2.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread3.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread4.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
     error = thread5.join();
-    REQUIRE(error == OsalError::eOk);
+    REQUIRE(!error);
 
     std::set<std::uint32_t> uniqueIds;
     for (auto id : ids)
