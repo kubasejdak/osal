@@ -8,6 +8,7 @@ include(cmake/conan.cmake)
 include(cmake/coverage.cmake)
 include(cmake/doxygen.cmake)
 include(cmake/platform.cmake)
+include(cmake/utils.cmake)
 
 project(osal VERSION 1.0.0 LANGUAGES ASM C CXX)
 
@@ -26,6 +27,7 @@ if (COVERAGE)
 endif ()
 
 add_subdirectory(${platform_SOURCE_DIR}/app ${platform_BINARY_DIR})
+add_subdirectory(${utils_SOURCE_DIR}/lib ${utils_BINARY_DIR})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
