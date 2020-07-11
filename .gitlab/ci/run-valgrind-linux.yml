@@ -1,21 +1,17 @@
-.Run_Valgrind:
-  stage: valgrind
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - cd ${AppArtifact}/bin
-    - valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=123 ./osal-tests ${TestTags} || if [ $? -eq 123 ]; then exit 1; fi
-
 .Run_Valgrind_Linux:
-  extends: .Run_Valgrind
+  stage: valgrind
+  image: kubasejdak/gcc:latest
   tags:
     - linux
     - shared
-  image: kubasejdak/gcc:latest
   dependencies:
     - Linux_GCC_Debug_Build
   variables:
+    GIT_STRATEGY: none
     AppArtifact: "Linux_GCC_Debug_Build"
+  script:
+    - cd ${AppArtifact}/bin
+    - valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=123 ./osal-tests ${TestTags} || if [ $? -eq 123 ]; then exit 1; fi
 
 Error_Valgrind_Linux:
   extends: .Run_Valgrind_Linux

@@ -8,10 +8,10 @@
 
 .Run_Test_Linux:
   extends: .Run_Test
+  image: kubasejdak/gcc:latest
   tags:
     - linux
     - shared
-  image: kubasejdak/gcc:latest
   dependencies:
     - Linux_GCC_Debug_Build
   variables:
@@ -19,6 +19,7 @@
 
 .Run_Test_Linux_ARM:
   extends: .Run_Test
+  image: kubasejdak/arm-tests:latest
   tags:
     - raspberrypi
   dependencies:
