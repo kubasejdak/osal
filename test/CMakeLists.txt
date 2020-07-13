@@ -19,11 +19,7 @@ target_include_directories(apposal-tests
     PRIVATE .
 )
 
-target_compile_features(apposal-tests
-    PRIVATE cxx_std_17
-)
-
-conan_get(REQUIRES catch2/2.12.1)
+conan_get(REQUIRES catch2/2.12.4)
 find_package(Catch2 REQUIRED)
 
 if (PLATFORM STREQUAL freertos-arm)
