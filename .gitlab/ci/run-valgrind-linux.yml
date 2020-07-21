@@ -13,32 +13,32 @@
     - cd ${AppArtifact}/bin
     - valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=123 ./osal-tests ${TestTags} || if [ $? -eq 123 ]; then exit 1; fi
 
-Error_Valgrind_Linux:
+Error_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
   variables:
     TestTags: "[error]"
 
-Mutex_Valgrind_Linux:
+Mutex_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
   variables:
     TestTags: "[mutex]"
 
-Semaphore_Valgrind_Linux:
+Semaphore_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
   variables:
     TestTags: "[semaphore]"
 
-Timeout_Valgrind_Linux:
+Timeout_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
   variables:
     TestTags: "[timeout]"
 
-Timestamp_Valgrind_Linux:
+Timestamp_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
   variables:
     TestTags: "[timestamp]"
 
-Thread_Valgrind_Linux:
+Thread_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
   variables:
     TestTags: "[thread]"
