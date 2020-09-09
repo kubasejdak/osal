@@ -42,13 +42,6 @@
 using namespace std::chrono_literals;
 
 namespace osal {
-
-/// Helper constant representing zero timeout.
-constexpr auto cTimeoutNone = Duration::zero();
-
-/// Helper constant representing infinity timeout.
-constexpr auto cTimeoutInfinity = Duration::max();
-
 namespace detail {
 
 /// Helper type to perform SFINAE to prevent using std::chrono unit in Timeout, which is smaller than Duration,
@@ -77,6 +70,7 @@ public:
     Timeout(const std::chrono::duration<Representation, Period>& duration, bool forceExpire = false) // NOLINT
         : m_duration(duration)
         , m_expireTimestamp(timestamp() + (forceExpire ? Duration::zero() : duration))
+        , m_infinity(duration == Duration::max())
     {
         assert(duration >= Duration::zero());
     }
@@ -93,12 +87,21 @@ public:
     /// @return Boolean flag indicating if the deadline has been reached.
     /// @retval true                 Deadline has been reached.
     /// @retval false                Deadline has not been reached.
-    [[nodiscard]] bool isExpired() const { return (timestamp() > m_expireTimestamp); }
+    [[nodiscard]] bool isExpired() const { return !isInfinity() && (timeLeft() == Duration::zero()); }
+
+    /// Checks, if given timeout represents infinity.
+    /// @return Boolean flag indicating if given timeout represents infinity.
+    /// @retval true                 Timeout represents infinity.
+    /// @retval false                Timeout does not represent infinity.
+    [[nodiscard]] bool isInfinity() const { return m_infinity; }
 
     /// Returns the std::chrono duration value representing time left to the deadline timestamp.
     /// @return std::chrono duration value representing time left to the deadline timestamp.
     [[nodiscard]] Duration timeLeft() const
     {
+        if (isInfinity())
+            return Duration::max();
+
         auto now = timestamp();
         if (now > m_expireTimestamp)
             return Duration::zero();
@@ -113,9 +116,18 @@ public:
         std::swap(*this, other);
     }
 
+    /// Returns helper constant representing zero timeout.
+    /// @return Helper constant representing zero timeout.
+    static Timeout none() { return {Duration::zero()}; }
+
+    /// Returns helper constant representing infinity timeout.
+    /// @return Helper constant representing infinity timeout.
+    static Timeout infinity() { return {Duration::max()}; }
+
 private:
     Duration m_duration;
     std::chrono::time_point<Clock, Duration> m_expireTimestamp;
+    bool m_infinity;
 };
 
 } // namespace osal
