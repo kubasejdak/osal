@@ -273,3 +273,18 @@ TEST_CASE("TimedLock called from second thread, success in C++", "[unit][cpp][mu
     error = mutex.unlock();
     REQUIRE(!error);
 }
+
+TEST_CASE("Timeout used with mutexes", "[unit][cpp][mutex]")
+{
+    osal::Mutex mutex;
+    auto error = mutex.lock();
+    REQUIRE(!error);
+
+    osal::Timeout timeout = 100ms;
+    error = mutex.timedLock(timeout);
+    REQUIRE(error == OsalError::eTimeout);
+    REQUIRE(timeout.isExpired());
+
+    error = mutex.unlock();
+    REQUIRE(!error);
+}

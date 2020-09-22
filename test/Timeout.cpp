@@ -202,16 +202,6 @@ TEST_CASE("Timeout used as a function argument", "[unit][cpp][timeout]")
     REQUIRE((end - start) >= cTimeout);
 }
 
-// TEST_CASE("Timeout used with semaphores", "[unit][cpp][timeout]")
-// {
-//     osal::Semaphore semaphore(0, "semaphore");
-//     osal::Timeout timeout = 100ms;
-
-//     auto result = semaphore.timedWait(timeout);
-//     REQUIRE(result == osal::eTimeout);
-//     REQUIRE(timeout.isExpired());
-// }
-
 TEST_CASE("Resetting timeout", "[unit][cpp][timeout]")
 {
     osal::Timeout t1 = 400ms;
@@ -231,5 +221,26 @@ TEST_CASE("Resetting timeout", "[unit][cpp][timeout]")
 
         t2.reset();
         REQUIRE(!t2.isExpired());
+    }
+}
+
+TEST_CASE("Sleeping until timeout is expired", "[unit][cpp][timeout]")
+{
+    SECTION("Sleeping for timeout expiration is required")
+    {
+        osal::Timeout timeout = 400ms;
+        REQUIRE(!timeout.isExpired());
+
+        osal::sleepUntilExpired(timeout);
+        REQUIRE(timeout.isExpired());
+    }
+
+    SECTION("Sleeping for timeout expiration is not required")
+    {
+        osal::Timeout timeout = 0ms;
+        REQUIRE(timeout.isExpired());
+
+        osal::sleepUntilExpired(timeout);
+        REQUIRE(timeout.isExpired());
     }
 }

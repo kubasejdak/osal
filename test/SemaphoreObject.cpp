@@ -391,3 +391,13 @@ TEST_CASE("TimedWait called from second thread in C++, success", "[unit][cpp][se
     error = semaphore.signal();
     REQUIRE(!error);
 }
+
+TEST_CASE("Timeout used with semaphores", "[unit][cpp][semaphore]")
+{
+    osal::Semaphore semaphore(0);
+
+    osal::Timeout timeout = 100ms;
+    auto error = semaphore.timedWait(timeout);
+    REQUIRE(error == OsalError::eTimeout);
+    REQUIRE(timeout.isExpired());
+}
