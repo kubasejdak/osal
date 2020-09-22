@@ -32,6 +32,7 @@
 
 #pragma once
 
+#include "osal/sleep.hpp"
 #include "osal/timestamp.hpp"
 
 #include <cassert>
@@ -51,7 +52,7 @@ using NotLessThanDuration = std::enable_if_t<std::is_same_v<std::common_type_t<T
 
 } // namespace detail
 
-/// Represents a universal timeout object, that can tell if the given timeout has already expired.
+/// Represents an universal timeout object, that can tell if the given timeout has already expired.
 /// Upon construction Timeout object calculates timestamp value, which determines deadline for the given operation.
 /// Calling "isExpired()" simply compares current timestamp value with the calculated one.
 /// @note This class is supposed to replace all occurrences of the raw std::uint32_t timeout values in OSAL and HAL
@@ -129,5 +130,13 @@ private:
     std::chrono::time_point<Clock, Duration> m_expireTimestamp;
     bool m_infinity;
 };
+
+/// Blocks current thread until given timeout is expired.
+/// @param timeout                  Timeout to be checked.
+static inline void sleepUntilExpired(const Timeout& timeout)
+{
+    if (!timeout.isExpired())
+        sleep(timeout.timeLeft());
+}
 
 } // namespace osal
