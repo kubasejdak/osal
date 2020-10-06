@@ -244,3 +244,18 @@ TEST_CASE("Sleeping until timeout is expired", "[unit][cpp][timeout]")
         REQUIRE(timeout.isExpired());
     }
 }
+
+TEST_CASE("Converting duration to raw milliseconds", "[unit][cpp][timeout]")
+{
+    osal::Timeout t1(2s);
+    osal::Timeout t2(16min);
+    osal::Timeout t3(546ms);
+    osal::Timeout t4(13ms);
+    osal::Timeout t5(0ms);
+
+    REQUIRE(osal::durationMs(t1) == (2 * 1000));
+    REQUIRE(osal::durationMs(t2) == (16 * 60 * 1000));
+    REQUIRE(osal::durationMs(t3) == 546);
+    REQUIRE(osal::durationMs(t4) == 13);
+    REQUIRE(osal::durationMs(t5) == 0);
+}
