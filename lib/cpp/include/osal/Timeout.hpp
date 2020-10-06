@@ -139,4 +139,12 @@ static inline void sleepUntilExpired(const Timeout& timeout)
         sleep(timeout.timeLeft());
 }
 
+/// Coverts duration of the given timeout to raw milliseconds.
+/// @param timeout                  Timeout to be used.
+/// @return Duration of the given timeout expressed in raw milliseconds.
+static inline std::uint32_t durationMs(const osal::Timeout& timeout)
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(timeout.duration()).count();
+}
+
 } // namespace osal
