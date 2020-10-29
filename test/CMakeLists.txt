@@ -19,7 +19,7 @@ target_include_directories(apposal-tests
     PRIVATE .
 )
 
-conan_get(REQUIRES catch2/2.13.0)
+conan_get(REQUIRES catch2/2.13.2)
 find_package(Catch2 REQUIRED)
 
 if (PLATFORM STREQUAL freertos-arm)
