@@ -114,7 +114,7 @@ public:
     void reset()
     {
         Timeout other(duration());
-        std::swap(*this, other);
+        m_expireTimestamp = other.m_expireTimestamp;
     }
 
     /// Returns helper constant representing zero timeout.

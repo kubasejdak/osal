@@ -37,4 +37,4 @@
 /// Internal value of system time latched during OSAL initialization.
 /// @note This value must be properly set by OSAL initialization in order to have correct values
 /// returned from timestamp module.
-extern std::chrono::steady_clock::time_point initTime;
+extern std::chrono::steady_clock::time_point initTime; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
