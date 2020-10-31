@@ -3,7 +3,6 @@
   image: kubasejdak/gcc:latest
   tags:
     - linux
-    - shared
   dependencies:
     - Linux_GCC_Debug_Build
   variables:
