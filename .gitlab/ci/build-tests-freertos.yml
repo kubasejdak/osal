@@ -25,5 +25,7 @@ FreeRTOS_ARM_GCC_Debug_Build:
 
 FreeRTOS_ARM_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
+  only:
+    - master
   variables:
     BuildType: "Release"

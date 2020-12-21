@@ -23,7 +23,7 @@ conan_init()
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
 
 if (SANITIZE)
-    # Enable compilers sanitizers.
+    # Enable compiler sanitizers.
     enable_sanitizers()
 endif ()
 
