@@ -22,9 +22,11 @@ target_include_directories(apposal-tests
 conan_get(REQUIRES catch2/2.13.3)
 find_package(Catch2 REQUIRED)
 
+target_compile_definitions(Catch2::Catch2 INTERFACE CATCH_CONFIG_DISABLE_EXCEPTIONS)
+
 if (PLATFORM STREQUAL freertos-arm)
     # This is required, because FreeRTOS doesn't support signals or exceptions.
-    target_compile_definitions(Catch2::Catch2 INTERFACE CATCH_CONFIG_NO_POSIX_SIGNALS CATCH_CONFIG_DISABLE_EXCEPTIONS)
+    target_compile_definitions(Catch2::Catch2 INTERFACE CATCH_CONFIG_NO_POSIX_SIGNALS)
 endif ()
 
 target_link_libraries(apposal-tests
