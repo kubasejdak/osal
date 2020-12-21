@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.19)
 
 # Define application name and settings.
 set(APP osal-tests)
@@ -8,6 +8,7 @@ include(cmake/conan.cmake)
 include(cmake/coverage.cmake)
 include(cmake/doxygen.cmake)
 include(cmake/platform.cmake)
+include(cmake/sanitizers.cmake)
 include(cmake/utils.cmake)
 
 project(osal VERSION 1.0.0 LANGUAGES ASM C CXX)
@@ -20,6 +21,11 @@ conan_init()
 
 # Project-wide compilation options.
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
+
+if (SANITIZE)
+    # Enable compilers sanitizers.
+    enable_sanitizers()
+endif ()
 
 if (COVERAGE)
     # Generate coverage report.
