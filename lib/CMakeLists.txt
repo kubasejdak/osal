@@ -5,7 +5,7 @@ if (NOT DEFINED OSAL_PLATFORM)
 endif ()
 
 # Project-wide compilation options.
-add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17> $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
 
 add_subdirectory(${OSAL_PLATFORM})
 add_subdirectory(common)
