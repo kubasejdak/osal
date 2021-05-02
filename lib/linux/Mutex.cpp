@@ -155,10 +155,10 @@ OsalError osalMutexTimedLock(OsalMutex* mutex, uint32_t timeoutMs)
     auto result = clock_gettime(CLOCK_REALTIME, &ts);
     assert(result == 0);
 
-    ts.tv_nsec += osalMsToNs(timeoutMs);
-    auto secs = osalNsToSec(ts.tv_nsec);
+    ts.tv_nsec += int(osalMsToNs(timeoutMs));
+    auto secs = int(osalNsToSec(ts.tv_nsec));
     ts.tv_sec += secs;
-    ts.tv_nsec -= osalSecToNs(secs);
+    ts.tv_nsec -= int(osalSecToNs(secs));
 
     result = pthread_mutex_timedlock(&mutex->impl.handle, &ts);
     if (result == ETIMEDOUT) {
