@@ -36,7 +36,7 @@
 
 namespace osal {
 
-std::chrono::time_point<Clock, Duration> timestamp()
+Timestamp timestamp()
 {
     Duration timeSinceStart;
 
@@ -50,7 +50,7 @@ std::chrono::time_point<Clock, Duration> timestamp()
         timeSinceStart = Duration(osalTimestampMs());
     }
 
-    return std::chrono::time_point<Clock, Duration>(timeSinceStart);
+    return Timestamp(timeSinceStart);
 }
 
 } // namespace osal
