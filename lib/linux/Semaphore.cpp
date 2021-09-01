@@ -38,6 +38,7 @@
 
 #include <cassert>
 #include <cerrno>
+#include <chrono>
 #include <cstring>
 #include <ctime>
 
@@ -100,16 +101,16 @@ OsalError osalSemaphoreTimedWait(OsalSemaphore* semaphore, uint32_t timeoutMs)
     if (semaphore == nullptr || !semaphore->initialized)
         return OsalError::eInvalidArgument;
 
-    timespec ts{};
-    auto result = clock_gettime(CLOCK_REALTIME, &ts);
-    assert(result == 0);
+    auto toTimespec = [](const auto& timePoint) {
+        auto secs = std::chrono::time_point_cast<std::chrono::seconds>(timePoint);
+        auto ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(timePoint)
+                  - std::chrono::time_point_cast<std::chrono::nanoseconds>(secs);
 
-    ts.tv_nsec += int(osalMsToNs(timeoutMs));
-    auto secs = int(osalNsToSec(ts.tv_nsec));
-    ts.tv_sec += secs;
-    ts.tv_nsec -= int(osalSecToNs(secs));
+        return timespec{int(secs.time_since_epoch().count()), int(ns.count())};
+    };
 
-    result = sem_timedwait(&semaphore->impl.handle, &ts);
+    auto ts = toTimespec(std::chrono::system_clock::now() + std::chrono::milliseconds{timeoutMs});
+    auto result = sem_timedwait(&semaphore->impl.handle, &ts);
     if ((result == -1) && (errno == ETIMEDOUT))
         return OsalError::eTimeout;
 
