@@ -1,4 +1,4 @@
-add_library(osal-freertos EXCLUDE_FROM_ALL
+target_sources(osal-c PRIVATE
     init.cpp
     Mutex.cpp
     Semaphore.cpp
@@ -7,10 +7,6 @@ add_library(osal-freertos EXCLUDE_FROM_ALL
     timestamp.cpp
 )
 
-target_include_directories(osal-freertos
-    PUBLIC ../include include
-)
-
-target_link_libraries(osal-freertos
+target_link_libraries(osal-c
     PUBLIC freertos
 )

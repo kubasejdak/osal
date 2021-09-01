@@ -7,17 +7,18 @@ endif ()
 # Project-wide compilation options.
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17> $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
 
+# OSAL for C.
+add_library(osal-c EXCLUDE_FROM_ALL)
+add_library(osal::c ALIAS osal-c)
+
+target_include_directories(osal-c
+    PUBLIC include ${OSAL_PLATFORM}/include
+)
+
+target_link_libraries(osal-c
+    PRIVATE osal::common
+)
+
 add_subdirectory(${OSAL_PLATFORM})
 add_subdirectory(common)
 add_subdirectory(cpp)
-
-# OSAL for C.
-add_library(osal-c INTERFACE)
-add_library(osal::c ALIAS osal-c)
-
-target_link_libraries(osal-c
-    INTERFACE osal-${OSAL_PLATFORM} osal-common
-)
-
-# OSAL for C++.
-add_library(osal::cpp ALIAS osal-cpp)

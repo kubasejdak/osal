@@ -1,4 +1,4 @@
-add_library(osal-linux EXCLUDE_FROM_ALL
+target_sources(osal-c PRIVATE
     init.cpp
     Mutex.cpp
     Semaphore.cpp
@@ -7,11 +7,6 @@ add_library(osal-linux EXCLUDE_FROM_ALL
     timestamp.cpp
 )
 
-target_include_directories(osal-linux
-    PUBLIC ../include include
-)
-
-target_link_libraries(osal-linux
-    PUBLIC pthread
-    PRIVATE osal-common
+target_link_libraries(osal-c
+    PRIVATE pthread
 )

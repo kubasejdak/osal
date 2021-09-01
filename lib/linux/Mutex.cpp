@@ -32,7 +32,7 @@
 
 #include "osal/Mutex.h"
 
-#include "osal/common/logger.h"
+#include "osal/common/logger.hpp"
 #include "osal/timestamp.h"
 
 #include <cassert>
