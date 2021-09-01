@@ -1,6 +1,7 @@
 add_library(osal-common EXCLUDE_FROM_ALL
     timestamp.cpp
 )
+add_library(osal::common ALIAS osal-common)
 
 target_include_directories(osal-common
     PUBLIC include
