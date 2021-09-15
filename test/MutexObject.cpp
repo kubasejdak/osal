@@ -79,13 +79,6 @@ TEST_CASE("Moving mutex around in C++", "[unit][cpp][mutex]")
     REQUIRE(!error);
 }
 
-TEST_CASE("Invalid parameters to mutex constructor", "[unit][cpp][mutex]")
-{
-    osal::Mutex mutex(static_cast<OsalMutexType>(4));
-    auto error = mutex.lock();
-    REQUIRE(error == OsalError::eInvalidArgument);
-}
-
 TEST_CASE("Lock called from two threads in C++", "[unit][cpp][mutex]")
 {
     OsalMutexType type{};

@@ -73,10 +73,6 @@ TEST_CASE("Invalid parameters to mutex creation and destruction functions", "[un
 
     error = osalMutexDestroy(nullptr);
     REQUIRE(error == OsalError::eInvalidArgument);
-
-    OsalMutex mutex{};
-    error = osalMutexCreate(&mutex, static_cast<OsalMutexType>(4));
-    REQUIRE(error == OsalError::eInvalidArgument);
 }
 
 TEST_CASE("Lock and unlock from one thread", "[unit][c][mutex]")

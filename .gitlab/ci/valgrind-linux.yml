@@ -2,7 +2,7 @@
   stage: valgrind
   image: kubasejdak/gcc:latest
   tags:
-    - linux
+    - cet_build
   needs:
     - Linux_GCC_Debug_Build
   variables:
