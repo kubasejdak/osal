@@ -70,9 +70,11 @@ public:
               typename = detail::NotLessThanDuration<std::chrono::duration<Representation, Period>>>
     Timeout(const std::chrono::duration<Representation, Period>& duration, bool forceExpire = false) // NOLINT
         : m_duration(duration)
-        , m_expireTimestamp(timestamp() + (forceExpire ? Duration::zero() : duration))
         , m_infinity(duration == Duration::max())
     {
+        if (!isInfinity())
+            m_expireTimestamp = timestamp() + (forceExpire ? Duration::zero() : duration);
+
         assert(duration >= Duration::zero());
     }
 
@@ -127,8 +129,8 @@ public:
 
 private:
     Duration m_duration;
-    std::chrono::time_point<Clock, Duration> m_expireTimestamp;
     bool m_infinity;
+    std::chrono::time_point<Clock, Duration> m_expireTimestamp;
 };
 
 /// Blocks current thread until given timeout is expired.

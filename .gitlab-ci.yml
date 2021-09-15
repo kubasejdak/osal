@@ -6,6 +6,7 @@ stages:
   - build-Clang
   - test
   - valgrind
+  - sanitizers
   - coverage
   - quality
   - deploy
@@ -16,5 +17,6 @@ include:
   - "/.gitlab/ci/coverage-linux.yml"
   - "/.gitlab/ci/deploy.yml"
   - "/.gitlab/ci/quality.yml"
+  - "/.gitlab/ci/sanitizers-linux.yml"
   - "/.gitlab/ci/test-linux.yml"
   - "/.gitlab/ci/valgrind-linux.yml"

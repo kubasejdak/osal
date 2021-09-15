@@ -4,7 +4,7 @@
     - master
   image: kubasejdak/gcc:latest
   tags:
-    - linux
+    - cet_build
   needs: []
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}"

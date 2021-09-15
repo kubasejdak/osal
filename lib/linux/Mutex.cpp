@@ -50,14 +50,7 @@ OsalError osalMutexCreate(OsalMutex* mutex, OsalMutexType type)
 
     mutex->initialized = false;
 
-    int mutexType{};
-    switch (type) {
-        case OsalMutexType::eRecursive: mutexType = PTHREAD_MUTEX_RECURSIVE; break;
-        case OsalMutexType::eNonRecursive: mutexType = PTHREAD_MUTEX_NORMAL; break;
-        default:
-            MutexLogger::error("Failed to create mutex: invalid type={}", type);
-            return OsalError::eInvalidArgument;
-    }
+    auto mutexType = (type == OsalMutexType::eRecursive) ? PTHREAD_MUTEX_RECURSIVE : PTHREAD_MUTEX_NORMAL;
 
     pthread_mutexattr_t attr{};
     pthread_mutexattr_init(&attr);
