@@ -34,6 +34,8 @@
 
 #include <string>
 
+namespace osal {
+
 struct ErrorCategory : std::error_category {
     [[nodiscard]] const char* name() const noexcept override;
     [[nodiscard]] std::string message(int value) const override;
@@ -60,11 +62,11 @@ std::string ErrorCategory::message(int value) const
     }
 }
 
-// NOLINTNEXTLINE(fuchsia-statically-constructed-objects)
-const ErrorCategory cErrorCategory{};
+} // namespace osal
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 std::error_code make_error_code(OsalError error)
 {
+    static const osal::ErrorCategory cErrorCategory{};
     return {static_cast<int>(error), cErrorCategory};
 }
