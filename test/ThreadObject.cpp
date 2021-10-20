@@ -310,7 +310,7 @@ TEST_CASE("Launch 5 threads in C++ with different priorities and check their res
     bool start{};
     bool stop{};
 
-    auto func = [](unsigned int& counter, bool& start, bool& stop) {
+    auto func = [](unsigned int& counter, bool& start, bool& stop) { // NOLINT(bugprone-easily-swappable-parameters)
         while (!start)
             osal::thread::yield();
 

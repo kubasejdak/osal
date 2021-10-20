@@ -37,6 +37,7 @@ extern "C" {
 #endif
 
 // clang-format off
+/// Represents possible error codes returned from OSAL. 
 enum OsalError {
     eOk,
     eInvalidArgument,
