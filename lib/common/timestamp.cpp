@@ -32,7 +32,6 @@
 
 #include "osal/timestamp.h"
 
-// clang-format off
 /// @num ConversionsToSec
 /// Represents the time conversion helpers to seconds.
 enum ConversionsToSec
@@ -56,7 +55,6 @@ enum ConversionsToUs
 {
     eOsalNsInUs = 1000
 };
-// clang-format on
 
 uint64_t osalMsToSec(uint64_t milliseconds)
 {
