@@ -36,9 +36,9 @@
 extern "C" {
 #endif
 
-// clang-format off
-/// Represents possible error codes returned from OSAL. 
-enum OsalError {
+/// Represents possible error codes returned from OSAL.
+enum OsalError
+{
     eOk,
     eInvalidArgument,
     eOsError,
@@ -49,7 +49,6 @@ enum OsalError {
     eLocked,
     eTimeout
 };
-// clang-format on
 
 #ifdef __cplusplus
 }
