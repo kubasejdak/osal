@@ -14,7 +14,7 @@
     - cd ${CI_JOB_NAME}
 
     # Build application.
-    - cmake .. -DPLATFORM=freertos-arm -DCMAKE_BUILD_TYPE=${BuildType}
+    - cmake .. -DPLATFORM=freertos-arm -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=${BuildType}
     - make
     - make osal-tests.bin
 
