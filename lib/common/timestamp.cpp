@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2020-2021, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2022, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -34,8 +34,7 @@
 
 /// @num ConversionsToSec
 /// Represents the time conversion helpers to seconds.
-enum ConversionsToSec
-{
+enum ConversionsToSec {
     eOsalMsInSec = 1000,
     eOsalUsInSec = 1000000,
     eOsalNsInSec = 1000000000
@@ -43,16 +42,14 @@ enum ConversionsToSec
 
 /// @num ConversionsToMs
 /// Represents the time conversion helpers to milliseconds.
-enum ConversionsToMs
-{
+enum ConversionsToMs {
     eOsalUsInMs = 1000,
     eOsalNsInMs = 1000000
 };
 
 /// @num ConversionsToUs
 /// Represents the time conversion helpers to microseconds.
-enum ConversionsToUs
-{
+enum ConversionsToUs {
     eOsalNsInUs = 1000
 };
 

@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2020-2021, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2022, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -55,8 +55,7 @@ struct OsalThread {
 ///       enum value. The only assumption client can make, is that eLowest will set the lowest
 //        possible priority in the system and eHighest will set the highest possible priority in the system.
 ///       All implementations will also try to set eNormal to the default priority on the target system.
-enum OsalThreadPriority
-{
+enum OsalThreadPriority {
     eLowest,
     eLow,
     eNormal,
