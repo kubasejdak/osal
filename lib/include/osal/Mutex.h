@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2020-2021, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2020-2022, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,7 @@ extern "C" {
 
 /// Represents possible types of the OSAL mutex. These types define how mutex will react to multiple recursive
 /// locks made by the same thread.
-enum OsalMutexType
-{
+enum OsalMutexType {
     eRecursive,
     eNonRecursive
 };
