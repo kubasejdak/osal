@@ -1,4 +1,5 @@
 add_library(osal-common EXCLUDE_FROM_ALL
+    time.cpp
     timestamp.cpp
 )
 add_library(osal::common ALIAS osal-common)
