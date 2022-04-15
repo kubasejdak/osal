@@ -13,6 +13,7 @@ add_library(apposal-tests OBJECT EXCLUDE_FROM_ALL
     ThreadObject.cpp
     time.cpp
     Timeout.cpp
+    timestamp.cpp
 )
 
 target_include_directories(apposal-tests

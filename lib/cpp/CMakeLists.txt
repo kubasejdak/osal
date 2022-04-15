@@ -5,6 +5,7 @@ add_library(osal-cpp EXCLUDE_FROM_ALL
     ScopedLock.cpp
     Semaphore.cpp
     sleep.cpp
+    time.cpp
     timestamp.cpp
 )
 add_library(osal::cpp ALIAS osal-cpp)

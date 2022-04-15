@@ -56,6 +56,16 @@ Semaphore_Linux_UT:
   variables:
     TestTags: "[semaphore]"
 
+Time_Linux_ARM_UT:
+  extends: .Run_Test_Linux_ARM
+  variables:
+    TestTags: "[time]"
+
+Time_Linux_UT:
+  extends: .Run_Test_Linux
+  variables:
+    TestTags: "[time]"
+
 Timeout_Linux_ARM_UT:
   extends: .Run_Test_Linux_ARM
   variables:

@@ -27,6 +27,11 @@ Semaphore_Linux_Valgrind:
   variables:
     TestTags: "[semaphore]"
 
+Time_Linux_Valgrind:
+  extends: .Run_Valgrind_Linux
+  variables:
+    TestTags: "[time]"
+
 Timeout_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
   variables:

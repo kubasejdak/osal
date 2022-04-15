@@ -37,6 +37,11 @@ Semaphore_Coverage:
   variables:
     Tags: "[semaphore]"
 
+Time_Coverage:
+  extends: .Linux_Coverage
+  variables:
+    Tags: "[time]"
+
 Timeout_Coverage:
   extends: .Linux_Coverage
   variables:
