@@ -16,7 +16,7 @@
     - cd ${CI_JOB_NAME}
 
     # Build application.
-    - cmake .. -DUSE_CONAN=ON -DCOVERAGE=ON
+    - cmake .. --preset linux-gcc-debug -DCOVERAGE=ON
     - make
     - bin/osal-tests [unit]${Tags}
     - make coverage
