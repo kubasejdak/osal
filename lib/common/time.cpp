@@ -130,7 +130,7 @@ OsalError osalTmToString(struct tm value, char* str, size_t size, OsalTimeString
     if (size < requiredSize)
         return OsalError::eInvalidArgument;
 
-    std::strftime(str, requiredSize, formatStr.c_str(), &value);
+    (void) std::strftime(str, requiredSize, formatStr.c_str(), &value);
     return OsalError::eOk;
 }
 

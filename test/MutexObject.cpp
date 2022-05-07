@@ -43,11 +43,20 @@ TEST_CASE("Mutex creation and destruction in C++", "[unit][cpp][mutex]")
 {
     OsalMutexType type{};
 
-    SECTION("Non recursive mutex") { type = OsalMutexType::eNonRecursive; }
+    SECTION("Non recursive mutex")
+    {
+        type = OsalMutexType::eNonRecursive;
+    }
 
-    SECTION("Recursive mutex") { type = OsalMutexType::eRecursive; }
+    SECTION("Recursive mutex")
+    {
+        type = OsalMutexType::eRecursive;
+    }
 
-    SECTION("Default mutex") { type = cOsalMutexDefaultType; }
+    SECTION("Default mutex")
+    {
+        type = cOsalMutexDefaultType;
+    }
 
     osal::Mutex mutex;
     auto error = mutex.lock();
@@ -83,11 +92,20 @@ TEST_CASE("Lock called from two threads in C++", "[unit][cpp][mutex]")
 {
     OsalMutexType type{};
 
-    SECTION("Non recursive mutex") { type = OsalMutexType::eNonRecursive; }
+    SECTION("Non recursive mutex")
+    {
+        type = OsalMutexType::eNonRecursive;
+    }
 
-    SECTION("Recursive mutex") { type = OsalMutexType::eRecursive; }
+    SECTION("Recursive mutex")
+    {
+        type = OsalMutexType::eRecursive;
+    }
 
-    SECTION("Default mutex") { type = cOsalMutexDefaultType; }
+    SECTION("Default mutex")
+    {
+        type = cOsalMutexDefaultType;
+    }
 
     osal::Mutex mutex(type);
 
@@ -119,11 +137,20 @@ TEST_CASE("TryLock called from second threads in C++", "[unit][cpp][mutex]")
 {
     OsalMutexType type{};
 
-    SECTION("Non recursive mutex") { type = OsalMutexType::eNonRecursive; }
+    SECTION("Non recursive mutex")
+    {
+        type = OsalMutexType::eNonRecursive;
+    }
 
-    SECTION("Recursive mutex") { type = OsalMutexType::eRecursive; }
+    SECTION("Recursive mutex")
+    {
+        type = OsalMutexType::eRecursive;
+    }
 
-    SECTION("Default mutex") { type = cOsalMutexDefaultType; }
+    SECTION("Default mutex")
+    {
+        type = cOsalMutexDefaultType;
+    }
 
     osal::Mutex mutex(type);
 
@@ -157,9 +184,15 @@ TEST_CASE("TryLock and unlock called from ISR in C++", "[unit][cpp][mutex]")
 {
     OsalMutexType type{};
 
-    SECTION("Non recursive mutex") { type = OsalMutexType::eNonRecursive; }
+    SECTION("Non recursive mutex")
+    {
+        type = OsalMutexType::eNonRecursive;
+    }
 
-    SECTION("Default mutex") { type = cOsalMutexDefaultType; }
+    SECTION("Default mutex")
+    {
+        type = cOsalMutexDefaultType;
+    }
 
     osal::Mutex mutex(type);
 
@@ -201,11 +234,20 @@ TEST_CASE("TimedLock called from second thread, timeout in C++", "[unit][cpp][mu
 {
     OsalMutexType type{};
 
-    SECTION("Non recursive mutex") { type = OsalMutexType::eNonRecursive; }
+    SECTION("Non recursive mutex")
+    {
+        type = OsalMutexType::eNonRecursive;
+    }
 
-    SECTION("Recursive mutex") { type = OsalMutexType::eRecursive; }
+    SECTION("Recursive mutex")
+    {
+        type = OsalMutexType::eRecursive;
+    }
 
-    SECTION("Default mutex") { type = cOsalMutexDefaultType; }
+    SECTION("Default mutex")
+    {
+        type = cOsalMutexDefaultType;
+    }
 
     osal::Mutex mutex(type);
 
@@ -235,11 +277,20 @@ TEST_CASE("TimedLock called from second thread, success in C++", "[unit][cpp][mu
 {
     OsalMutexType type{};
 
-    SECTION("Non recursive mutex") { type = OsalMutexType::eNonRecursive; }
+    SECTION("Non recursive mutex")
+    {
+        type = OsalMutexType::eNonRecursive;
+    }
 
-    SECTION("Recursive mutex") { type = OsalMutexType::eRecursive; }
+    SECTION("Recursive mutex")
+    {
+        type = OsalMutexType::eRecursive;
+    }
 
-    SECTION("Default mutex") { type = cOsalMutexDefaultType; }
+    SECTION("Default mutex")
+    {
+        type = cOsalMutexDefaultType;
+    }
 
     osal::Mutex mutex(type);
 
