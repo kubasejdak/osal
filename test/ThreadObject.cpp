@@ -198,15 +198,30 @@ TEST_CASE("Thread creation in C++ with different priorities", "[unit][cpp][threa
         launched = true;
     };
 
-    SECTION("eLowest priority") { osal::Thread<OsalThreadPriority::eLowest> thread(func); }
+    SECTION("eLowest priority")
+    {
+        osal::Thread<OsalThreadPriority::eLowest> thread(func);
+    }
 
-    SECTION("eLow priority") { osal::Thread<OsalThreadPriority::eLow> thread(func); }
+    SECTION("eLow priority")
+    {
+        osal::Thread<OsalThreadPriority::eLow> thread(func);
+    }
 
-    SECTION("eNormal priority") { osal::Thread<OsalThreadPriority::eNormal> thread(func); }
+    SECTION("eNormal priority")
+    {
+        osal::Thread<OsalThreadPriority::eNormal> thread(func);
+    }
 
-    SECTION("eHigh priority") { osal::Thread<OsalThreadPriority::eHigh> thread(func); }
+    SECTION("eHigh priority")
+    {
+        osal::Thread<OsalThreadPriority::eHigh> thread(func);
+    }
 
-    SECTION("eHighest priority") { osal::Thread<OsalThreadPriority::eHighest> thread(func); }
+    SECTION("eHighest priority")
+    {
+        osal::Thread<OsalThreadPriority::eHighest> thread(func);
+    }
 
     REQUIRE(launched);
 }
@@ -220,15 +235,30 @@ TEST_CASE("Thread creation in C++ with different priorities using helper types",
         launched = true;
     };
 
-    SECTION("eLowest priority") { osal::LowestPrioThread<> thread(func); }
+    SECTION("eLowest priority")
+    {
+        osal::LowestPrioThread<> thread(func);
+    }
 
-    SECTION("eLow priority") { osal::LowPrioThread<> thread(func); }
+    SECTION("eLow priority")
+    {
+        osal::LowPrioThread<> thread(func);
+    }
 
-    SECTION("eNormal priority") { osal::NormalPrioThread<> thread(func); }
+    SECTION("eNormal priority")
+    {
+        osal::NormalPrioThread<> thread(func);
+    }
 
-    SECTION("eHigh priority") { osal::HighPrioThread<> thread(func); }
+    SECTION("eHigh priority")
+    {
+        osal::HighPrioThread<> thread(func);
+    }
 
-    SECTION("eHighest priority") { osal::HighestPrioThread<> thread(func); }
+    SECTION("eHighest priority")
+    {
+        osal::HighestPrioThread<> thread(func);
+    }
 
     REQUIRE(launched);
 }

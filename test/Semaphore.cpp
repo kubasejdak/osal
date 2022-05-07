@@ -41,9 +41,15 @@ TEST_CASE("Semaphore creation and destruction", "[unit][c][semaphore]")
 {
     unsigned int initialValue{};
 
-    SECTION("Initial value 0") { initialValue = 0; }
+    SECTION("Initial value 0")
+    {
+        initialValue = 0;
+    }
 
-    SECTION("Initial value 1") { initialValue = 1; }
+    SECTION("Initial value 1")
+    {
+        initialValue = 1;
+    }
 
     SECTION("Initial value 15")
     {
@@ -310,7 +316,10 @@ TEST_CASE("Multiple wait called one thread", "[unit][c][semaphore]")
 {
     unsigned int initialValue{};
 
-    SECTION("Initial value 0") { initialValue = 0; }
+    SECTION("Initial value 0")
+    {
+        initialValue = 0;
+    }
 
     SECTION("Initial value 4")
     {
@@ -344,7 +353,10 @@ TEST_CASE("Multiple tryWait called one thread", "[unit][c][semaphore]")
 {
     unsigned int initialValue{};
 
-    SECTION("Initial value 0") { initialValue = 0; }
+    SECTION("Initial value 0")
+    {
+        initialValue = 0;
+    }
 
     SECTION("Initial value 4")
     {
@@ -378,7 +390,10 @@ TEST_CASE("Multiple tryWait called from ISR", "[unit][c][semaphore]")
 {
     unsigned int initialValue{};
 
-    SECTION("Initial value 0") { initialValue = 0; }
+    SECTION("Initial value 0")
+    {
+        initialValue = 0;
+    }
 
     SECTION("Initial value 4")
     {
