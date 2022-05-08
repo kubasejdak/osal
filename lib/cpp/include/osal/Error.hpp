@@ -44,7 +44,6 @@ std::error_code make_error_code(OsalError error); // NOLINT(readability-identifi
 namespace std {
 
 template <>
-struct is_error_code_enum<OsalError> : true_type {
-};
+struct is_error_code_enum<OsalError> : true_type {};
 
 } // namespace std
