@@ -10,7 +10,16 @@
     AppArtifact: "Linux_GCC_Debug_Build"
   script:
     - cd ${AppArtifact}/bin
-    - valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=123 ./osal-tests ${TestTags} || if [ $? -eq 123 ]; then exit 1; fi
+    - |
+      valgrind \
+      --leak-check=full \
+      --show-leak-kinds=definite,indirect,possible \
+      --fair-sched=yes \
+      --track-origins=yes \
+      --trace-children=yes \
+      --error-markers=errstart,errend \
+      --error-exitcode=123 \
+      ./osal-tests ${TestTags} || if [ $? -eq 123 ]; then exit 1; fi
 
 Error_Linux_Valgrind:
   extends: .Run_Valgrind_Linux
