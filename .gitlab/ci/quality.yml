@@ -58,6 +58,7 @@ Coverage_Total:
     - Mutex_Coverage
     - Semaphore_Coverage
     - Timestamp_Coverage
+    - Time_Coverage
     - Timeout_Coverage
     - Thread_Coverage
   artifacts:
@@ -74,6 +75,7 @@ Coverage_Total:
            -a ../Mutex_Coverage/coverage/coverage.info \
            -a ../Semaphore_Coverage/coverage/coverage.info \
            -a ../Timestamp_Coverage/coverage/coverage.info \
+           -a ../Time_Coverage/coverage/coverage.info \
            -a ../Timeout_Coverage/coverage/coverage.info \
            -a ../Thread_Coverage/coverage/coverage.info \
            -o coverage.info
