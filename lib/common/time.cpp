@@ -42,9 +42,7 @@ extern "C" time_t timegm(struct tm* tm); // NOLINT
 struct tm osalTimeToTm(time_t value)
 {
     tm result{};
-    if (gmtime_r(&value, &result) == nullptr)
-        return {};
-
+    gmtime_r(&value, &result);
     return result;
 }
 
