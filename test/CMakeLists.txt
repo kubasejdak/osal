@@ -21,7 +21,7 @@ target_compile_definitions(osal-tests
 )
 
 target_link_libraries(osal-tests
-    PRIVATE osal::c osal::cpp platform::main platform::init
+    PRIVATE osal::c osal::cpp platform::init platform::main
 )
 
 if (PLATFORM STREQUAL freertos-arm)
