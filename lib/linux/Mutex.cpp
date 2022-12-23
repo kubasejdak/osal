@@ -32,6 +32,7 @@
 
 #include "osal/Mutex.h"
 
+#include "osal/common/format.hpp"
 #include "osal/common/logger.hpp"
 #include "osal/timestamp.h"
 
