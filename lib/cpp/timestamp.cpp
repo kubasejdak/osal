@@ -34,6 +34,8 @@
 
 #include "osal/timestamp.h"
 
+#include <type_traits>
+
 namespace osal {
 
 Timestamp timestamp()

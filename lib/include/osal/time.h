@@ -38,7 +38,7 @@ extern "C" {
 
 #include "osal/Error.h"
 
-#include <stdint.h>   // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
+#include <stddef.h>   // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 #include <sys/time.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 #include <time.h>     // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 

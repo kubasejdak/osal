@@ -22,26 +22,27 @@
 
 #include <osal/Error.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
-#include <string_view>
+#include <string>
 #include <system_error>
 
 TEST_CASE("Errors have proper human readable messages", "[unit][cpp][error]")
 {
-    const std::string_view cUnrecognizedMsg = "(unrecognized error)";
+    const std::string cUnrecognizedMsg = "(unrecognized error)";
     constexpr int cErrorsCount = 9;
 
     for (int i = 0; i < cErrorsCount; ++i) {
         std::error_code error = static_cast<OsalError>(i);
-        REQUIRE(std::string_view(error.category().name()) == "osal");
+        REQUIRE_THAT(error.category().name(), Catch::Matchers::Equals("osal"));
         REQUIRE(!error.message().empty());
-        REQUIRE(error.message() != cUnrecognizedMsg);
+        REQUIRE_THAT(error.message(), !Catch::Matchers::Equals(cUnrecognizedMsg));
     }
 
     constexpr int cInvalidError = cErrorsCount;
     std::error_code error = static_cast<OsalError>(cInvalidError);
-    REQUIRE(std::string_view(error.category().name()) == "osal");
+    REQUIRE_THAT(error.category().name(), Catch::Matchers::Equals("osal"));
     REQUIRE(!error.message().empty());
-    REQUIRE(error.message() == cUnrecognizedMsg);
+    REQUIRE_THAT(error.message(), Catch::Matchers::Equals(cUnrecognizedMsg));
 }

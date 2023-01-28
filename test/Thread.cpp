@@ -30,13 +30,18 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.h>
 #include <osal/Thread.h>
 #include <osal/sleep.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
 #include <set>
+#include <tuple>
 
 TEST_CASE("Thread creation and destruction", "[unit][c][thread]")
 {

@@ -33,6 +33,7 @@
 #include "osal/timestamp.h"
 
 #include <chrono>
+#include <cstdint>
 
 /// Internal value of system time latched during OSAL initialization.
 /// @note This value must be properly set by OSAL initialization in order to have correct values

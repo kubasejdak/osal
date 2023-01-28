@@ -33,6 +33,7 @@
 #include "osal/Semaphore.hpp"
 
 #include <chrono>
+#include <cstdint>
 
 namespace osal {
 
