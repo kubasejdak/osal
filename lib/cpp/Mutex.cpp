@@ -33,6 +33,7 @@
 #include "osal/Mutex.hpp"
 
 #include <chrono>
+#include <cstdint>
 
 namespace osal {
 

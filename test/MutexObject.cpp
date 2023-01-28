@@ -30,12 +30,13 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.hpp>
 #include <osal/Mutex.hpp>
 #include <osal/Thread.hpp>
 #include <osal/sleep.hpp>
 #include <osal/timestamp.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <utility>
 

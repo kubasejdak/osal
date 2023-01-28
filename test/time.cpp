@@ -30,13 +30,18 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.hpp>
 #include <osal/time.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 #include <osal/time.hpp>
+#include <sys/time.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
+#include <ctime>
 #include <string>
 
 static constexpr int cDatesCount = 5;     // NOLINT
@@ -505,30 +510,30 @@ TEST_CASE("Convert to string", "[unit][c][time]")
         }
     }
 
-    REQUIRE(std::string_view{time[0].data()} == "22:13:02");
-    REQUIRE(std::string_view{date[0].data()} == "28.01.2022");
-    REQUIRE(std::string_view{timeDate[0].data()} == "22:13:02 28.01.2022");
-    REQUIRE(std::string_view{sortedDateTime[0].data()} == "20220128_221302");
+    REQUIRE_THAT(time[0].data(), Catch::Matchers::Equals("22:13:02"));
+    REQUIRE_THAT(date[0].data(), Catch::Matchers::Equals("28.01.2022"));
+    REQUIRE_THAT(timeDate[0].data(), Catch::Matchers::Equals("22:13:02 28.01.2022"));
+    REQUIRE_THAT(sortedDateTime[0].data(), Catch::Matchers::Equals("20220128_221302"));
 
-    REQUIRE(std::string_view{time[1].data()} == "15:05:45");
-    REQUIRE(std::string_view{date[1].data()} == "14.08.1997");
-    REQUIRE(std::string_view{timeDate[1].data()} == "15:05:45 14.08.1997");
-    REQUIRE(std::string_view{sortedDateTime[1].data()} == "19970814_150545");
+    REQUIRE_THAT(time[1].data(), Catch::Matchers::Equals("15:05:45"));
+    REQUIRE_THAT(date[1].data(), Catch::Matchers::Equals("14.08.1997"));
+    REQUIRE_THAT(timeDate[1].data(), Catch::Matchers::Equals("15:05:45 14.08.1997"));
+    REQUIRE_THAT(sortedDateTime[1].data(), Catch::Matchers::Equals("19970814_150545"));
 
-    REQUIRE(std::string_view{time[2].data()} == "21:06:17");
-    REQUIRE(std::string_view{date[2].data()} == "31.12.2001");
-    REQUIRE(std::string_view{timeDate[2].data()} == "21:06:17 31.12.2001");
-    REQUIRE(std::string_view{sortedDateTime[2].data()} == "20011231_210617");
+    REQUIRE_THAT(time[2].data(), Catch::Matchers::Equals("21:06:17"));
+    REQUIRE_THAT(date[2].data(), Catch::Matchers::Equals("31.12.2001"));
+    REQUIRE_THAT(timeDate[2].data(), Catch::Matchers::Equals("21:06:17 31.12.2001"));
+    REQUIRE_THAT(sortedDateTime[2].data(), Catch::Matchers::Equals("20011231_210617"));
 
-    REQUIRE(std::string_view{time[3].data()} == "12:00:00");
-    REQUIRE(std::string_view{date[3].data()} == "11.09.1970");
-    REQUIRE(std::string_view{timeDate[3].data()} == "12:00:00 11.09.1970");
-    REQUIRE(std::string_view{sortedDateTime[3].data()} == "19700911_120000");
+    REQUIRE_THAT(time[3].data(), Catch::Matchers::Equals("12:00:00"));
+    REQUIRE_THAT(date[3].data(), Catch::Matchers::Equals("11.09.1970"));
+    REQUIRE_THAT(timeDate[3].data(), Catch::Matchers::Equals("12:00:00 11.09.1970"));
+    REQUIRE_THAT(sortedDateTime[3].data(), Catch::Matchers::Equals("19700911_120000"));
 
-    REQUIRE(std::string_view{time[4].data()} == "20:20:00");
-    REQUIRE(std::string_view{date[4].data()} == "08.08.1990");
-    REQUIRE(std::string_view{timeDate[4].data()} == "20:20:00 08.08.1990");
-    REQUIRE(std::string_view{sortedDateTime[4].data()} == "19900808_202000");
+    REQUIRE_THAT(time[4].data(), Catch::Matchers::Equals("20:20:00"));
+    REQUIRE_THAT(date[4].data(), Catch::Matchers::Equals("08.08.1990"));
+    REQUIRE_THAT(timeDate[4].data(), Catch::Matchers::Equals("20:20:00 08.08.1990"));
+    REQUIRE_THAT(sortedDateTime[4].data(), Catch::Matchers::Equals("19900808_202000"));
 }
 
 TEST_CASE("Convert to std::tm in C++", "[unit][cpp][time]")

@@ -30,12 +30,13 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.h>
 #include <osal/Mutex.h>
 #include <osal/Thread.hpp>
 #include <osal/sleep.hpp>
 #include <osal/timestamp.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Mutex creation and destruction", "[unit][c][mutex]")
 {

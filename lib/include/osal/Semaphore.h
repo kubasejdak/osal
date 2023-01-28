@@ -36,8 +36,8 @@
 extern "C" {
 #endif
 
-#include "Error.h"
 #include "internal/SemaphoreImpl.h"
+#include "osal/Error.h"
 
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 

@@ -35,7 +35,7 @@
 #include <chrono>
 #include <thread>
 
-void osalSleepMs(const uint64_t cDurationMs)
+void osalSleepMs(uint64_t cDurationMs)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(cDurationMs));
 }

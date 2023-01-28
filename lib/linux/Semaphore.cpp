@@ -34,8 +34,6 @@
 
 #include "osal/timestamp.h"
 
-#include <semaphore.h>
-
 #include <cassert>
 #include <cerrno>
 #include <chrono>

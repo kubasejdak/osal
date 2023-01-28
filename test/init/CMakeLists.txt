@@ -6,3 +6,7 @@ target_include_directories(platform-init
 )
 
 add_subdirectory(${PLATFORM})
+
+target_link_libraries(platform-init
+    INTERFACE optimized Catch2 debug Catch2d
+)

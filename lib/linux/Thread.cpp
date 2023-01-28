@@ -32,13 +32,13 @@
 
 #include "osal/Thread.h"
 
-#include <pthread.h>
 #include <sched.h>
 
 #include <algorithm>
 #include <cassert>
-#include <climits>
+#include <cstddef>
 #include <cstring>
+#include <functional>
 #include <memory>
 
 /// Represents helper wrapper around OSAL thread function and its arguments.

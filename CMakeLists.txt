@@ -11,10 +11,6 @@ include(cmake/utils.cmake)
 
 project(osal VERSION 1.0.0 LANGUAGES ASM C CXX)
 
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-endif ()
-
 if (USE_CONAN)
     conan_init_wrapper()
     conan_init_profile()

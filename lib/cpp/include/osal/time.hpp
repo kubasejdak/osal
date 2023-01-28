@@ -34,6 +34,8 @@
 
 #include "osal/time.h" // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 
+#include <sys/time.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
+
 #include <ctime>
 #include <string>
 

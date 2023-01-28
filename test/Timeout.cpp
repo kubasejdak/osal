@@ -30,13 +30,15 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.hpp>
 #include <osal/Timeout.hpp>
 #include <osal/sleep.hpp>
 #include <osal/timestamp.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <algorithm>
+#include <chrono>
 
 TEST_CASE("Creation of timeout", "[unit][cpp][timeout]")
 {
@@ -98,8 +100,8 @@ TEST_CASE("Creation of timeout", "[unit][cpp][timeout]")
 
 TEST_CASE("Creation of special timeout values", "[unit][cpp][timeout]")
 {
-    osal::Timeout t1 = osal::Timeout::none();
-    osal::Timeout t2 = osal::Timeout::infinity();
+    auto t1 = osal::Timeout::none();
+    auto t2 = osal::Timeout::infinity();
 
     REQUIRE(t1.duration() == std::chrono::milliseconds::zero());
     REQUIRE(!t1.isInfinity());

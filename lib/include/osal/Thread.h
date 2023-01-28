@@ -36,8 +36,8 @@
 extern "C" {
 #endif
 
-#include "Error.h"
 #include "internal/ThreadImpl.h"
+#include "osal/Error.h"
 
 #include <stddef.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)
 #include <stdint.h> // NOLINT(modernize-deprecated-headers,hicpp-deprecated-headers)

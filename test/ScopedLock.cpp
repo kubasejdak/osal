@@ -30,12 +30,13 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.hpp>
 #include <osal/Mutex.hpp>
 #include <osal/ScopedLock.hpp>
 #include <osal/Thread.hpp>
 #include <osal/sleep.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Create and destroy lock", "[unit][cpp][mutex]")
 {

@@ -30,13 +30,16 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <osal/Error.hpp>
 #include <osal/Thread.hpp>
-#include <osal/sleep.h>
 #include <osal/sleep.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
 #include <set>
 #include <utility>
 

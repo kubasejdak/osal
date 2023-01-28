@@ -18,7 +18,7 @@
     # Build application.
     - cmake .. --preset linux-gcc-debug -DCOVERAGE=ON
     - make
-    - bin/osal-tests [unit]${Tags}
+    - bin/osal-tests -r verbose [unit]${Tags}
     - make coverage
     - sed -i "s|SF:${CI_PROJECT_DIR}/|SF:|g" coverage/coverage.info
 

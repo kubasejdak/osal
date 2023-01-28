@@ -35,7 +35,10 @@
 #include <osal/timestamp.h>
 #include <osal/timestamp.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <chrono>
+#include <cstdint>
 
 TEST_CASE("Check C timestamp values after multiple delays in ms", "[unit][c][timestamp]")
 {
