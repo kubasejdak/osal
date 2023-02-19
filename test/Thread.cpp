@@ -31,16 +31,20 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include <osal/Error.h>
+#include <osal/Semaphore.hpp>
 #include <osal/Thread.h>
 #include <osal/sleep.hpp>
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <functional>
 #include <set>
+#include <string_view>
 #include <tuple>
 
 TEST_CASE("Thread creation and destruction", "[unit][c][thread]")
@@ -51,6 +55,51 @@ TEST_CASE("Thread creation and destruction", "[unit][c][thread]")
     auto error
         = osalThreadCreate(&thread, {cOsalThreadDefaultPriority, cOsalThreadDefaultStackSize, nullptr}, func, nullptr);
     REQUIRE(error == OsalError::eOk);
+
+    error = osalThreadJoin(&thread);
+    REQUIRE(error == OsalError::eOk);
+
+    error = osalThreadDestroy(&thread);
+    REQUIRE(error == OsalError::eOk);
+
+    error = osalThreadDestroy(&thread);
+    REQUIRE(error == OsalError::eInvalidArgument);
+}
+
+TEST_CASE("Named thread creation and destruction", "[unit][c][thread]")
+{
+    constexpr std::size_t cGetNameSize = 16;
+
+    struct ThreadData {
+        std::array<char, cGetNameSize> getThreadName{};
+        osal::Semaphore startSemaphore{0};
+        osal::Semaphore stopSemaphore{0};
+    };
+
+    ThreadData threadData;
+
+    auto func = [](void* arg) {
+        auto* threadData = static_cast<ThreadData*>(arg);
+
+        threadData->startSemaphore.wait();
+        osalThreadName(threadData->getThreadName.data(), threadData->getThreadName.size());
+        threadData->stopSemaphore.signal();
+    };
+
+    std::string_view setThreadName = "0123456789ABCDE";
+
+    OsalThread thread{};
+    auto error = osalThreadCreateEx(&thread,
+                                    {cOsalThreadDefaultPriority, cOsalThreadDefaultStackSize, nullptr},
+                                    func,
+                                    &threadData,
+                                    setThreadName.data());
+    REQUIRE(error == OsalError::eOk);
+
+    threadData.startSemaphore.signal();
+    threadData.stopSemaphore.wait();
+    std::string_view getThreadName{threadData.getThreadName.data(), std::strlen(threadData.getThreadName.data())};
+    REQUIRE_THAT(getThreadName.data(), Catch::Matchers::Equals(setThreadName.data()));
 
     error = osalThreadJoin(&thread);
     REQUIRE(error == OsalError::eOk);
@@ -75,6 +124,13 @@ TEST_CASE("Thread creation with invalid arguments", "[unit][c][thread]")
                              {cOsalThreadDefaultPriority, cOsalThreadDefaultStackSize, nullptr},
                              nullptr,
                              nullptr);
+    REQUIRE(error == OsalError::eInvalidArgument);
+
+    error = osalThreadCreateEx(&thread,
+                               {cOsalThreadDefaultPriority, cOsalThreadDefaultStackSize, nullptr},
+                               func,
+                               nullptr,
+                               "0123456789ABCDEF");
     REQUIRE(error == OsalError::eInvalidArgument);
 
     constexpr int cInvalidPriority = 5;

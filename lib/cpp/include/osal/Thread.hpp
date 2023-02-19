@@ -38,8 +38,11 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <functional>
 #include <memory>
+#include <string>
+#include <string_view>
 #include <system_error>
 #include <utility>
 
@@ -68,6 +71,19 @@ public:
     explicit Thread(ThreadFunction function, Args&&... args)
     {
         start(std::forward<ThreadFunction>(function), std::forward<Args>(args)...);
+    }
+
+    /// Constructor.
+    /// @tparam ThreadFunction  Type of user function to be invoked by the new thread.
+    /// @tparam Args            Types of user arguments to be passed to the used function.
+    /// @param function         User function to be invoked by the new thread.
+    /// @param args             User arguments to be passed to the used function.
+    /// @param name             Human readable name of the thread.
+    /// @note This constructor immediately starts the thread.
+    template <typename ThreadFunction, typename... Args>
+    explicit Thread(std::string_view name, ThreadFunction function, Args&&... args)
+    {
+        start(name, std::forward<ThreadFunction>(function), std::forward<Args>(args)...);
     }
 
     /// Copy constructor.
@@ -123,6 +139,19 @@ public:
     template <typename ThreadFunction, typename... Args>
     std::error_code start(ThreadFunction function, Args&&... args)
     {
+        return start({}, std::forward<ThreadFunction>(function), std::forward<Args>(args)...);
+    }
+
+    /// Starts the thread.
+    /// @tparam ThreadFunction  Type of user function to be invoked by the new thread.
+    /// @tparam Args            Types of user arguments to be passed to the used function.
+    /// @param function         User function to be invoked by the new thread.
+    /// @param args             User arguments to be passed to the used function.
+    /// @param name             Human readable name of the thread.
+    /// @return Error code of the operation.
+    template <typename ThreadFunction, typename... Args>
+    std::error_code start(std::string_view name, ThreadFunction function, Args&&... args)
+    {
         if (m_started)
             return OsalError::eThreadAlreadyStarted;
 
@@ -136,8 +165,18 @@ public:
             userFunction();
         };
 
-        auto error
-            = osalThreadCreate(&m_thread, {cPriority, cStackSize, m_stack}, m_workerFunction, m_userFunction.get());
+        OsalError error{};
+        if (name.empty()) {
+            error
+                = osalThreadCreate(&m_thread, {cPriority, cStackSize, m_stack}, m_workerFunction, m_userFunction.get());
+        }
+        else {
+            error = osalThreadCreateEx(&m_thread,
+                                       {cPriority, cStackSize, m_stack},
+                                       m_workerFunction,
+                                       m_userFunction.get(),
+                                       name.data());
+        }
 
         m_started = (error == OsalError::eOk);
         return error;
@@ -200,6 +239,19 @@ inline void yield()
 [[nodiscard]] inline std::uint32_t id()
 {
     return osalThreadId();
+}
+
+/// Returns name of the current thread.
+/// @note Returned name will be the same as the one provided in upon thread creation.
+/// @note Returned name will always be NULL-terminated.
+[[nodiscard]] inline std::string name()
+{
+    constexpr std::size_t cMaxSize = 64;
+    std::string threadName(cMaxSize, '\0');
+
+    osalThreadName(threadName.data(), cMaxSize);
+    threadName.resize(std::strlen(threadName.data()));
+    return threadName;
 }
 
 } // namespace thread

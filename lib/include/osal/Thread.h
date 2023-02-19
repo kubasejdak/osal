@@ -90,6 +90,18 @@ typedef void (*OsalThreadFunction)(void*); // NOLINT(modernize-use-using)
 ///       at least the same as created thread.
 OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg);
 
+/// Creates and immediately starts new thread with the following configuration, main function and arguments.
+/// @param thread           Thread handle to be initialized.
+/// @param config           OSAL thread configuration to be used to setup new thread.
+/// @param func             User function to be invoked by the new thread.
+/// @param arg              User argument to be passed to the used function.
+/// @param name             Human readable name of the thread.
+/// @return Error code of the operation.
+/// @note Argument is passed as pointer, which means that it comes from the stack, then its lifetime must be
+///       at least the same as created thread.
+OsalError
+osalThreadCreateEx(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg, const char* name);
+
 /// Destroys thread represented by the given handle.
 /// @param thread           Thread handle to be destroyed.
 /// @return Error code of the operation.
@@ -108,9 +120,18 @@ OsalError osalThreadJoin(OsalThread* thread);
 void osalThreadYield();
 
 /// Returns numerical id of the current thread.
+/// @return Numerical id of the current thread.
 /// @note It is up to the concrete implementation what this number means. The only thing that caller can depend on
 ///       is that on the given platform this value will be unique among all created threads.
 uint32_t osalThreadId();
+
+/// Returns name of the current thread.
+/// @param name             Memory block where the name should be stored.
+/// @param size             Size of the given memory block.
+/// @return Error code of the operation.
+/// @note Returned name will be the same as the one provided in upon thread creation.
+/// @note Returned name will always be NULL-terminated.
+OsalError osalThreadName(char* name, size_t size);
 
 #ifdef __cplusplus
 }

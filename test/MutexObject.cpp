@@ -319,7 +319,7 @@ TEST_CASE("TimedLock called from second thread, success in C++", "[unit][cpp][mu
     REQUIRE(!error);
 }
 
-TEST_CASE("Timeout used with mutexes", "[unit][cpp][mutex]")
+TEST_CASE("Timeout used with mutexes in C++", "[unit][cpp][mutex]")
 {
     osal::Mutex mutex;
     auto error = mutex.lock();
