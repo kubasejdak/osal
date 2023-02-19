@@ -32,6 +32,7 @@
 
 #include "osal/Semaphore.h"
 
+#include <FreeRTOSConfig.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 

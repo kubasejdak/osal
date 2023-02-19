@@ -34,9 +34,11 @@
 
 #include "osal/Semaphore.h"
 
+#include <FreeRTOSConfig.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
+#include <algorithm>
 #include <cstring>
 
 /// Helper thread function which is used as a wrapper for OSAL thread function.
@@ -51,7 +53,16 @@ static void threadWrapper(void* arg)
 
 OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg)
 {
+    return osalThreadCreateEx(thread, config, func, arg, nullptr);
+}
+
+OsalError
+osalThreadCreateEx(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg, const char* name)
+{
     if (thread == nullptr || func == nullptr)
+        return OsalError::eInvalidArgument;
+
+    if (name != nullptr && std::strlen(name) > (configMAX_TASK_NAME_LEN - 1))
         return OsalError::eInvalidArgument;
 
     thread->initialized = false;
@@ -77,7 +88,7 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
 #if configSUPPORT_STATIC_ALLOCATION
     thread->impl.stack = static_cast<StackType_t*>(config.stack);
     thread->impl.handle = xTaskCreateStatic(threadWrapper,
-                                            "thread",
+                                            name,
                                             config.stackSize,
                                             &thread->impl.params,
                                             priority,
@@ -88,7 +99,7 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
         return OsalError::eOsError;
 #elif configSUPPORT_DYNAMIC_ALLOCATION
     auto result
-        = xTaskCreate(threadWrapper, "thread", config.stackSize, &thread->impl.params, priority, &thread->impl.handle);
+        = xTaskCreate(threadWrapper, name, config.stackSize, &thread->impl.params, priority, &thread->impl.handle);
     if (result != pdPASS)
         return OsalError::eOsError;
 #endif
@@ -126,4 +137,12 @@ void osalThreadYield()
 uint32_t osalThreadId()
 {
     return uint32_t(xTaskGetCurrentTaskHandle());
+}
+
+OsalError osalThreadName(char* name, size_t size)
+{
+    auto* namePtr = pcTaskGetName(nullptr);
+    std::strncpy(name, namePtr, size);
+    name[size - 1] = '\0';
+    return OsalError::eOk;
 }

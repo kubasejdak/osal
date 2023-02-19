@@ -41,6 +41,9 @@
 #include <functional>
 #include <memory>
 
+/// Maximal size of the thread name.
+static constexpr std::size_t cMaxThreadName = 15;
+
 /// Represents helper wrapper around OSAL thread function and its arguments.
 /// @note This type is necessary, because OsalThreadFunction has different signature than pthread.
 ///       Thus special threadWrapper() function (with pthread compliant signature) is used directly in
@@ -64,7 +67,16 @@ static void* threadWrapper(void* arg)
 
 OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg)
 {
+    return osalThreadCreateEx(thread, config, func, arg, nullptr);
+}
+
+OsalError
+osalThreadCreateEx(OsalThread* thread, OsalThreadConfig config, OsalThreadFunction func, void* arg, const char* name)
+{
     if (thread == nullptr || func == nullptr)
+        return OsalError::eInvalidArgument;
+
+    if (name != nullptr && std::strlen(name) > cMaxThreadName)
         return OsalError::eInvalidArgument;
 
     thread->initialized = false;
@@ -106,6 +118,11 @@ OsalError osalThreadCreate(OsalThread* thread, OsalThreadConfig config, OsalThre
     result = pthread_create(&handle, &attr, threadWrapper, wrapper.release());
     assert(result == 0);
 
+    if (name != nullptr && std::strcmp(name, "") != 0) {
+        result = pthread_setname_np(handle, name);
+        assert(result == 0);
+    }
+
     result = pthread_attr_destroy(&attr);
     assert(result == 0);
 
@@ -142,4 +159,15 @@ void osalThreadYield()
 uint32_t osalThreadId()
 {
     return std::hash<pthread_t>{}(pthread_self());
+}
+
+OsalError osalThreadName(char* name, size_t size)
+{
+    std::array<char, cMaxThreadName + 1> buffer{};
+    auto result = pthread_getname_np(pthread_self(), buffer.data(), buffer.size());
+    assert(result == 0);
+
+    std::strncpy(name, buffer.data(), size);
+    name[size - 1] = '\0';
+    return OsalError::eOk;
 }

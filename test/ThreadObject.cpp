@@ -31,10 +31,12 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include <osal/Error.hpp>
+#include <osal/Semaphore.hpp>
 #include <osal/Thread.hpp>
 #include <osal/sleep.hpp>
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <array>
 #include <cstddef>
@@ -111,6 +113,30 @@ TEST_CASE("Thread creation and destruction in C++", "[unit][cpp][thread]")
     }
 
     REQUIRE(launched);
+}
+
+TEST_CASE("Named thread creation and destruction", "[unit][cpp][thread]")
+{
+    std::string getThreadName;
+    osal::Semaphore startSemaphore{0};
+    osal::Semaphore stopSemaphore{0};
+
+    auto func = [&] {
+        startSemaphore.wait();
+        getThreadName = osal::thread::name();
+        stopSemaphore.signal();
+    };
+
+    std::string_view setThreadName = "0123456789ABCDE";
+
+    osal::Thread thread(setThreadName, func);
+
+    startSemaphore.signal();
+    stopSemaphore.wait();
+    REQUIRE_THAT(getThreadName, Catch::Matchers::Equals(setThreadName.data()));
+
+    auto error = thread.join();
+    REQUIRE(!error);
 }
 
 TEST_CASE("Thread creation with custom stack", "[unit][cpp][thread]")
