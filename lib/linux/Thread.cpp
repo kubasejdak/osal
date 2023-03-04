@@ -164,7 +164,7 @@ uint32_t osalThreadId()
 OsalError osalThreadName(char* name, size_t size)
 {
     std::array<char, cMaxThreadName + 1> buffer{};
-    auto result = pthread_getname_np(pthread_self(), buffer.data(), buffer.size());
+    [[maybe_unused]] auto result = pthread_getname_np(pthread_self(), buffer.data(), buffer.size());
     assert(result == 0);
 
     std::strncpy(name, buffer.data(), size);
