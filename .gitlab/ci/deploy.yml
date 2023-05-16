@@ -10,12 +10,13 @@ pages:
   artifacts:
     paths:
       - public
+  before_script:
+    - mkdir public
   script:
     # Copy coverage report.
-    - mkdir -p public/coverage
-    - mv Coverage_Total/html/* public/coverage
+    - mv Coverage_Total/html public/coverage
 
     # Generate documentation.
     - tools/doxygen.sh -i lib -i README.md -m README.md
     - doxygen
-    - mkdir public; mv docs/html public/docs
+    - mv docs/html public/docs
