@@ -1,6 +1,6 @@
 .Run_Valgrind_Linux:
   stage: valgrind
-  image: ${DOCKER_IMAGE_GCC}
+  image: ${DOCKER_IMAGE_VALGRIND}
   tags:
     - cet_build
   needs:

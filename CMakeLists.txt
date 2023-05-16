@@ -4,7 +4,6 @@ include(test/settings.cmake)
 
 include(cmake/conan.cmake)
 include(cmake/coverage.cmake)
-include(cmake/doxygen.cmake)
 include(cmake/platform.cmake)
 include(cmake/sanitizers.cmake)
 include(cmake/utils.cmake)
@@ -37,5 +36,3 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(lib)
 add_subdirectory(test)
-
-doxygen_addTarget(${CMAKE_CURRENT_SOURCE_DIR}/lib README.md)
